@@ -23,7 +23,7 @@ TOOLS = [
         "name": "get_history",
         "description": "Recent payments made from the wallet, newest first, with transaction hashes.",
         "strict": True,
-        "input_schema": {"type": "object", "properties": {"limit": {"type": "integer", "minimum": 1, "maximum": 50}},
+        "input_schema": {"type": "object", "properties": {"limit": {"type": "integer", "description": "1 to 50"}},
                          "required": ["limit"], "additionalProperties": False},
     },
     {
@@ -187,7 +187,7 @@ def run_tool(ctx: ToolContext, name: str, args: dict) -> str:
         if name == "get_portfolio":
             out = get_portfolio(ctx)
         elif name == "get_history":
-            out = get_history(ctx, int(args.get("limit", 10)))
+            out = get_history(ctx, max(1, min(50, int(args.get("limit", 10) or 10))))
         elif name == "check_recipient":
             out = check_recipient(ctx, str(args.get("recipient", "")))
         elif name == "transfer":

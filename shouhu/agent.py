@@ -52,8 +52,14 @@ class ModelClient:
         if self._beta_ok:
             try:
                 return self.client.beta.messages.create(betas=["server-side-fallback-2026-07-01"], fallbacks="default", **kw)
-            except (self.anthropic.BadRequestError, TypeError):
-                self._beta_ok = False
+            except TypeError:
+                self._beta_ok = False          # older SDK without the fallbacks parameter
+            except self.anthropic.BadRequestError as e:
+                msg = str(e).lower()
+                if "fallback" in msg or "beta" in msg:
+                    self._beta_ok = False      # fallback feature unavailable here; plain endpoint from now on
+                else:
+                    raise                      # a real request error: surface it
         return self.client.messages.create(**kw)
 
 
