@@ -1,0 +1,13 @@
+{
+ "chain": "sepolia",
+ "chain_id": 11155111,
+ "token": "0x6b2f3F61DB4e45D07453D58dF2F4eB27C5284931",
+ "wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525",
+ "owner": "0x4444b10a36E88682C63caE89E2ADb561651e9EEF",
+ "agent": "0xe46Ab06dF31a8E03BAAe6aA5912b60B10e0Fb291",
+ "deploy_block": 11926706,
+ "token_tx": "0x09fc9fe7db1c0febd1a793932804f9ffb05b4f87d8639ba3f64ce40b56fdaee2",
+ "wallet_tx": "0xa858a9a45f83dc612b81984473310fd179ae6adc4fe40fbe96a086b27ff6d9b9",
+ "deployed_at": 1792145748.515883,
+ "rpc": "https://ethereum-sepolia-rpc.publicnode.com"
+}
