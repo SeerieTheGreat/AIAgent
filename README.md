@@ -83,3 +83,7 @@ docs/                 technical documentation, security self-assessment, demo sc
 ## Known limits (see docs/security_self_assessment.md)
 
 The contract is small and tested but unaudited. The owner key lives in a file on the same machine for the demo; in production it would sit in the owner's own wallet. The injection screen is rule-based and is a tripwire only; the guarantee is structural. Testnet money only.
+
+## Rights
+
+Copyright 2026 the Shouhu team. All rights reserved. Submitted to the 2026 Shenzhen International FinTech Competition (International Track, Topic F); the organisers may use the entry for non-commercial promotion as set out in the competition rules. Intellectual property remains with the contestants.
