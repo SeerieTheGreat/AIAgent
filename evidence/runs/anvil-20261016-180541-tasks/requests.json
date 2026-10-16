@@ -1,0 +1,32 @@
+[
+ {
+  "id": "R1",
+  "intent_id": "0xb6563ee7ed0fff4bb38ecd0d3173781b80f04fbadae5df72e92b98be610d7c82",
+  "to": "0x98e0BF3d07f999A160F44ec80Bb90fBCf0ff480B",
+  "name": "Landlord Zhang",
+  "amount": 800000000,
+  "memo": "deposit",
+  "reasons": [
+   "800 tUSDC exceeds the per-transfer cap of 500 tUSDC"
+  ],
+  "status": "executed",
+  "created": 1792145141.1240451,
+  "approve_tx": "0xfdf53d252f7441a50fd12f9e0cde54646d0adb76f18d2de9008716d285caad8b",
+  "exec_tx": "0x0006772bfb3050f24c4b7d271ab04d01af472142183f8bfa90107687b8d6143d"
+ },
+ {
+  "id": "R2",
+  "intent_id": "0x8a643399eaadefea9acc7dd216d309486242fa70f9d7ee86dff4c7718a458f8c",
+  "to": "0x7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c",
+  "name": null,
+  "amount": 50000000,
+  "memo": "",
+  "reasons": [
+   "0x7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c is not on the owner's allowlist"
+  ],
+  "status": "pending",
+  "created": 1792145141.754656,
+  "approve_tx": null,
+  "exec_tx": null
+ }
+]
