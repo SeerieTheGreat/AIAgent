@@ -176,15 +176,15 @@ uv run shouhu-demo --chain anvil --verbose                 # full demo, local ch
 uv run shouhu-verify --chain sepolia --all</pre>
 <p>The command reads the transaction from the public chain, decodes its events, and looks up the intent id in the audit logs shipped under <code>evidence/runs/</code>. It prints the user's exact request, the policy decision, its tier and reasons, with the time. The intent id is the hash of that log entry, so a forged log would not match the chain. <code>--all</code> does this for every payment of the wallet. It needs no keys.</p></div>
 <div class="step"><h3>Check 4. The guardrails hold without the model (repository, one minute)</h3>
-<pre>uv run shouhu-try --chain sepolia mama 600          # REJECTED: ExceedsPerTransferCap
-uv run shouhu-try --chain sepolia mama 5            # ALLOWED (dry run, nothing sent)
-uv run shouhu-owner --chain sepolia status          # the live policy and allowlist, read-only</pre>
+<pre>uv run shouhu-try --chain sepolia mama 600      # REJECTED, over the cap
+uv run shouhu-try --chain sepolia mama 5        # ALLOWED, dry run only
+uv run shouhu-owner --chain sepolia status      # live policy, read-only</pre>
 <p>The first two ask the contract directly, with the agent's authority, whether it would accept the payment. No model is involved, so this shows the layer that holds even if the model were fully compromised.</p></div>
 <div class="step"><h3>Check 5. Reproduce everything from scratch (repository, ten minutes)</h3>
-<pre>uv run shouhu-demo --chain anvil --verbose   # the eight tasks on a fresh local chain, with the live model
-uv run shouhu-demo --chain anvil --offline   # the same without a model: policy engine and contract only
-uv run shouhu-redteam --chain anvil          # the eight attacks; writes evidence/redteam_results.md
-uv run pytest                                # 20 Python tests, including the end-to-end run on a local chain
+<pre>uv run shouhu-demo --chain anvil --verbose   # eight tasks, fresh local chain
+uv run shouhu-demo --chain anvil --offline   # same, without a model
+uv run shouhu-redteam --chain anvil          # eight attacks, results table
+uv run pytest                                # 20 Python tests
 cd contracts && forge test                   # 12 contract tests</pre>
 <p>Section 8 has the install steps. A judge who deploys a fresh copy on Sepolia with their own faucet ether (Section 8, last paragraph) gets their own hashes with the same behaviour.</p></div>
 
