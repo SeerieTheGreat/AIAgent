@@ -24,3 +24,5 @@ See `security_self_assessment.md`. Keys: `.env` (agent key, API key) is read by 
 ## Deployment and evidence
 
 Ethereum Sepolia: PolicyWallet `0xb9D959da30680e86E9bF0A287Abee354033a0525`, TestUSDC `0x6b2f3F61DB4e45D07453D58dF2F4eB27C5284931`, deploy block 11926706, both verified on Sourcify. Evidence bundles with transaction hashes, explorer links, the audit log and the request store are under `evidence/runs/`; the red-team table is `evidence/redteam_results.md`.
+
+Source code: https://github.com/SeerieTheGreat/AIAgent

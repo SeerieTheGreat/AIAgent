@@ -7,6 +7,7 @@ only the owner can settle, with a separate key, outside the chat. Every payment 
 links the transaction hash to the agent's audit log.
 
 Entry for the 2026 Shenzhen International FinTech Competition, International Track, Topic F (Agent Wallet).
+Repository: https://github.com/SeerieTheGreat/AIAgent
 Scenario: a family in Shenzhen funds a student abroad; contacts are Mama, Ge (older brother), the landlord,
 the university bursar and a friend. Amounts are in tUSDC, a test token with no value.
 
