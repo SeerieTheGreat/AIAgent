@@ -4,6 +4,8 @@ from __future__ import annotations
 import argparse
 import sys
 
+from eth_utils import to_checksum_address
+
 from . import config, contacts as contacts_mod
 from .chain import Chain, ChainError, account_from
 from .money import fmt, to_units
@@ -15,7 +17,7 @@ def _resolve(contacts, query: str) -> str:
     if len(hits) == 1:
         return hits[0].address
     if query.startswith("0x") and len(query) == 42:
-        return query
+        return to_checksum_address(query)
     raise SystemExit(f"could not resolve '{query}' to one contact or address")
 
 
