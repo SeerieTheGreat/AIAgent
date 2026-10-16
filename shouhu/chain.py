@@ -199,11 +199,14 @@ class Chain:
             nonce = self.w3.eth.get_transaction_count(account.address, "pending")
             base = self.w3.eth.get_block("latest").get("baseFeePerGas", 0) or 0
             prio = 10**9
-            tx = {"to": to_checksum_address(to), "value": wei, "nonce": nonce, "chainId": self.cfg["chain_id"], "gas": 21000,
-                  "maxPriorityFeePerGas": prio, "maxFeePerGas": base * 2 + prio}
+            tx = {"from": account.address, "to": to_checksum_address(to), "value": wei, "nonce": nonce,
+                  "chainId": self.cfg["chain_id"], "maxPriorityFeePerGas": prio, "maxFeePerGas": base * 2 + prio}
+            tx["gas"] = int(self.w3.eth.estimate_gas(tx) * 1.3)   # never hard-code 21000: intrinsic costs change
             signed = account.sign_transaction(tx)
             h = self.w3.eth.send_raw_transaction(signed.raw_transaction)
             r = self.w3.eth.wait_for_transaction_receipt(h, timeout=timeout)
+            if r["status"] != 1:
+                raise ChainError(f"ether transfer {hx(h)} failed on-chain (gas used {r['gasUsed']} of {tx['gas']})")
             return Receipt(hx(h), r["blockNumber"], r["gasUsed"], r["status"])
 
     # agent paths
