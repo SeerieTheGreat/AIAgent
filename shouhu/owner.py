@@ -41,8 +41,8 @@ def main(argv=None):
     chain = Chain(a.chain)
     if not chain.deployment:
         sys.exit(f"no deployment for {a.chain}; run shouhu-deploy first")
-    owner = account_from(config.owner_key())
     contacts = contacts_mod.load()
+    owner = None if a.cmd in ("status", "requests") else account_from(config.owner_key())
     reqs = Requests()
     try:
         if a.cmd == "status":

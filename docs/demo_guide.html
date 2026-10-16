@@ -63,7 +63,7 @@
   <tr><td>Competition site and rules</td><td><a href="https://fintechathon.g-ican.com/#/en">https://fintechathon.g-ican.com/#/en</a> and <a href="https://fintechathon.g-ican.com/#/en/rule">https://fintechathon.g-ican.com/#/en/rule</a></td></tr>
   <tr><td>Red-team results, evidence bundles, documents in the repository</td><td><a href="https://github.com/SeerieTheGreat/AIAgent/blob/main/evidence/redteam_results.md">evidence/redteam_results.md</a> · <a href="https://github.com/SeerieTheGreat/AIAgent/tree/main/evidence/runs">evidence/runs</a> · <a href="https://github.com/SeerieTheGreat/AIAgent/tree/main/docs">docs</a></td></tr>
 </table>
-<p class="small">On this Mac the files are in <code>~/Desktop/FinTechathon 2026/</code> (deck as .pptx and .pdf, the three documents, the registration form) and the project in <code>~/fintechathon/shouhu</code>.</p>
+<p class="small">Every link above was opened on 16 October 2026 and answered normally, and every transaction hash was re-read directly from the Sepolia chain: status Success, sent by the key the row names, carrying the event the row describes. On this Mac the files are in <code>~/Desktop/FinTechathon 2026/</code> (deck as .pptx and .pdf, the three documents, the registration form) and the project in <code>~/fintechathon/shouhu</code>.</p>
 
 <h2>2. Before any demo (ten minutes, once)</h2>
 <div class="step"><h3>Step 1. Open Terminal and go to the project</h3>
@@ -159,6 +159,47 @@ uv run shouhu-demo --chain anvil --verbose                 # full demo, local ch
   <li>The contract source on Sourcify is an exact match of the deployed bytecode: what judges read is exactly what runs.</li>
 </ul>
 </div>
+
+<h2>10. For the judges: how to check that it really works</h2>
+<p>The rules for Topic F say the execution evidence must be <b>real on-chain transaction hashes</b>. Everything below can be done by a judge with a browser, and the deeper checks with the repository on any computer. No keys from the team are needed for any of it.</p>
+<div class="step"><h3>Check 1. The hashes are real, successful, and belong to our contract (browser only, two minutes)</h3>
+<ol>
+  <li>Open any payment link from Section 1, for example Payment 1 to Mama. On the explorer page confirm: <b>Status: Success</b>; <b>From</b> is the agent address <code>0xe46A…b291</code>; <b>To</b> is the PolicyWallet contract <code>0xb9D9…0525</code>.</li>
+  <li>Open the <b>Logs</b> tab of that transaction. Two events appear: <code>Payment</code> from the PolicyWallet (topic 1 is the intent id, topic 2 is the recipient, data holds the amount and the by-approval flag) and the tUSDC <code>Transfer</code> from the wallet to the recipient.</li>
+  <li>Open the approval link. <b>From</b> is the owner address <code>0x4444…9EEF</code>, not the agent; the log is <code>ApprovalGranted</code> with the same intent id that Payment 2 later carries. That is the one-time approval, made with a different key, consumed by the 800 payment.</li>
+  <li>Open the PolicyWallet address page and its <b>Events</b> tab: every payment the agent ever made is listed there, newest first. The contract's <b>Read Contract</b> view shows the live policy: <code>perTransferCap</code> 500000000 (500 tUSDC with six decimals), <code>rollingCap</code> 1000000000, <code>paused</code> false, and <code>allowlist(address)</code> for any address.</li>
+</ol></div>
+<div class="step"><h3>Check 2. The contract that runs is the contract we show (browser only, one minute)</h3>
+<p>Open the Sourcify links in Section 1. Sourcify reports an <b>exact match</b> between the deployed bytecode and the source, and shows the source itself; it is the same file as <code>contracts/src/PolicyWallet.sol</code> in the repository. The limits are in that code, in <code>agentTransfer</code>, and the only functions that change them are marked <code>onlyOwner</code>.</p></div>
+<div class="step"><h3>Check 3. A hash leads back to the conversation that caused it (repository, two minutes)</h3>
+<pre>uv run shouhu-verify --chain sepolia 0x838aee659579417aa92716e84790bb07158e68f6fbb77b11fb20936e46a38cfc
+uv run shouhu-verify --chain sepolia --all</pre>
+<p>The command reads the transaction from the public chain, decodes its events, and looks up the intent id in the audit logs shipped under <code>evidence/runs/</code>. It prints the user's exact request, the policy decision, its tier and reasons, with the time. The intent id is the hash of that log entry, so a forged log would not match the chain. <code>--all</code> does this for every payment of the wallet. It needs no keys.</p></div>
+<div class="step"><h3>Check 4. The guardrails hold without the model (repository, one minute)</h3>
+<pre>uv run shouhu-try --chain sepolia mama 600          # REJECTED: ExceedsPerTransferCap
+uv run shouhu-try --chain sepolia mama 5            # ALLOWED (dry run, nothing sent)
+uv run shouhu-owner --chain sepolia status          # the live policy and allowlist, read-only</pre>
+<p>The first two ask the contract directly, with the agent's authority, whether it would accept the payment. No model is involved, so this shows the layer that holds even if the model were fully compromised.</p></div>
+<div class="step"><h3>Check 5. Reproduce everything from scratch (repository, ten minutes)</h3>
+<pre>uv run shouhu-demo --chain anvil --verbose   # the eight tasks on a fresh local chain, with the live model
+uv run shouhu-demo --chain anvil --offline   # the same without a model: policy engine and contract only
+uv run shouhu-redteam --chain anvil          # the eight attacks; writes evidence/redteam_results.md
+uv run pytest                                # 20 Python tests, including the end-to-end run on a local chain
+cd contracts && forge test                   # 12 contract tests</pre>
+<p>Section 8 has the install steps. A judge who deploys a fresh copy on Sepolia with their own faucet ether (Section 8, last paragraph) gets their own hashes with the same behaviour.</p></div>
+
+<h2>11. Submission checklist against the rules</h2>
+<table>
+  <tr><th style="width:34%">Required by Attachment 2, section 5</th><th>Where it is</th></tr>
+  <tr><td>Technical documentation (architecture, core algorithm, security design)</td><td><code>docs/technical_documentation.md</code> in the repository; copy in the Desktop folder</td></tr>
+  <tr><td>Presentation deck (final presentation no longer than 10 minutes)</td><td><code>Shouhu_Deck.pptx</code> and <code>.pdf</code> in the Desktop folder; 12 slides with speaker notes</td></tr>
+  <tr><td>Demo video (optional, no longer than 5 minutes)</td><td>Record with Section 6; the hashes and transcripts already satisfy the evidence rule</td></tr>
+  <tr><td>Source code with README, GitHub link, deployment instructions, test cases</td><td><a href="https://github.com/SeerieTheGreat/AIAgent">https://github.com/SeerieTheGreat/AIAgent</a>: README with run and deploy instructions, <code>tests/</code>, <code>contracts/test/</code></td></tr>
+  <tr><td>Security self-assessment (permission-tier implementation, known-risk list)</td><td><code>docs/security_self_assessment.md</code>; copy in the Desktop folder; red-team table in <code>evidence/redteam_results.md</code></td></tr>
+  <tr><td>Execution evidence (on-chain topic: real on-chain transaction hashes)</td><td>Section 1 of this guide; <code>evidence/runs/sepolia-20261016-182745-tasks/</code> with payments, hashes, explorer links, transcript and audit log</td></tr>
+  <tr><td>Registration form (Attachment 3) with member details</td><td><code>Attachment 3 - International Track Registration Form (fill this).xlsx</code> in the Desktop folder; team fields pre-filled, member rows to complete</td></tr>
+</table>
+<p class="small">E-mail everything to fintechathon@ican-x.com by 20 October 2026, 23:59 Beijing time, subject "International Track Registration – Philippines – Team Name – Team Leader's Full Name". Later versions before the deadline replace earlier ones.</p>
 
 </body>
 </html>

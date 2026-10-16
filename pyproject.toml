@@ -22,6 +22,7 @@ shouhu-demo = "shouhu.demo:main"
 shouhu-redteam = "shouhu.redteam:main"
 shouhu-evidence = "shouhu.evidence:main"
 shouhu-try = "shouhu.trycontract:main"
+shouhu-verify = "shouhu.verify:main"
 
 [build-system]
 requires = ["hatchling"]
