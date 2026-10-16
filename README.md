@@ -45,6 +45,15 @@ uv run shouhu-owner --chain anvil allow "Xiao Wang" | disallow ... | pause | unp
 uv run shouhu-evidence --chain sepolia           # export payments, hashes, audit log and requests
 ```
 
+## Live deployment (Ethereum Sepolia)
+
+| Contract | Address | Source |
+|---|---|---|
+| PolicyWallet | `0xb9D959da30680e86E9bF0A287Abee354033a0525` | [explorer](https://sepolia.etherscan.io/address/0xb9D959da30680e86E9bF0A287Abee354033a0525), [Sourcify exact match](https://repo.sourcify.dev/contracts/full_match/11155111/0xb9D959da30680e86E9bF0A287Abee354033a0525/) |
+| TestUSDC | `0x6b2f3F61DB4e45D07453D58dF2F4eB27C5284931` | [explorer](https://sepolia.etherscan.io/address/0x6b2f3F61DB4e45D07453D58dF2F4eB27C5284931), [Sourcify exact match](https://repo.sourcify.dev/contracts/full_match/11155111/0x6b2f3F61DB4e45D07453D58dF2F4eB27C5284931/) |
+
+Owner `0x4444b10a36E88682C63caE89E2ADb561651e9EEF`, agent `0xe46Ab06dF31a8E03BAAe6aA5912b60B10e0Fb291`, deployed at block 11926706 (`deployments/sepolia.json`). Policy: per-transfer cap 500 tUSDC, 24-hour cap 1,000 tUSDC, five allowlisted contacts. Evidence runs with transaction hashes live under `evidence/runs/`.
+
 ## Permission tiers
 
 | Tier | What | Who approves | Where it is enforced |
