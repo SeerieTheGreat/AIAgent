@@ -1,0 +1,32 @@
+[
+ {
+  "id": "R1",
+  "intent_id": "0x576eb76b93e72754fe9a1793fce021e23e56235518386e25e287cc23186db22a",
+  "to": "0x98e0BF3d07f999A160F44ec80Bb90fBCf0ff480B",
+  "name": "Landlord Zhang",
+  "amount": 800000000,
+  "memo": "Apartment deposit",
+  "reasons": [
+   "800 tUSDC exceeds the per-transfer cap of 500 tUSDC"
+  ],
+  "status": "executed",
+  "created": 1792146244.965568,
+  "approve_tx": "0xe6e3226b7d33ef02bdfdcc32d437b02c239fc8d6c8e295bd3d6022eaff2cd6c5",
+  "exec_tx": "0x9e8d71a33fb06fef4c9f898868c85c8ccc4c12f5ba1de8b010906a091822e044"
+ },
+ {
+  "id": "R2",
+  "intent_id": "0xb6a2fcb8db39f88f9f27936f65dd5804cfc5a11c7f131bf0a6abb4c71a26f5f9",
+  "to": "0x7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c",
+  "name": null,
+  "amount": 50000000,
+  "memo": "Friend's share of the trip",
+  "reasons": [
+   "0x7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c is not on the owner's allowlist"
+  ],
+  "status": "pending",
+  "created": 1792146265.6825259,
+  "approve_tx": null,
+  "exec_tx": null
+ }
+]
