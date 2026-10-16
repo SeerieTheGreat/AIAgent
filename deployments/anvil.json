@@ -1,0 +1,13 @@
+{
+ "chain": "anvil",
+ "chain_id": 31337,
+ "token": "0x6b2f3F61DB4e45D07453D58dF2F4eB27C5284931",
+ "wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525",
+ "owner": "0x4444b10a36E88682C63caE89E2ADb561651e9EEF",
+ "agent": "0xe46Ab06dF31a8E03BAAe6aA5912b60B10e0Fb291",
+ "deploy_block": 1,
+ "token_tx": "0xd123677e0316b676a730e1c07aea34b39d9f76b990e8cc9b73cd10b6e4b97ea8",
+ "wallet_tx": "0xbffdee4e106bf5b396af5a5971f30f3be26931ea1ec59e45b82811f823a85164",
+ "deployed_at": 1792145140.0709078,
+ "rpc": "http://127.0.0.1:8545"
+}

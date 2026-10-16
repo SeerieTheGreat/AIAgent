@@ -1,0 +1,58 @@
+[
+ {
+  "name": "Mama",
+  "aliases": [
+   "mama",
+   "mom",
+   "mother",
+   "妈妈",
+   "妈",
+   "ma"
+  ],
+  "address": "0x76782b840f864dA37F8CA7ecB2B1354782D4bf33"
+ },
+ {
+  "name": "Ge",
+  "aliases": [
+   "ge",
+   "gege",
+   "哥",
+   "哥哥",
+   "older brother",
+   "brother"
+  ],
+  "address": "0xa61A132925b7Eb4B32f3201a7D31cDD80de12e49"
+ },
+ {
+  "name": "Landlord Zhang",
+  "aliases": [
+   "landlord",
+   "landlord zhang",
+   "zhang",
+   "房东",
+   "rent"
+  ],
+  "address": "0x98e0BF3d07f999A160F44ec80Bb90fBCf0ff480B"
+ },
+ {
+  "name": "University Bursar",
+  "aliases": [
+   "bursar",
+   "university",
+   "tuition",
+   "学费",
+   "school"
+  ],
+  "address": "0x0B2B01EEABE600DaAC40B9B5bd2B26F30ce3439F"
+ },
+ {
+  "name": "Xiao Wang",
+  "aliases": [
+   "xiao wang",
+   "wang",
+   "小王",
+   "friend"
+  ],
+  "address": "0x3Aa49018675B446F69DB93818A924675CF28b01E"
+ }
+]

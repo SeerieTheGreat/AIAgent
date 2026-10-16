@@ -1,0 +1,13 @@
+.env
+.owner.env
+ADDRESSES.md
+.venv/
+__pycache__/
+*.pyc
+contracts/out/
+contracts/cache/
+contracts/lib/
+evidence/audit_log.jsonl
+evidence/runs/
+data/
+.pytest_cache/
