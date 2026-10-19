@@ -63,6 +63,8 @@ request once, exactly as filed, denies it, or pauses the agent.
   the owner key and is refused unless the signer is the contract's `owner()`; optional new limits go on-chain with
   `setPolicy`. Passwords are salted scrypt hashes in `data/accounts.json`; each page has its own session cookie, and
   five wrong passwords lock sign-in for 30 seconds. `--reset-accounts` shows the sign-up screens again.
+  `--reset-demo` also clears requests, registered contacts and owner activity, for a clean live demo
+  (script: `docs/Shouhu_Live_Demo_Script.pdf`).
 - **Contact registration.** The owner console registers a new contact (name, Chinese name, address or a generated
   test address) and sends `setAllowlist` in the same step; the chat picks the contact up without a restart.
 - **Proof of transaction.** `/proof?tx=0x…` on either page re-reads a transaction, its receipt and block from the

@@ -180,6 +180,7 @@ uv run shouhu-web --chain sepolia --reset-accounts   # show registration again</
 <p class="small">Page security: both servers listen only on 127.0.0.1, refuse requests that name another host, require a signed-in session for every data request, and require a token issued when the page loads for every action, so another website open in the same browser cannot press the buttons. Before signing, the owner console checks that the approval matches the filed request exactly (id, recipient, amount and intent id). The receipt cards come from the tool results, so a model that misreported a payment would be contradicted on screen, and the proof page contradicts both if the chain disagrees.</p>
 
 <h2>7. Recording the demo video (five minutes or less)</h2>
+<p>A word-for-word five-minute script with clicks, measured waits, checkpoints and a driver's cue card is in <code>docs/Shouhu_Live_Demo_Script.pdf</code>; use it for the video and for the demo inside the ten-minute final. Start with <code>uv run shouhu-web --chain sepolia --reset-demo</code> so every run begins with empty sign-ups and request R1.</p>
 <ol>
   <li>Easiest: record Demo D. Run <code>uv run shouhu-web --chain sepolia --fresh</code>, put the chat on the left and the owner console on the right, and keep an explorer tab ready. For Demo B instead: Terminal window 1 on the left, window 2 on the right, the browser with the explorer behind them.</li>
   <li>Open QuickTime Player, choose File, New Screen Recording, pick the microphone, press Record, select the whole screen.</li>

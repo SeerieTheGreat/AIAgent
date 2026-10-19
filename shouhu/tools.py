@@ -173,7 +173,8 @@ def transfer(ctx: ToolContext, recipient: str, amount: str, memo: str | None = N
         req = ctx.requests.create("0x" + intent_id.hex(), res.address, res.name, units, decision.reasons + ([reason] if reason else []), memo)
         ctx.audit.log("request_filed", request_id=req["id"], intent_id=req["intent_id"], to=res.address, amount=units)
         return {"status": "needs_owner_approval", "request_id": req["id"], "to": res.name or res.address, "amount": fmt(units), **base,
-                "how_to_approve": f"the owner runs: shouhu-owner approve {req['id']}  (with the owner key, outside this chat); then ask me to complete {req['id']}"}
+                "how_to_approve": f"the owner approves {req['id']} in the owner console, or runs shouhu-owner approve {req['id']}; "
+                                  f"either way with the owner key, outside this chat; then ask me to complete {req['id']}"}
     return {**_execute(ctx, res, units, intent_id, memo, via_approval=False), **base}
 
 

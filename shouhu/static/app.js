@@ -221,7 +221,7 @@ function renderChips() {
   const approved = (STATE?.requests || []).filter((r) => r.status === "approved");
   const extra = approved.map((r) => ({ text: `The owner says they approved request ${r.id}. Please complete it.`, label: `complete ${r.id}`, hot: true }));
   const items = [...extra, ...(BOOT.examples || [])];
-  $("chips").innerHTML = items.map((e, i) => `<button type="button" class="chip${e.hot ? " hot" : ""}" data-i="${i}" title="${esc(e.text)}">${esc(e.hot ? `✓ ${e.label}` : e.text)}</button>`).join("");
+  $("chips").innerHTML = items.map((e, i) => `<button type="button" class="chip${e.hot ? " hot" : ""}" data-i="${i}" title="${esc(e.text)}">${esc(e.hot ? `✓ ${e.label}` : e.chip || e.text)}</button>`).join("");
   $("chips").onclick = (ev) => { const b = ev.target.closest(".chip"); if (b) send(items[+b.dataset.i].text); };
 }
 

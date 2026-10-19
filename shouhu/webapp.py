@@ -33,6 +33,11 @@ SEPOLIA_HISTORY_RPCS = ("https://0xrpc.io/sep", "https://gateway.tenderly.co/pub
                         "https://eth-sepolia.api.onfinality.io/public")
 
 
+# short chip labels so all eight scripted lines fit above the input box; the full line is in the tooltip and the chat
+CHIPS = {1: "Wallet", 2: "Mama 20", 3: "Landlord 800", 4: "New address", 5: "Lookalike", 6: "Injection",
+         7: "Fake owner", 8: "给哥转 10"}
+
+
 class WebChain(Chain):
     """Default endpoints for reads and sends; payment history falls back to endpoints that keep old logs."""
 
@@ -224,7 +229,8 @@ def build_app(session: Session, owner_port: int | None, accounts: Accounts | Non
     app.pages["/proof"] = "proof.html"
     tasks = scripted_tasks(session.contacts)
     app.page_vars = {"owner_url": f"http://127.0.0.1:{owner_port}/" if owner_port else None,
-                     "examples": [{"n": t["n"], "text": t["user"], "label": t["criterion"]} for t in tasks],
+                     "examples": [{"n": t["n"], "text": t["user"], "label": t["criterion"], "chip": f"{t['n']} {CHIPS.get(t['n'], '')}"}
+                                  for t in tasks],
                      "offline": session.offline_reason, "chain": session.chain.name, "home": "/", "side": "student"}
     accounts = accounts or Accounts()
 
@@ -291,6 +297,8 @@ def main(argv=None):
     ap.add_argument("--no-owner", action="store_true", help="do not start the owner console")
     ap.add_argument("--fresh", action="store_true", help="clear old approval requests first")
     ap.add_argument("--reset-accounts", action="store_true", help="remove the student and parent accounts, to show registration again")
+    ap.add_argument("--reset-demo", action="store_true",
+                    help="start the live demo from scratch: no accounts, requests, registered contacts or owner activity")
     ap.add_argument("--no-browser", action="store_true")
     ap.add_argument("--model", default=config.MODEL)
     ap.add_argument("--effort", default=config.EFFORT)
@@ -321,9 +329,13 @@ def main(argv=None):
             sys.exit(f"no deployment for {a.chain}; run: uv run shouhu-deploy --chain {a.chain}")
         if a.fresh:
             Requests().clear()
-        if a.reset_accounts:
+        if a.reset_accounts or a.reset_demo:
             for role in accounts_mod.ROLES:
                 Accounts().remove(role)
+        if a.reset_demo:                  # the chain keeps its history; only this computer's demo records go
+            Requests().clear()
+            for name in ("contacts_registered.json", "owner_actions.json"):
+                (config.DATA_DIR / name).unlink(missing_ok=True)
         session = Session(chain, a.model, a.effort, offline)
         owner_proc = None
         if not a.no_owner:
