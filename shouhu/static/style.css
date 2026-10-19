@@ -225,3 +225,79 @@ body.owner .top { border-bottom: 3px solid var(--cinnabar); }
 .confirm p { margin: 0 0 8px; font-size: 13.5px; }
 .confirm input { border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px; font: inherit; width: 120px; background: var(--card); color: var(--text); }
 .section-title { font-size: 12px; text-transform: uppercase; letter-spacing: .6px; color: var(--muted); margin: 6px 0 10px; }
+
+/* ---------------------------------------------------------------- accounts */
+body.locked { overflow: hidden; }
+.auth { position: fixed; inset: 0; z-index: 30; background: var(--paper); overflow-y: auto; display: grid; place-items: start center; padding: 6vh 16px 40px; }
+.auth-card {
+  width: 100%; max-width: 460px; background: var(--card); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow);
+  padding: 26px 26px 20px; display: flex; flex-direction: column; gap: 12px;
+}
+.auth-card .seal { margin: 0 auto 2px; }
+.auth-card h2 { margin: 0; text-align: center; font-size: 19px; color: var(--ink); }
+.auth-card .lead { margin: 0 0 4px; text-align: center; color: var(--muted); font-size: 13.5px; }
+.auth-card label, .contact-form label { display: flex; flex-direction: column; gap: 4px; font-size: 12.5px; color: var(--muted); font-weight: 600; }
+.auth-card input, .contact-form input:not([type=checkbox]), .lookup input {
+  border: 1px solid var(--line); border-radius: 9px; padding: 9px 11px; font: inherit; font-weight: 400; background: var(--paper); color: var(--text); min-width: 0;
+}
+.auth-card input:focus, .contact-form input:focus, .lookup input:focus { outline: 2px solid var(--ink-2); outline-offset: -1px; }
+.auth-card fieldset { border: 1px dashed var(--line); border-radius: 10px; padding: 10px 12px 4px; margin: 0; }
+.auth-card legend { font-size: 12px; color: var(--muted); padding: 0 4px; }
+.auth-card .small { margin: 6px 0; text-align: center; }
+.auth-card fieldset .small { text-align: left; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+@media (max-width: 520px) { .two { grid-template-columns: 1fr; } }
+.auth-err { color: var(--cinnabar); font-size: 13px; min-height: 1em; }
+.btn.wide { width: 100%; padding: 10px; font-weight: 600; }
+.btn.xs { padding: 3px 9px; font-size: 12px; }
+.user-chip { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; padding: 3px 4px 3px 3px; border: 1px solid var(--line); border-radius: 999px; }
+.avatar.sm { width: 24px; height: 24px; font-size: 12px; }
+.linkish { border: 0; background: none; color: var(--blue); font-size: 12.5px; padding: 2px 8px; }
+.proof-link { font-size: 12.5px; white-space: nowrap; font-weight: 600; color: var(--jade); }
+.card .proof-link { margin-left: auto; }
+.panel-note { margin: -4px 0 8px; }
+.contact-form { display: flex; flex-direction: column; gap: 10px; }
+details.stmt { font-size: 12px; color: var(--muted); }
+details.stmt pre { white-space: pre-wrap; word-break: break-all; background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 8px; font-family: var(--mono); font-size: 11px; margin: 4px 0 0; }
+#family .item .grow div { white-space: normal; }
+
+/* ---------------------------------------------------------------- proof page */
+body.proof-page { height: auto; display: block; }
+body.proof-page .top { border-bottom: 3px solid var(--jade); }
+.proof-wrap { max-width: 1000px; margin: 0 auto; padding: 18px 22px 40px; }
+@media (max-width: 700px) { .proof-wrap { padding: 12px 16px 30px; } }
+.lookup { display: flex; gap: 8px; margin-bottom: 16px; }
+.lookup input { flex: 1; font-family: var(--mono); font-size: 13px; }
+.verdict { display: flex; gap: 16px; align-items: center; padding: 18px 20px; border-radius: var(--radius); border: 1px solid var(--line); margin-bottom: 12px; }
+.verdict.ok { background: var(--jade-bg); border-color: var(--jade); }
+.verdict.bad { background: var(--cinnabar-bg); border-color: var(--cinnabar); }
+.verdict .mark { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; font-size: 26px; font-weight: 700; color: #fff; flex: none; background: var(--jade); }
+.verdict.bad .mark { background: var(--cinnabar); }
+.verdict h2 { margin: 2px 0 4px; font-size: 20px; color: var(--ink); overflow-wrap: anywhere; }
+.verdict p { margin: 0; font-size: 13.5px; color: var(--muted); }
+.verdict .kind { text-transform: uppercase; letter-spacing: .5px; font-weight: 600; }
+.proof-wrap .actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 14px; }
+.proof-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.proof-grid > .panel:nth-child(2) { grid-row: span 2; }
+@media (max-width: 820px) { .proof-grid { grid-template-columns: minmax(0, 1fr); } .proof-grid > .panel:nth-child(2) { grid-row: auto; } }
+.checks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 7px; font-size: 13.5px; }
+.checks li { display: grid; grid-template-columns: 20px 1fr; gap: 6px; }
+.checks li span { font-weight: 700; }
+.checks li.ok span { color: var(--jade); } .checks li.bad span { color: var(--cinnabar); }
+dl.facts { display: grid; grid-template-columns: 128px minmax(0, 1fr); gap: 6px 12px; margin: 0; font-size: 13px; }
+dl.facts dt { color: var(--muted); }
+dl.facts dd { margin: 0; overflow-wrap: anywhere; }
+.event { border-top: 1px solid var(--line); padding: 8px 0; font-size: 13px; }
+.event:first-of-type { border-top: 0; padding-top: 0; }
+.event dl { display: grid; grid-template-columns: 128px minmax(0, 1fr); gap: 3px 12px; margin: 4px 0 0; }
+.event dt { color: var(--muted); } .event dd { margin: 0; overflow-wrap: anywhere; }
+.copy { cursor: copy; overflow-wrap: anywhere; }
+@media print {
+  .no-print, .lookup, .toast { display: none !important; }
+  body.proof-page { background: #fff; }
+  .top { position: static; }
+  .panel, .verdict { box-shadow: none; break-inside: avoid; }
+  .proof-grid { grid-template-columns: 1fr; }
+  .proof-grid > .panel:nth-child(2) { grid-row: auto; }
+}
+.contact-form label.toggle { flex-direction: row; font-weight: 500; }

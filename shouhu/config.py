@@ -14,7 +14,7 @@ load_dotenv(ENV_PATH)
 ARTIFACTS = ROOT / "shouhu" / "artifacts"
 DEPLOYMENTS = ROOT / "deployments"
 EVIDENCE_DIR = ROOT / "evidence"
-DATA_DIR = ROOT / "data"
+DATA_DIR = Path(os.environ.get("SHOUHU_DATA_DIR") or ROOT / "data")   # requests, accounts, registered contacts
 CONTACTS_PATH = ROOT / "contacts.json"
 REQUESTS_PATH = DATA_DIR / "requests.json"
 AUDIT_PATH = EVIDENCE_DIR / "audit_log.jsonl"
@@ -61,6 +61,15 @@ MAX_TOOL_ROUNDS = 8
 DEFAULT_PER_TRANSFER_CAP = 500 * UNIT
 DEFAULT_ROLLING_CAP = 1000 * UNIT
 INITIAL_WALLET_FUNDING = 10_000 * UNIT
+
+
+def set_data_dir(path: Path) -> None:
+    """Point this process, and the processes it starts, at another data folder (the local chain keeps its own)."""
+    global DATA_DIR, REQUESTS_PATH
+    DATA_DIR = Path(path)
+    REQUESTS_PATH = DATA_DIR / "requests.json"
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    os.environ["SHOUHU_DATA_DIR"] = str(DATA_DIR)
 
 
 def owner_key() -> str | None:

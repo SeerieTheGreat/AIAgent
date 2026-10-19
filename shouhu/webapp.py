@@ -1,6 +1,7 @@
 """Browser interface for the student's chat with Shouhu. The process holds only the agent key.
 
-The owner console (approvals, pause) is a different process started next to it, see owner_web.py."""
+The owner console (approvals, pause, contacts) is a different process started next to it, see owner_web.py.
+The student signs up and signs in here; every payment has a proof page that re-reads it from the chain."""
 from __future__ import annotations
 
 import argparse
@@ -14,12 +15,14 @@ import time
 from concurrent.futures import ThreadPoolExecutor
 from contextlib import nullcontext
 
-from . import config, contacts as contacts_mod
+from . import accounts as accounts_mod, config, contacts as contacts_mod
+from .accounts import AccountError, Accounts
 from .agent import ModelClient, ShouhuAgent
 from .audit import Audit
 from .chain import Chain, ChainError, account_from
 from .localchain import Anvil
 from .money import fmt
+from .proof import verify_tx
 from .requests_store import Requests
 from .scenarios import scripted_tasks
 from .tools import ToolContext
@@ -56,7 +59,9 @@ class Session:
         self.model, self.effort = model, effort
         self.offline_reason = offline_reason
         self.model_client = model_client
+        self.watch_contacts = contacts is None     # pick up contacts the owner registers in the other process
         self.contacts = contacts if contacts is not None else contacts_mod.load()
+        self._contacts_seen = self._contacts_stamp()
         self.requests = requests or Requests()
         self.agent_account = agent_account or account_from(config.agent_key())
         self.audit_path = audit_path
@@ -91,7 +96,21 @@ class Session:
     def invalidate(self):
         self._cache.clear()
 
+    @staticmethod
+    def _contacts_stamp():
+        p = contacts_mod.registered_path()
+        return p.stat().st_mtime if p.exists() else None
+
+    def sync_contacts(self):
+        if not self.watch_contacts or self._contacts_stamp() == self._contacts_seen:
+            return
+        self._contacts_seen = self._contacts_stamp()
+        self.contacts[:] = contacts_mod.load()      # in place: the tool context holds the same list
+        self.invalidate()
+
     def state(self) -> dict:
+        self.sync_contacts()
+
         def read():
             # public endpoints answer one call at a time slowly; issue the independent reads together
             allowed = [self._pool.submit(self.chain.is_allowlisted, c.address) for c in self.contacts]
@@ -128,6 +147,7 @@ class Session:
         if not self.lock.acquire(blocking=False):
             return {"error": "Shouhu is still answering the previous message."}
         try:
+            self.sync_contacts()
             self.busy, self.progress = True, []
             started = time.time()
             try:
@@ -199,12 +219,28 @@ def _card(name: str, args: dict, result_text: str, chain: Chain) -> dict:
     return card
 
 
-def build_app(session: Session, owner_port: int | None) -> App:
+def build_app(session: Session, owner_port: int | None, accounts: Accounts | None = None) -> App:
     app = App("index.html", "Shouhu")
+    app.pages["/proof"] = "proof.html"
     tasks = scripted_tasks(session.contacts)
     app.page_vars = {"owner_url": f"http://127.0.0.1:{owner_port}/" if owner_port else None,
                      "examples": [{"n": t["n"], "text": t["user"], "label": t["criterion"]} for t in tasks],
-                     "offline": session.offline_reason}
+                     "offline": session.offline_reason, "chain": session.chain.name, "home": "/", "side": "student"}
+    accounts = accounts or Accounts()
+
+    def prepare(name: str, body: dict) -> dict:
+        chinese = str(body.get("chinese_name") or "").strip()
+        if len(chinese) > 12:
+            raise AccountError("keep the Chinese name under 12 characters")
+        d = session.chain.deployment
+        # the student account is bound to this wallet and its agent key; it never gets a key of its own
+        return {"chinese_name": chinese, "wallet": d["wallet"], "agent": d["agent"], "chain": session.chain.name}
+
+    accounts_mod.add_routes(app, accounts, "student", prepare)
+
+    @app.get("/api/proof")
+    def _proof(q):
+        return 200, verify_tx(session.chain, q.get("tx", ""), session.contacts, session.requests, session.audit.path)
 
     @app.get("/api/state")
     def _state(q):
@@ -254,6 +290,7 @@ def main(argv=None):
     ap.add_argument("--owner-port", type=int, default=8788)
     ap.add_argument("--no-owner", action="store_true", help="do not start the owner console")
     ap.add_argument("--fresh", action="store_true", help="clear old approval requests first")
+    ap.add_argument("--reset-accounts", action="store_true", help="remove the student and parent accounts, to show registration again")
     ap.add_argument("--no-browser", action="store_true")
     ap.add_argument("--model", default=config.MODEL)
     ap.add_argument("--effort", default=config.EFFORT)
@@ -272,20 +309,28 @@ def main(argv=None):
     local = Anvil(port=8545) if a.chain == "anvil" else nullcontext()
     with local:
         if a.chain == "anvil":
+            # a fresh chain is a fresh family: its accounts, requests and contacts live apart from the testnet ones
+            import shutil
+            shutil.rmtree(config.ROOT / "data" / "anvil", ignore_errors=True)
+            config.set_data_dir(config.ROOT / "data" / "anvil")
             from .deploy import deploy
             print("starting a fresh local chain and deploying the contracts ...")
             deploy("anvil", 1.0, config.INITIAL_WALLET_FUNDING, config.DEFAULT_PER_TRANSFER_CAP, config.DEFAULT_ROLLING_CAP, quiet=True)
         chain = WebChain(a.chain)
         if not chain.deployment:
             sys.exit(f"no deployment for {a.chain}; run: uv run shouhu-deploy --chain {a.chain}")
-        if a.fresh or a.chain == "anvil":
+        if a.fresh:
             Requests().clear()
+        if a.reset_accounts:
+            for role in accounts_mod.ROLES:
+                Accounts().remove(role)
         session = Session(chain, a.model, a.effort, offline)
         owner_proc = None
         if not a.no_owner:
             # a separate process: the owner key is read there and never enters this one
             owner_proc = subprocess.Popen([sys.executable, "-m", "shouhu.owner_web", "--chain", a.chain,
-                                           "--port", str(a.owner_port), "--rpc", chain.rpc_url, "--no-browser"],
+                                           "--port", str(a.owner_port), "--rpc", chain.rpc_url, "--no-browser",
+                                           "--parent-pid", str(os.getpid())],
                                           cwd=config.ROOT)
         httpd = serve(build_app(session, None if a.no_owner else a.owner_port), a.port, open_browser=not a.no_browser)
         print(f"Shouhu 守护 on {a.chain} via {chain.rpc_url}")

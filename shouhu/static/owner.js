@@ -4,6 +4,7 @@ const $ = (id) => document.getElementById(id);
 { const t = new URLSearchParams(location.search).get("theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; }
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const short = (h, a = 6, b = 4) => (h && h.length > a + b + 2 ? `${h.slice(0, a)}…${h.slice(-b)}` : h || "");
+const proofUrl = (h) => `/proof?tx=${encodeURIComponent(h)}`;
 let S = null;
 let open = null;          // request id whose confirmation panel is open
 let working = false;
@@ -14,6 +15,7 @@ async function api(path, body) {
     method: "POST", headers: { "Content-Type": "application/json", "X-Shouhu-Token": BOOT.token }, body: JSON.stringify(body),
   };
   const r = await fetch(path, opt);
+  if (r.status === 401) window.ShouhuAuth.expired();
   return r.json().catch(() => ({ error: `HTTP ${r.status}` }));
 }
 
@@ -37,8 +39,8 @@ function reqCard(r, pending) {
       <div class="actions"><input id="yes" autocomplete="off" placeholder="yes"><button class="btn primary" data-sign="${esc(r.id)}">Sign approval</button>
         <button class="btn" data-cancel="1">Cancel</button></div>
     </div>` : "";
-  const tx = (label, h, url) => h && (url ? `<a href="${url}" target="_blank" rel="noopener">${label} ↗</a>` : `${label} <span class="addr">${esc(short(h, 10, 6))}</span>`);
-  const links = [tx("approval tx", r.approve_tx, r.approve_explorer), tx("payment tx", r.exec_tx, r.exec_explorer)].filter(Boolean).join(" · ");
+  const tx = (label, h, url) => h && `<a href="${proofUrl(h)}" target="_blank" rel="noopener">${label} proof →</a>${url ? ` <a class="small" href="${url}" target="_blank" rel="noopener">etherscan ↗</a>` : ""}`;
+  const links = [tx("approval", r.approve_tx, r.approve_explorer), tx("payment", r.exec_tx, r.exec_explorer)].filter(Boolean).join(" · ");
   return `<div class="req ${pending ? "pending" : ""}">
     <div class="head"><span class="amt">${esc(r.amount_text)}</span><span>→ <b>${esc(r.name || "not a contact")}</b></span>
       <span style="flex:1"></span><span class="st ${esc(r.status)}">${esc(r.status)}</span><b>${esc(r.id)}</b></div>
@@ -70,8 +72,24 @@ function render() {
   $("paused").className = `status ${S.paused ? "bad" : "ok"}`;
   $("pauseBtn").textContent = S.paused ? "Resume the agent" : "Pause the agent";
   $("pauseBtn").disabled = BOOT.read_only || working;
-  $("allow").innerHTML = S.contacts.map((c) => `<div class="item"><div class="grow"><div><b>${esc(c.name)}</b></div><div class="addr small">${esc(short(c.address))}</div></div>
-    ${c.allowlisted ? `<span class="ok-mark">✓ allowed</span>` : `<span class="no-mark">not allowed</span>`}</div>`).join("");
+  $("allow").innerHTML = S.contacts.map((c) => `<div class="item"><div class="grow"><div><b>${esc(c.name)}</b> ${c.alias ? `<span class="small">${esc(c.alias)}</span>` : ""}</div><div class="addr small" title="${esc(c.address)}">${esc(short(c.address))}</div></div>
+    ${c.allowlisted ? `<span class="ok-mark">✓ allowed</span>` : `<span class="no-mark">not allowed</span>`}
+    ${BOOT.read_only ? "" : `<button class="btn xs" data-allow="${esc(c.address)}" data-to="${c.allowlisted ? "0" : "1"}">${c.allowlisted ? "Remove" : "Allow"}</button>`}</div>`).join("");
+  const a = S.account, st = S.student;
+  const stmtOpen = $("family").querySelector("details")?.open;
+  $("family").innerHTML = `
+    <div class="item"><div class="avatar" style="background:var(--ink);color:var(--card)">家</div><div class="grow"><div><b>${esc(a ? a.name : "—")}</b> <span class="small">parent · owner</span></div>
+      <div class="small">${a ? `owner key verified by signature <span class="addr" title="${esc(a.signature)}">${esc(short(a.signature, 10, 6))}</span>` : ""}</div>
+      ${a && a.policy_tx ? `<div class="small"><a href="${proofUrl(a.policy_tx)}" target="_blank" rel="noopener">limits set at registration: proof →</a></div>` : ""}
+      ${a ? `<details class="stmt" ${stmtOpen ? "open" : ""}><summary>signed statement</summary><pre>${esc(a.statement)}</pre></details>` : ""}</div></div>
+    <div class="item"><div class="avatar">${esc(st ? (st.chinese_name || st.name)[0] : "学")}</div><div class="grow">
+      ${st ? `<div><b>${esc(st.name)}</b> ${st.chinese_name ? `<span class="small">${esc(st.chinese_name)}</span>` : ""} <span class="small">student</span></div><div class="small">registered ${when(st.created)} · uses Shouhu, holds no key</div>`
+           : `<div><b>No student yet</b></div><div class="small">The student registers in the chat app.</div>`}</div></div>`;
+  const act = S.activity || [];
+  $("activity").innerHTML = act.length ? act.map((x) => `<div class="item"><div class="grow"><div>${esc(x.text)}</div>
+      <div class="small">${when(x.ts)} · <span class="addr">${esc(short(x.tx, 10, 6))}</span></div></div>
+      <a class="proof-link" href="${proofUrl(x.tx)}" target="_blank" rel="noopener">proof →</a></div>`).join("")
+    : `<div class="empty">No owner transactions yet. Registering a contact, approving a request or pausing shows up here.</div>`;
   const pend = S.requests.filter((r) => r.status === "pending");
   const done = S.requests.filter((r) => r.status !== "pending");
   // keep the confirmation panel stable while the owner types
@@ -124,6 +142,15 @@ document.addEventListener("click", async (e) => {
     document.activeElement?.blur();
     return load();
   }
+  if (t.dataset.allow) {
+    working = true;
+    t.disabled = true;
+    t.textContent = "Waiting…";
+    const r = await api("/api/allowlist", { address: t.dataset.allow, allowed: t.dataset.to === "1" });
+    working = false;
+    toast(r.error ? esc(r.error) : `Allowlist updated on-chain. <a style="color:inherit;text-decoration:underline" href="${proofUrl(r.tx)}" target="_blank" rel="noopener">proof →</a>`, 6000);
+    return load();
+  }
   if (t.id === "pauseBtn") {
     working = true;
     t.textContent = "Waiting for the block…";
@@ -135,6 +162,28 @@ document.addEventListener("click", async (e) => {
 });
 document.addEventListener("keydown", (e) => { if (e.key === "Enter" && e.target.id === "yes") document.querySelector("[data-sign]")?.click(); });
 window.addEventListener("focus", () => (document.title = "Shouhu Owner Console"));
-if (BOOT.read_only) $("readonly").hidden = false;
-load();
-setInterval(() => { if (!working) load(); }, 5000);
+$("contactForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  if (working) return;
+  const f = e.target, data = Object.fromEntries(new FormData(f).entries());
+  data.allowlist = f.allowlist.checked;
+  working = true;
+  const btn = $("contactBtn");
+  btn.disabled = true;
+  btn.textContent = data.allowlist ? "Saving and waiting for the block…" : "Saving…";
+  const r = await api("/api/contacts", data);
+  working = false;
+  btn.disabled = BOOT.read_only;
+  btn.textContent = "Register contact";
+  if (r.error && !r.contact) { toast(esc(r.error), 6000); return; }
+  f.reset();
+  toast(r.tx ? `${esc(r.contact.name)} registered and allowlisted on-chain. <a style="color:inherit;text-decoration:underline" href="${proofUrl(r.tx)}" target="_blank" rel="noopener">proof →</a>`
+             : r.error ? esc(r.error) : `${esc(r.contact.name)} registered (not allowlisted).`, 8000);
+  load();
+});
+if (BOOT.read_only) { $("readonly").hidden = false; $("contactBtn").disabled = true; }
+window.addEventListener("shouhu-registered", (e) => toast(`Registered. The owner key signed your statement and it matches the contract's owner.`, 5000));
+window.ShouhuAuth.ready(() => {
+  load();
+  setInterval(() => { if (!working && window.ShouhuAuth.account) load(); }, 5000);
+});

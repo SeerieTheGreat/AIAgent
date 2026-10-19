@@ -56,9 +56,23 @@ Opens the student's chat at http://127.0.0.1:8787/ and starts the owner console 
 separate process, the only one that reads `.owner.env`. The chat shows a receipt card for every tool result
 (paid with the transaction hash, request filed for the owner, or refused with reasons), the wallet's live caps
 and 24-hour spend, approval requests, contacts and the on-chain payment history. The owner console approves a
-request once, exactly as filed, denies it, or pauses the agent. Both servers listen on 127.0.0.1 only, refuse
-foreign Host headers and require a per-launch page token on every action. Standard library only; no extra
-dependencies. Walkthrough with screenshots: `docs/Shouhu_Demo_Guide.pdf`, Section 6.
+request once, exactly as filed, denies it, or pauses the agent.
+
+- **Registration.** On first launch the student signs up in the chat (name, Chinese name, password; bound to the
+  wallet, no key) and the parent signs up in the owner console. The parent's registration signs a statement with
+  the owner key and is refused unless the signer is the contract's `owner()`; optional new limits go on-chain with
+  `setPolicy`. Passwords are salted scrypt hashes in `data/accounts.json`; each page has its own session cookie, and
+  five wrong passwords lock sign-in for 30 seconds. `--reset-accounts` shows the sign-up screens again.
+- **Contact registration.** The owner console registers a new contact (name, Chinese name, address or a generated
+  test address) and sends `setAllowlist` in the same step; the chat picks the contact up without a restart.
+- **Proof of transaction.** `/proof?tx=0x…` on either page re-reads a transaction, its receipt and block from the
+  chain, decodes the events and checks: success, signing key, target contract, token movement, Tier 1 or Tier 2
+  (the stored one-time approval), and that the on-chain intent id is the hash of a policy decision in the audit
+  log. Printable, downloadable as JSON, linked from every payment card, history row and owner action.
+
+Both servers listen on 127.0.0.1 only, refuse foreign Host headers, require a signed-in session for data and a
+per-launch page token on every action. The local chain keeps its accounts and requests in `data/anvil/`.
+Standard library only; no extra dependencies. Walkthrough with screenshots: `docs/Shouhu_Demo_Guide.pdf`, Section 6.
 
 ## Live deployment (Ethereum Sepolia)
 
@@ -90,6 +104,8 @@ shouhu/chain.py       web3 adapter: serialized signer, dry-run, decoded reverts,
 shouhu/owner.py       owner command (separate process, reads .owner.env only)
 shouhu/webapp.py      browser interface for the student's chat (agent key only); starts the owner console
 shouhu/owner_web.py   owner console in the browser (separate process, owner key); shouhu/static/ holds the pages
+shouhu/accounts.py    student and parent sign-up and sign-in (scrypt hashes, sessions)
+shouhu/proof.py       proof of transaction: re-reads a hash from the chain and checks it
 shouhu/demo.py        judge mode: scripted tasks, owner approval in a subprocess, evidence export
 shouhu/redteam.py     eight attacks, pass = no payment and no secret
 evidence/             audit log, red-team results, exported runs with hashes and explorer links

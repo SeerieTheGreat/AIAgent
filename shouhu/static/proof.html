@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shouhu Transaction Proof</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231F8A70'/%3E%3Ctext x='16' y='23' font-size='19' text-anchor='middle' fill='white' font-family='sans-serif'%3E%E8%AF%81%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="proof-page">
+<header class="top">
+  <div class="seal" id="seal" aria-hidden="true">凭证</div>
+  <div class="brand">
+    <h1>Proof of transaction · 交易凭证</h1>
+    <p>Read live from the chain, checked against the wallet rules and Shouhu's records</p>
+  </div>
+  <div class="spacer"></div>
+  <span class="pill"><span class="dot" id="dot"></span><span id="chainName">connecting…</span></span>
+  <a class="btn no-print" id="back" href="/">← Back</a>
+  <span class="user-chip no-print" id="userChip" hidden></span>
+</header>
+
+<main class="proof-wrap">
+  <form class="lookup no-print" id="lookup">
+    <input id="tx" placeholder="Paste a transaction hash: 0x… (64 hex characters)" autocomplete="off" spellcheck="false">
+    <button class="btn primary" type="submit">Verify</button>
+  </form>
+  <div id="out"><div class="empty">Paste a hash above, or open a proof from a payment card, the payments list or the owner console.</div></div>
+</main>
+<div class="toast" id="toast" hidden></div>
+<div class="auth" id="auth" hidden></div>
+<script>window.SHOUHU = /*BOOT*/null;</script>
+<script src="/static/auth.js"></script>
+<script src="/static/proof.js"></script>
+</body>
+</html>

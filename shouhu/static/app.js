@@ -10,6 +10,7 @@ let lastRequests = "";
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const short = (h, a = 6, b = 4) => (h && h.length > a + b + 2 ? `${h.slice(0, a)}…${h.slice(-b)}` : h || "");
 const txUrl = (h) => (STATE && STATE.tx_explorer ? STATE.tx_explorer.replace("{}", h) : null);
+const proofUrl = (h) => `/proof?tx=${encodeURIComponent(h)}`;
 
 async function api(path, body) {
   const opt = body === undefined ? {} : {
@@ -17,6 +18,7 @@ async function api(path, body) {
   };
   const r = await fetch(path, opt);
   const j = await r.json().catch(() => ({ error: `HTTP ${r.status}` }));
+  if (r.status === 401) window.ShouhuAuth.expired();
   if (!r.ok && !j.error) j.error = `HTTP ${r.status}`;
   return j;
 }
@@ -75,7 +77,8 @@ function cardHtml(c) {
   if (c.kind === "paid" && c.tx) {
     const u = c.explorer || txUrl(c.tx);
     extra += `<div class="row small">tx ${u ? `<a class="hash" href="${u}" target="_blank" rel="noopener">${short(c.tx, 10, 8)} ↗</a>` : `<span class="hash">${short(c.tx, 10, 8)}</span>`}
-      <span>· intent <span class="hash" title="${esc(c.intent)}">${short(c.intent, 8, 4)}</span></span></div>`;
+      <span>· intent <span class="hash" title="${esc(c.intent)}">${short(c.intent, 8, 4)}</span></span>
+      <a class="proof-link" href="${proofUrl(c.tx)}" target="_blank" rel="noopener">Proof of transaction →</a></div>`;
   }
   if (c.kind === "request" && BOOT.owner_url) {
     extra += `<div class="row small" style="margin-top:4px">Waiting for the owner. <a href="${BOOT.owner_url}" target="_blank" rel="noopener">Open the owner console ↗</a></div>`;
@@ -175,7 +178,7 @@ function renderState(s) {
     <div class="item"><div class="grow"><div><b>${esc(r.id)}</b> · ${esc(r.amount)} → ${esc(r.name || short(r.to))}</div>
       <div class="small">${esc((r.reasons || []).join("; "))}</div>
       ${r.status === "approved" ? `<div style="margin-top:6px"><button class="btn jade" data-complete="${esc(r.id)}">Ask Shouhu to complete ${esc(r.id)}</button></div>` : ""}
-      ${r.exec_tx ? `<div class="small">${r.exec_explorer ? `<a href="${r.exec_explorer}" target="_blank" rel="noopener">payment tx ↗</a>` : `payment tx <span class="addr">${short(r.exec_tx, 10, 6)}</span>`}</div>` : ""}</div>
+      ${r.exec_tx ? `<div class="small"><a href="${proofUrl(r.exec_tx)}" target="_blank" rel="noopener">payment proof →</a>${r.approve_tx ? ` · <a href="${proofUrl(r.approve_tx)}" target="_blank" rel="noopener">approval proof →</a>` : ""}</div>` : ""}</div>
       <span class="st ${esc(r.status)}">${esc(r.status)}</span></div>`).join("")
     : `<div class="empty">None yet. Payments outside the limits appear here.</div>`;
 
@@ -209,7 +212,8 @@ async function loadHistory(force) {
   const rows = h.payments || [];
   $("history").innerHTML = rows.length ? rows.slice(0, 10).map((p) => `
     <div class="item"><div class="grow"><div><b>${esc(p.amount)}</b> → ${esc(p.name || short(p.to))} ${p.via_approval ? `<span class="tag t2">approval</span>` : ""}</div>
-      <div class="small">block ${p.block} · ${p.explorer ? `<a class="addr" href="${p.explorer}" target="_blank" rel="noopener">${short(p.tx_hash, 10, 6)} ↗</a>` : `<span class="addr">${short(p.tx_hash, 10, 6)}</span>`}</div></div></div>`).join("")
+      <div class="small">block ${p.block} · ${p.explorer ? `<a class="addr" href="${p.explorer}" target="_blank" rel="noopener">${short(p.tx_hash, 10, 6)} ↗</a>` : `<span class="addr">${short(p.tx_hash, 10, 6)}</span>`}</div></div>
+      <a class="proof-link" href="${proofUrl(p.tx_hash)}" target="_blank" rel="noopener">proof →</a></div>`).join("")
     : `<div class="empty">${h.error ? esc("History unavailable right now: " + h.error.slice(0, 140)) : "No payments yet."}</div>`;
 }
 
@@ -252,12 +256,16 @@ if (BOOT.offline) { $("offline").textContent = BOOT.offline; $("offline").hidden
 
 renderExamples();
 renderChips();
-refresh();
-loadHistory();
-setInterval(() => { if (!busy) refresh(); }, 8000);
-
-// restore the conversation after a reload
-api("/api/log").then((l) => {
-  for (const t of l.turns || []) { addUser(t.user); fillBot(botShell(), t); }
+window.addEventListener("shouhu-registered", (e) => toast(`Welcome, ${e.detail.name}. Your account is linked to the family wallet.`, 4500));
+window.ShouhuAuth.ready((acct) => {
+  const hello = document.querySelector("#welcome h3");
+  if (hello) hello.textContent = `你好 ${acct.chinese_name || acct.name}, I'm Shouhu.`;
+  refresh();
+  loadHistory();
+  setInterval(() => { if (!busy && window.ShouhuAuth.account) refresh(); }, 8000);
+  // restore the conversation after a reload
+  api("/api/log").then((l) => {
+    for (const t of l.turns || []) { addUser(t.user); fillBot(botShell(), t); }
+  });
+  $("input").focus();
 });
-$("input").focus();

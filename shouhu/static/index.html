@@ -16,7 +16,9 @@
   </div>
   <div class="spacer"></div>
   <span class="pill" id="chainPill"><span class="dot" id="chainDot"></span><span id="chainName">connecting…</span></span>
+  <a class="btn hide-sm" href="/proof">Verify a transaction</a>
   <a class="btn hide-sm" id="ownerLink" target="_blank" rel="noopener" hidden>Owner console ↗</a>
+  <span class="user-chip" id="userChip" hidden></span>
 </header>
 <div class="banner" id="offline" hidden></div>
 
@@ -82,6 +84,7 @@
 
     <section class="panel">
       <h3>On-chain payments <span class="spacer"></span><a href="#" id="reloadHistory">refresh</a></h3>
+      <p class="small panel-note">Each payment has a proof page that re-reads it from the chain.</p>
       <div class="list" id="history"><div class="empty">Loading…</div></div>
     </section>
 
@@ -89,7 +92,9 @@
   </aside>
 </main>
 <div class="toast" id="toast" hidden></div>
+<div class="auth" id="auth" hidden></div>
 <script>window.SHOUHU = /*BOOT*/null;</script>
+<script src="/static/auth.js"></script>
 <script src="/static/app.js"></script>
 </body>
 </html>
