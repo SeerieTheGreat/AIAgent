@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shouhu 守护</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23B8322A'/%3E%3Ctext x='16' y='23' font-size='19' text-anchor='middle' fill='white' font-family='sans-serif'%3E%E5%AE%88%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="seal" aria-hidden="true">守护</div>
+  <div class="brand">
+    <h1>Shouhu 守护</h1>
+    <p>Policy-guarded AI agent wallet</p>
+  </div>
+  <div class="spacer"></div>
+  <span class="pill" id="chainPill"><span class="dot" id="chainDot"></span><span id="chainName">connecting…</span></span>
+  <a class="btn hide-sm" id="ownerLink" target="_blank" rel="noopener" hidden>Owner console ↗</a>
+</header>
+<div class="banner" id="offline" hidden></div>
+
+<main class="layout">
+  <section class="chat" aria-label="Chat with Shouhu">
+    <div class="chat-head">
+      <div class="seal small" aria-hidden="true">守</div>
+      <h2>Chat with Shouhu</h2>
+      <span class="meta">English or 中文</span>
+      <div class="spacer"></div>
+      <label class="toggle"><input type="checkbox" id="traceToggle"> Show tool calls</label>
+      <button class="btn" id="newChat" title="Start a new conversation">New chat</button>
+    </div>
+    <div class="stream" id="stream">
+      <div class="welcome" id="welcome">
+        <div class="seal" style="margin:0 auto" aria-hidden="true">守护</div>
+        <h3>你好, I'm Shouhu.</h3>
+        <p>I can read this family wallet and pay your contacts on your behalf, but only inside the limits your parent set in a smart contract. Anything outside them goes to your parent for a one-time approval.</p>
+        <div class="examples" id="examples"></div>
+      </div>
+    </div>
+    <div class="composer">
+      <div class="chips" id="chips"></div>
+      <form class="inputrow" id="form">
+        <textarea id="input" rows="1" placeholder="Ask Shouhu, e.g. Send 20 USDC to Mama · 给哥转 10 USDC" autocomplete="off"></textarea>
+        <button class="btn primary" id="send" type="submit">Send</button>
+      </form>
+      <div class="hint">Enter to send · Shift+Enter for a new line · tUSDC is a test token with no value</div>
+    </div>
+  </section>
+
+  <aside class="side">
+    <section class="panel">
+      <h3>Guarded wallet <span class="spacer"></span><a id="walletLink" target="_blank" rel="noopener">explorer ↗</a></h3>
+      <div class="balance" id="balance">—</div>
+      <div class="small"><span class="addr" id="walletAddr"></span> · <span class="status ok" id="paused">active</span></div>
+      <div class="kv">
+        <div><b id="perCap">—</b><span>per-transfer cap</span></div>
+        <div><b id="rollCap">—</b><span>24-hour cap</span></div>
+      </div>
+      <div class="bar" id="bar"><i id="barFill" style="width:0"></i></div>
+      <div class="small"><span id="spent">—</span> spent in the last 24 h · <span id="headroom">—</span> left</div>
+    </section>
+
+    <section class="panel">
+      <h3>Approval requests <span class="spacer"></span><a id="ownerLink2" target="_blank" rel="noopener" hidden>owner console ↗</a></h3>
+      <div class="list" id="requests"><div class="empty">None yet. Payments outside the limits appear here.</div></div>
+    </section>
+
+    <section class="panel">
+      <h3>Who decides</h3>
+      <div class="layers">
+        <div class="layer"><div class="n">1</div><div><b>The model plans and explains</b><span>It never decides whether money may move.</span></div></div>
+        <div class="layer"><div class="n">2</div><div><b>The policy engine decides</b><span>Allow, ask the owner, or refuse, with written reasons.</span></div></div>
+        <div class="layer"><div class="n">3</div><div><b>The contract enforces</b><span>Caps and allowlist live on-chain; only the owner key changes them.</span></div></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h3>Contacts <span class="spacer"></span><span class="small" style="text-transform:none;letter-spacing:0">set by the owner</span></h3>
+      <div class="list" id="contacts"></div>
+    </section>
+
+    <section class="panel">
+      <h3>On-chain payments <span class="spacer"></span><a href="#" id="reloadHistory">refresh</a></h3>
+      <div class="list" id="history"><div class="empty">Loading…</div></div>
+    </section>
+
+    <div class="footnote" id="footnote"></div>
+  </aside>
+</main>
+<div class="toast" id="toast" hidden></div>
+<script>window.SHOUHU = /*BOOT*/null;</script>
+<script src="/static/app.js"></script>
+</body>
+</html>

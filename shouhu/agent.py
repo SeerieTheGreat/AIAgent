@@ -73,6 +73,14 @@ class ShouhuAgent:
         self.on_tool = None  # optional callback(name, args, result_text)
 
     def chat(self, user_text: str) -> str:
+        mark = len(self.messages)
+        try:
+            return self._chat(user_text)
+        except Exception:
+            del self.messages[mark:]   # a turn cut off mid-tool-call would leave the history invalid for the next one
+            raise
+
+    def _chat(self, user_text: str) -> str:
         self.ctx.user_message = user_text
         self.ctx.risk = screen.risk_flags(user_text)
         self.ctx.audit.log("user_message", text=user_text, risk=self.ctx.risk, asks_for_secrets=screen.asks_for_secrets(user_text))

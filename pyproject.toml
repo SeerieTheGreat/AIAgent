@@ -23,6 +23,8 @@ shouhu-redteam = "shouhu.redteam:main"
 shouhu-evidence = "shouhu.evidence:main"
 shouhu-try = "shouhu.trycontract:main"
 shouhu-verify = "shouhu.verify:main"
+shouhu-web = "shouhu.webapp:main"
+shouhu-owner-web = "shouhu.owner_web:main"
 
 [build-system]
 requires = ["hatchling"]

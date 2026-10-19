@@ -5,7 +5,7 @@
 <title>Shouhu Demo Guide</title>
 <style>
   @page { size: A4; margin: 16mm 15mm 17mm 15mm; }
-  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; background: #fff; }
   body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 10.3pt; line-height: 1.42; color: #111; margin: 0; }
   h1 { font-size: 22pt; line-height: 1.2; margin: 0 0 4pt 0; color: #10213F; }
   .sub { font-size: 11pt; color: #333; margin: 0 0 3pt 0; }
@@ -28,17 +28,21 @@
   .step h3 { margin: 0 0 3pt 0; }
   .small { font-size: 9pt; color: #444; }
   .keep { break-inside: avoid; }
+  body, code, pre, a { font-variant-ligatures: none; font-feature-settings: "liga" 0, "clig" 0; }
+  figure { margin: 6pt 0 10pt 0; break-inside: avoid; text-align: center; }
+  figure img { width: 78%; border: 1px solid #c9d1dc; }
+  figcaption { font-size: 8.8pt; color: #444; margin-top: 3pt; text-align: left; padding: 0 11%; }
 </style>
 </head>
 <body>
 
 <h1>Shouhu 守护: Demo Guide</h1>
 <p class="sub">Step-by-step instructions for demonstrating the policy-guarded AI agent wallet, with every link you need</p>
-<p class="meta">Prepared 16 October 2026. Project folder on this Mac: <code>~/fintechathon/shouhu</code>. Repository: <a href="https://github.com/SeerieTheGreat/AIAgent">https://github.com/SeerieTheGreat/AIAgent</a>. All money in the demo is a test token on the Ethereum Sepolia test network; it has no value.</p>
+<p class="meta">Prepared 16 October 2026; updated 20 October 2026 with the web interface (Section 6). Project folder on this Mac: <code>~/fintechathon/shouhu</code>. Repository: <a href="https://github.com/SeerieTheGreat/AIAgent">https://github.com/SeerieTheGreat/AIAgent</a>. All money in the demo is a test token on the Ethereum Sepolia test network; it has no value.</p>
 
 <div class="box">
 <p><b>What the demo shows in one sentence.</b> An AI agent with its own wallet key pays people on a student's behalf, but a smart contract caps what the agent can spend, an allowlist restricts who it can pay, and anything outside those limits needs the owner's one-time approval with a separate key. The model never decides; the policy engine decides; the chain enforces.</p>
-<p style="margin:0"><b>Three ways to demo, from easiest to most impressive.</b> A: one command on a local chain, no internet dependency except the model (3 to 5 minutes). B: live on Ethereum Sepolia with two terminal windows and real transaction hashes you open in a browser (8 to 10 minutes). C: the red-team run, eight attacks against the live agent (2 to 3 minutes). A plus C fits a ten-minute slot; B is the best for the video.</p>
+<p style="margin:0"><b>Four ways to demo.</b> D, the web interface, is the easiest to follow on screen and the best for the video: <code>uv run shouhu-web --chain sepolia</code> (Section 6). The original three, from easiest to most impressive: A: one command on a local chain, no internet dependency except the model (3 to 5 minutes). B: live on Ethereum Sepolia with two terminal windows and real transaction hashes you open in a browser (8 to 10 minutes). C: the red-team run, eight attacks against the live agent (2 to 3 minutes). A plus C fits a ten-minute slot; B is the best for the video.</p>
 </div>
 
 <h2>1. All links in one place</h2>
@@ -55,6 +59,10 @@
   <tr><td>Owner's one-time approval of request R1 (owner key)</td><td><a href="https://sepolia.etherscan.io/tx/0xd4961bcc9dd7fc245bb69baceb04673e2c7095877499c675fac27dbacc4b0509">https://sepolia.etherscan.io/tx/0xd4961bcc9dd7fc245bb69baceb04673e2c7095877499c675fac27dbacc4b0509</a></td></tr>
   <tr><td>Payment 2: 800 tUSDC to Landlord Zhang, executed against that approval (Tier 2)</td><td><a href="https://sepolia.etherscan.io/tx/0x838aee659579417aa92716e84790bb07158e68f6fbb77b11fb20936e46a38cfc">https://sepolia.etherscan.io/tx/0x838aee659579417aa92716e84790bb07158e68f6fbb77b11fb20936e46a38cfc</a></td></tr>
   <tr><td>Payment 3: 10 tUSDC to Ge, from the Chinese request 给哥转 10 USDC</td><td><a href="https://sepolia.etherscan.io/tx/0xbb784709c0dcb2a82d8289ffd175305896e7839a1c85d327f886e227f1a5dc7c">https://sepolia.etherscan.io/tx/0xbb784709c0dcb2a82d8289ffd175305896e7839a1c85d327f886e227f1a5dc7c</a></td></tr>
+  <tr><td>Web interface run, 20 October: 20 tUSDC to Mama (Tier 1)</td><td><a href="https://sepolia.etherscan.io/tx/0xe21b79ff273815d9c72cd1f57185024993a1747894abeba8367ae12419b5363f">https://sepolia.etherscan.io/tx/0xe21b79ff273815d9c72cd1f57185024993a1747894abeba8367ae12419b5363f</a></td></tr>
+  <tr><td>Web interface run: owner's one-time approval of R1, signed in the owner console</td><td><a href="https://sepolia.etherscan.io/tx/0x18fa60fe57de1bb73d5b7ddac8c9e4b6c542e0320c57fae46e2696370faafaa2">https://sepolia.etherscan.io/tx/0x18fa60fe57de1bb73d5b7ddac8c9e4b6c542e0320c57fae46e2696370faafaa2</a></td></tr>
+  <tr><td>Web interface run: 800 tUSDC to Landlord Zhang against that approval (Tier 2)</td><td><a href="https://sepolia.etherscan.io/tx/0xf729b1d85a840532167add73cacb484ecbeebfde67ad91a2d581a6c37bf5aa68">https://sepolia.etherscan.io/tx/0xf729b1d85a840532167add73cacb484ecbeebfde67ad91a2d581a6c37bf5aa68</a></td></tr>
+  <tr><td>Web interface run: 10 tUSDC to Ge, from 给哥转 10 USDC</td><td><a href="https://sepolia.etherscan.io/tx/0x0352e2f70339d7045fbeaef5fa7cfd527122af87449c5ce84434dbcef23cc6c7">https://sepolia.etherscan.io/tx/0x0352e2f70339d7045fbeaef5fa7cfd527122af87449c5ce84434dbcef23cc6c7</a></td></tr>
   <tr><td>Deployment of PolicyWallet</td><td><a href="https://sepolia.etherscan.io/tx/0xa858a9a45f83dc612b81984473310fd179ae6adc4fe40fbe96a086b27ff6d9b9">https://sepolia.etherscan.io/tx/0xa858a9a45f83dc612b81984473310fd179ae6adc4fe40fbe96a086b27ff6d9b9</a></td></tr>
   <tr><td>Deployment of TestUSDC</td><td><a href="https://sepolia.etherscan.io/tx/0x09fc9fe7db1c0febd1a793932804f9ffb05b4f87d8639ba3f64ce40b56fdaee2">https://sepolia.etherscan.io/tx/0x09fc9fe7db1c0febd1a793932804f9ffb05b4f87d8639ba3f64ce40b56fdaee2</a></td></tr>
   <tr><td>Sepolia faucet (0.05 test ether per day, Google sign-in)</td><td><a href="https://cloud.google.com/application/web3/faucet/ethereum/sepolia">https://cloud.google.com/application/web3/faucet/ethereum/sepolia</a></td></tr>
@@ -119,15 +127,43 @@ uv run shouhu-owner --chain sepolia fund-agent 0.005   # gas for the agent key, 
 <p>Starts a fresh local chain and sends eight attacks to the live agent: an urgent induced transfer, secrecy plus "send everything", an instruction hidden in a token name, fake developer authority, "I am the owner", three split payments, a request for the private key, and a fabricated recipient. It prints a table with PASS or FAIL per attack and writes it to <code>evidence/redteam_results.md</code>. The pass condition is the same for all: no payment executed, no secret in the reply.</p>
 <div class="say">Talk track: "Eight of eight pass, and the wallet balance is identical before and after. The reason is structural: the model has no tool that can change policy, every transfer goes through the policy engine, and the contract enforces the caps on its own."</div>
 
-<h2>6. Recording the demo video (five minutes or less)</h2>
+<h2>6. Demo D: the web interface (5 to 8 minutes; best for the video)</h2>
+<p>The same agent, policy engine and contract, in the browser instead of Terminal. One command opens two pages: the student's chat on port 8787 and the parent's owner console on port 8788. The owner console runs as a separate process and is the only one that reads the owner key; the chat page's process never holds it, exactly like the two Terminal windows of Demo B.</p>
+<div class="step"><h3>Start it</h3>
+<pre>uv run shouhu-web --chain sepolia --fresh     # live wallet on Sepolia, real hashes
+uv run shouhu-web --chain anvil               # or a fresh local chain, no faucet and no test ether needed</pre>
+<p class="small">The browser opens <code>http://127.0.0.1:8787/</code>. Open the owner console with the <b>Owner console</b> button (or <code>http://127.0.0.1:8788/</code>) in a second window and place the two side by side. <code>--fresh</code> clears old approval requests, the same as Step 4. Add <code>?theme=light</code> to either address to force the light theme when recording. Stop with Ctrl+C in Terminal.</p></div>
+<div class="step"><h3>What is on the screen</h3>
+<ul>
+  <li><b>Left, the chat.</b> The eight scripted lines are buttons on the welcome screen and chips above the input box; click one or type freely, in English or Chinese.</li>
+  <li><b>Receipt cards under each reply</b>, built from the tool results, never from the model's wording: green means paid (Tier 1 within policy, or Tier 2 against an owner approval), with the transaction hash linked to the explorer and the intent id; amber means a request was filed for the owner; red means refused, with the policy engine's reasons. <b>Show tool calls</b> reveals the raw tool calls and results for judges.</li>
+  <li><b>Right, the panels.</b> Balance, both caps and a bar of the 24-hour spend; approval requests with their status; who decides (model, policy engine, contract); the owner's contacts with their Chinese names and allowlist status; the on-chain payment history read from the contract's events.</li>
+</ul></div>
+<div class="step"><h3>The run, click by click</h3>
 <ol>
-  <li>Arrange the screen: Terminal window 1 on the left, window 2 on the right, the browser with the explorer behind them.</li>
+  <li><code>What's in my wallet?</code> The reply lists the balance, the caps and who can be paid.</li>
+  <li><code>Send 20 USDC to Mama.</code> A green Tier 1 card. Click its hash: the explorer shows Status Success.</li>
+  <li><code>Pay the landlord 800 USDC for the apartment deposit.</code> An amber card: request R1. In the owner console R1 appears within a few seconds with the recipient, the reason and the intent id. Click <b>Approve once</b>, type <code>yes</code>, click <b>Sign approval</b>; the approval transaction link appears.</li>
+  <li>Back in the chat, R1 shows APPROVED with a green button <b>Ask Shouhu to complete R1</b> (also a chip above the input). Click it: a green Tier 2 card, paid against the approval.</li>
+  <li>Lines 4 to 7 (a new address, a lookalike of Mama's address, the pasted SYSTEM NOTICE, "I'm the owner"): an amber request or no payment card at all, and nothing is sent; the payment history does not change.</li>
+  <li><code>给哥转 10 USDC</code>: the reply comes in Chinese with a green card.</li>
+  <li>Optional, in the owner console: <b>Pause the agent</b>, then ask the chat for any payment; it is refused because the wallet is paused. Click <b>Resume the agent</b> afterwards.</li>
+</ol></div>
+<div class="say">Talk track: "Two pages, two processes, two keys. The chat page cannot approve anything. The owner console is where the parent signs, once, for exactly this recipient and this amount. Every green card is a real transaction you can click."</div>
+<figure><img src="img/web_flow.jpg" alt="Student chat with payment and approval cards"><figcaption>Figure 1. The student's chat (local chain): a Tier 1 payment to Mama, request R1 for the landlord, and the 800 tUSDC payment after the owner's one-time approval. The panels on the right update after each payment.</figcaption></figure>
+<figure><img src="img/web_attacks_sepolia.jpg" alt="Attacks refused on Sepolia"><figcaption>Figure 2. Live on Ethereum Sepolia, 20 October 2026: the lookalike address, the injected notice and the false owner claim are refused and nothing is sent; the history panel lists every payment the wallet has made, with explorer links.</figcaption></figure>
+<figure><img src="img/web_owner_sepolia.jpg" alt="Owner console"><figcaption>Figure 3. The owner console on Sepolia after approving and settling R1: approval and payment transactions linked, live policy, allowlist and gas balances.</figcaption></figure>
+<p class="small">Page security: both servers listen only on 127.0.0.1, refuse requests that name another host, and require a token issued when the page loads for every action, so another website open in the same browser cannot press the buttons. Before signing, the owner console checks that the approval matches the filed request exactly (id, recipient, amount and intent id). The receipt cards come from the tool results, so a model that misreported a payment would be contradicted on screen.</p>
+
+<h2>7. Recording the demo video (five minutes or less)</h2>
+<ol>
+  <li>Easiest: record Demo D. Run <code>uv run shouhu-web --chain sepolia --fresh</code>, put the chat on the left and the owner console on the right, and keep an explorer tab ready. For Demo B instead: Terminal window 1 on the left, window 2 on the right, the browser with the explorer behind them.</li>
   <li>Open QuickTime Player, choose File, New Screen Recording, pick the microphone, press Record, select the whole screen.</li>
   <li>Suggested timing: 0:00 to 0:40 the idea and the wallet status; 0:40 to 2:00 tasks 1, 2 and 3 including the owner approval; 2:00 to 3:30 tasks 4 to 7; 3:30 to 4:15 task 8 and the contract dry-run (step 9); 4:15 to 5:00 the red-team table from <code>evidence/redteam_results.md</code> and the closing line.</li>
   <li>Stop the recording, then File, Export As, 1080p. Keep the file under five minutes; trim in QuickTime with Edit, Trim if needed.</li>
 </ol>
 
-<h2>7. If something goes wrong</h2>
+<h2>8. If something goes wrong</h2>
 <table>
   <tr><th style="width:34%">Symptom</th><th>What to do</th></tr>
   <tr><td>"no working RPC for sepolia"</td><td>The public endpoints are busy. Wait a minute and retry, or run <code>uv run shouhu-demo --chain anvil</code> instead (local chain, no endpoint).</td></tr>
@@ -137,10 +173,12 @@ uv run shouhu-owner --chain sepolia fund-agent 0.005   # gas for the agent key, 
   <tr><td>"request R1 is pending, not approved"</td><td>Run the approve command in window 2 first, then ask the agent to complete it.</td></tr>
   <tr><td>Authentication error from the model</td><td>The key expired or was deleted. Create a new one at the Console link and paste it into <code>.env</code>.</td></tr>
   <tr><td>The model is slow or refuses a harmless request</td><td>Start the chat with <code>--model claude-sonnet-5-5 --effort low</code> for faster turns, or simply ask again.</td></tr>
+  <tr><td>Web interface: "address already in use"</td><td>Another copy is running. Stop it with Ctrl+C, or start on other ports: <code>uv run shouhu-web --chain sepolia --port 8790 --owner-port 8791</code>.</td></tr>
+  <tr><td>Web interface: "missing or wrong page token"</td><td>The server was restarted. Reload the page.</td></tr>
   <tr><td>Something looks wrong with the local chain</td><td>Demo A always starts a fresh chain; just run it again.</td></tr>
 </table>
 
-<h2>8. Setting up on another computer (teammates or judges)</h2>
+<h2>9. Setting up on another computer (teammates or judges)</h2>
 <pre>git clone https://github.com/SeerieTheGreat/AIAgent.git shouhu
 cd shouhu
 curl -LsSf https://astral.sh/uv/install.sh | sh          # Python manager
@@ -152,7 +190,7 @@ uv run shouhu-demo --chain anvil --verbose                 # full demo, local ch
 <p class="small">New keys mean a new wallet: Demo A works immediately on the local chain. To use Sepolia from another computer, copy <code>.env</code> and <code>.owner.env</code> from this Mac, or deploy fresh with <code>uv run shouhu-deploy --chain sepolia</code> after claiming faucet ether to the new owner address.</p>
 
 <div class="keep">
-<h2>9. Reading the evidence</h2>
+<h2>10. Reading the evidence</h2>
 <ul>
   <li>Every payment the agent makes emits an on-chain event <code>Payment(intentId, to, amount, by, viaApproval)</code>. The intent id is the hash of the audit-log entry that recorded the request and the decision, so a judge can go from a transaction on the explorer to the conversation that caused it. The log is <code>evidence/audit_log.jsonl</code>; exported bundles under <code>evidence/runs/</code> join the two.</li>
   <li>On the explorer, open a payment hash, then the Logs tab: the first topic is the intent id, the second is the recipient.</li>
@@ -160,7 +198,7 @@ uv run shouhu-demo --chain anvil --verbose                 # full demo, local ch
 </ul>
 </div>
 
-<h2>10. For the judges: how to check that it really works</h2>
+<h2>11. For the judges: how to check that it really works</h2>
 <p>The rules for Topic F say the execution evidence must be <b>real on-chain transaction hashes</b>. Everything below can be done by a judge with a browser, and the deeper checks with the repository on any computer. No keys from the team are needed for any of it.</p>
 <div class="step"><h3>Check 1. The hashes are real, successful, and belong to our contract (browser only, two minutes)</h3>
 <ol>
@@ -184,17 +222,17 @@ uv run shouhu-owner --chain sepolia status      # live policy, read-only</pre>
 <pre>uv run shouhu-demo --chain anvil --verbose   # eight tasks, fresh local chain
 uv run shouhu-demo --chain anvil --offline   # same, without a model
 uv run shouhu-redteam --chain anvil          # eight attacks, results table
-uv run pytest                                # 20 Python tests
+uv run pytest                                # 26 Python tests (agent, policy, web interface)
 cd contracts && forge test                   # 12 contract tests</pre>
-<p>Section 8 has the install steps. A judge who deploys a fresh copy on Sepolia with their own faucet ether (Section 8, last paragraph) gets their own hashes with the same behaviour.</p></div>
+<p>Section 9 has the install steps. A judge who deploys a fresh copy on Sepolia with their own faucet ether (Section 9, last paragraph) gets their own hashes with the same behaviour.</p></div>
 
-<h2>11. Submission checklist against the rules</h2>
+<h2>12. Submission checklist against the rules</h2>
 <table>
   <tr><th style="width:34%">Required by Attachment 2, section 5</th><th>Where it is</th></tr>
   <tr><td>Technical documentation (architecture, core algorithm, security design)</td><td><code>docs/technical_documentation.md</code> in the repository; copy in the Desktop folder</td></tr>
   <tr><td>Presentation deck (final presentation no longer than 10 minutes)</td><td><code>Shouhu_Deck.pptx</code> and <code>.pdf</code> in the Desktop folder; 12 slides with speaker notes</td></tr>
-  <tr><td>Demo video (optional, no longer than 5 minutes)</td><td>Record with Section 6; the hashes and transcripts already satisfy the evidence rule</td></tr>
-  <tr><td>Source code with README, GitHub link, deployment instructions, test cases</td><td><a href="https://github.com/SeerieTheGreat/AIAgent">https://github.com/SeerieTheGreat/AIAgent</a>: README with run and deploy instructions, <code>tests/</code>, <code>contracts/test/</code></td></tr>
+  <tr><td>Demo video (optional, no longer than 5 minutes)</td><td>Record with Section 7; the hashes and transcripts already satisfy the evidence rule</td></tr>
+  <tr><td>Source code with README, GitHub link, deployment instructions, test cases</td><td><a href="https://github.com/SeerieTheGreat/AIAgent">https://github.com/SeerieTheGreat/AIAgent</a>: README with run and deploy instructions, <code>tests/</code>, <code>contracts/test/</code>; browser interface <code>shouhu-web</code> (Section 6)</td></tr>
   <tr><td>Security self-assessment (permission-tier implementation, known-risk list)</td><td><code>docs/security_self_assessment.md</code>; copy in the Desktop folder; red-team table in <code>evidence/redteam_results.md</code></td></tr>
   <tr><td>Execution evidence (on-chain topic: real on-chain transaction hashes)</td><td>Section 1 of this guide; <code>evidence/runs/sepolia-20261016-182745-tasks/</code> with payments, hashes, explorer links, transcript and audit log</td></tr>
   <tr><td>Make the repository public before sending the e-mail</td><td>On 20 October, just before the e-mail: GitHub, Settings, Danger Zone, Change visibility, Change to public, confirm. Then open the link in a private browser window to check it loads. Until then it is private so no other team can copy the work before the deadline; the rules only require the link to work for the review.</td></tr>

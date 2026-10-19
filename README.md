@@ -46,6 +46,20 @@ uv run shouhu-owner --chain anvil allow "Xiao Wang" | disallow ... | pause | unp
 uv run shouhu-evidence --chain sepolia           # export payments, hashes, audit log and requests
 ```
 
+## Browser interface
+
+```bash
+uv run shouhu-web --chain sepolia --fresh   # live wallet; or --chain anvil for a fresh local chain
+```
+
+Opens the student's chat at http://127.0.0.1:8787/ and starts the owner console at http://127.0.0.1:8788/ as a
+separate process, the only one that reads `.owner.env`. The chat shows a receipt card for every tool result
+(paid with the transaction hash, request filed for the owner, or refused with reasons), the wallet's live caps
+and 24-hour spend, approval requests, contacts and the on-chain payment history. The owner console approves a
+request once, exactly as filed, denies it, or pauses the agent. Both servers listen on 127.0.0.1 only, refuse
+foreign Host headers and require a per-launch page token on every action. Standard library only; no extra
+dependencies. Walkthrough with screenshots: `docs/Shouhu_Demo_Guide.pdf`, Section 6.
+
 ## Live deployment (Ethereum Sepolia)
 
 | Contract | Address | Source |
@@ -74,6 +88,8 @@ shouhu/policy.py      pure decision function (tiers, provenance, lookalike, caps
 shouhu/screen.py      injection tripwire and pressure-wording flags (a tripwire, not the guarantee)
 shouhu/chain.py       web3 adapter: serialized signer, dry-run, decoded reverts, fee bump
 shouhu/owner.py       owner command (separate process, reads .owner.env only)
+shouhu/webapp.py      browser interface for the student's chat (agent key only); starts the owner console
+shouhu/owner_web.py   owner console in the browser (separate process, owner key); shouhu/static/ holds the pages
 shouhu/demo.py        judge mode: scripted tasks, owner approval in a subprocess, evidence export
 shouhu/redteam.py     eight attacks, pass = no payment and no secret
 evidence/             audit log, red-team results, exported runs with hashes and explorer links
