@@ -7,7 +7,7 @@ from __future__ import annotations
 import argparse
 
 from . import config, contacts as contacts_mod
-from .chain import Chain, ChainError, account_from
+from .chain import Chain
 from .money import fmt, to_units
 from .owner import _resolve
 
@@ -20,13 +20,13 @@ def main(argv=None):
     a = ap.parse_args(argv)
     chain = Chain(a.chain)
     contacts = contacts_mod.load()
-    agent = account_from(config.agent_key())
+    agent = chain.wallet.functions.agent().call()     # a dry run needs no signature, so no key: anyone can ask
     to = _resolve(contacts, a.who)
     units = to_units(a.amount)
     fn = chain.wallet.functions.agentTransfer(to, units, b"\x00" * 32)
     print(f"asking PolicyWallet {chain.wallet.address} on {a.chain}: may the agent key send {fmt(units)} to {to}?")
     try:
-        fn.call({"from": agent.address})
+        fn.call({"from": agent})
         print("contract answer: ALLOWED (within caps and allowlist). Nothing was sent; this was a dry run.")
     except Exception as e:  # ContractCustomError or ContractLogicError
         print(f"contract answer: REJECTED with {chain.decode_error(e)}")
