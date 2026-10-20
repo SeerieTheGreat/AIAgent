@@ -19,6 +19,8 @@ the university bursar and a friend. Amounts are in tUSDC, a test token with no v
 
 Security claim, precisely: no tool can move funds outside policy; the model cannot change policy; the chain enforces the agent's caps. The red-team table (`evidence/redteam_results.md`) and a contract revert hash prove those three sentences.
 
+Technical documentation (system architecture, core algorithms, security design): `docs/Shouhu_Technical_Documentation.pdf`, also readable here as [`docs/technical_documentation.md`](docs/technical_documentation.md).
+
 ## Quick start (judge mode, no faucet, no accounts)
 
 Requirements: Python 3.12 via [uv](https://docs.astral.sh/uv/), [Foundry](https://getfoundry.sh) for the local chain, an Anthropic API key.
@@ -32,7 +34,8 @@ uv run shouhu-demo --chain anvil --offline   # the same without a model: policy 
 uv run shouhu-redteam                 # eight attacks against the live agent, results table in evidence/
 uv run shouhu-redteam --rules         # the same attacks against the rules-only assistant (no model)
 uv run pytest                         # contract-adjacent Python tests, policy, screening, integration on Anvil
-cd contracts && forge test            # the Solidity test suite
+cd contracts && forge install foundry-rs/forge-std@v1.17.0 --no-git   # once: the test library (contracts/lib is not committed)
+forge test                            # the Solidity test suite (12 tests)
 ```
 
 ## Interactive use
@@ -124,7 +127,7 @@ shouhu/proof.py       proof of transaction: re-reads a hash from the chain and c
 shouhu/demo.py        judge mode: scripted tasks, owner approval in a subprocess, evidence export
 shouhu/redteam.py     eight attacks, pass = no payment and no secret
 evidence/             audit log, red-team results, exported runs with hashes and explorer links
-docs/                 technical documentation, security self-assessment, demo script
+docs/                 technical documentation (PDF and Markdown), security self-assessment, demo script
 ```
 
 ## Known limits (see docs/security_self_assessment.md)
