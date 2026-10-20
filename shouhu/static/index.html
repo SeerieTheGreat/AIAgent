@@ -14,22 +14,26 @@
     <h1>Shouhu 守护</h1>
     <p>Policy-guarded AI agent wallet</p>
   </div>
+  <nav class="nav" id="nav" aria-label="Pages"></nav>
   <div class="spacer"></div>
   <span class="pill" id="chainPill"><span class="dot" id="chainDot"></span><span id="chainName">connecting…</span></span>
-  <a class="btn hide-sm" href="/proof">Verify a transaction</a>
   <a class="btn hide-sm" id="ownerLink" target="_blank" rel="noopener" hidden>Owner console ↗</a>
   <span class="user-chip" id="userChip" hidden></span>
 </header>
-<div class="banner" id="offline" hidden></div>
+<div class="banner" id="notice" hidden></div>
 
 <main class="layout">
   <section class="chat" aria-label="Chat with Shouhu">
     <div class="chat-head">
       <div class="seal small" aria-hidden="true">守</div>
       <h2>Chat with Shouhu</h2>
-      <span class="meta">English or 中文</span>
+      <span class="meta hide-sm">English or 中文</span>
       <div class="spacer"></div>
-      <label class="toggle"><input type="checkbox" id="traceToggle"> Show tool calls</label>
+      <div class="seg" id="modeSeg" role="group" aria-label="Assistant">
+        <button type="button" data-mode="model" title="The AI model plans and explains; the policy engine and the contract decide">AI model</button>
+        <button type="button" data-mode="rules" title="No model at all: fixed rules read simple requests; the same policy engine and contract decide">Rules only</button>
+      </div>
+      <label class="toggle hide-sm"><input type="checkbox" id="traceToggle"> Show tool calls</label>
       <button class="btn" id="newChat" title="Start a new conversation">New chat</button>
     </div>
     <div class="stream" id="stream">
@@ -37,6 +41,7 @@
         <div class="seal" style="margin:0 auto" aria-hidden="true">守护</div>
         <h3>你好, I'm Shouhu.</h3>
         <p>I can read this family wallet and pay your contacts on your behalf, but only inside the limits your parent set in a smart contract. Anything outside them goes to your parent for a one-time approval.</p>
+        <p class="mode-note" id="modeNote" hidden>Rules-only mode: no language model is used. I understand simple requests like these in English and Chinese, and the policy engine and the contract decide exactly as they do with the AI model.</p>
         <div class="examples" id="examples"></div>
       </div>
     </div>
@@ -71,7 +76,7 @@
     <section class="panel">
       <h3>Who decides</h3>
       <div class="layers">
-        <div class="layer"><div class="n">1</div><div><b>The model plans and explains</b><span>It never decides whether money may move.</span></div></div>
+        <div class="layer"><div class="n">1</div><div><b>The model plans and explains</b><span>It never decides whether money may move. In rules-only mode there is no model at all.</span></div></div>
         <div class="layer"><div class="n">2</div><div><b>The policy engine decides</b><span>Allow, ask the owner, or refuse, with written reasons.</span></div></div>
         <div class="layer"><div class="n">3</div><div><b>The contract enforces</b><span>Caps and allowlist live on-chain; only the owner key changes them.</span></div></div>
       </div>
@@ -83,7 +88,7 @@
     </section>
 
     <section class="panel">
-      <h3>On-chain payments <span class="spacer"></span><a href="#" id="reloadHistory">refresh</a></h3>
+      <h3>On-chain payments <span class="spacer"></span><a href="/transactions" id="allTx">all transactions →</a> <a href="#" id="reloadHistory">refresh</a></h3>
       <p class="small panel-note">Each payment has a proof page that re-reads it from the chain.</p>
       <div class="list" id="history"><div class="empty">Loading…</div></div>
     </section>

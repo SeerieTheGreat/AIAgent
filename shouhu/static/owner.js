@@ -3,12 +3,15 @@ const BOOT = window.SHOUHU || {};
 const $ = (id) => document.getElementById(id);
 { const t = new URLSearchParams(location.search).get("theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; }
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const money = (s) => { const [amt, sym] = String(s ?? "").split(" "); return amt && !isNaN(amt) ? `${Number(amt).toLocaleString("en-US", { maximumFractionDigits: 2 })} ${sym || ""}`.trim() : String(s ?? ""); };   // "1200 tUSDC" -> "1,200 tUSDC"
 const short = (h, a = 6, b = 4) => (h && h.length > a + b + 2 ? `${h.slice(0, a)}…${h.slice(-b)}` : h || "");
-const proofUrl = (h) => `/proof?tx=${encodeURIComponent(h)}`;
+const proofUrl = (h) => `/proof?tx=${encodeURIComponent(h)}${document.documentElement.dataset.theme ? `&theme=${document.documentElement.dataset.theme}` : ""}`;   // keep a forced theme
 let S = null;
 let open = null;          // request id whose confirmation panel is open
 let working = false;
 let seen = null;
+let revoking = false;     // the revoke confirmation is open
+const ACT = { approval: "approval", contact: "contact", allowlist: "allowlist", pause: "pause", policy: "limits", deposit: "money in" };
 
 async function api(path, body) {
   const opt = body === undefined ? {} : {
@@ -61,35 +64,51 @@ function reqCard(r, pending) {
 function render() {
   if (!S) return;
   $("chainName").textContent = S.chain === "anvil" ? "Local chain (Anvil)" : S.chain === "sepolia" ? "Ethereum Sepolia" : S.chain;
-  const [amt, sym] = S.balance.split(" ");
-  $("balance").textContent = `${Number(amt).toLocaleString("en-US", { maximumFractionDigits: 2 })} ${sym}`;
-  $("perCap").textContent = S.per_transfer_cap;
-  $("rollCap").textContent = S.rolling_cap;
-  $("spent").textContent = S.spent_24h;
-  $("headroom").textContent = S.headroom;
+  $("balance").textContent = money(S.balance);
+  $("perCap").textContent = money(S.per_transfer_cap);
+  $("rollCap").textContent = money(S.rolling_cap);
+  $("spent").textContent = money(S.spent_24h);
+  $("headroom").textContent = money(S.headroom);
   if (S.wallet_explorer) $("walletLink").href = S.wallet_explorer; else $("walletLink").hidden = true;
   $("paused").textContent = S.paused ? "paused" : "active";
   $("paused").className = `status ${S.paused ? "bad" : "ok"}`;
   $("pauseBtn").textContent = S.paused ? "Resume the agent" : "Pause the agent";
-  $("pauseBtn").disabled = BOOT.read_only || working;
+  for (const id of ["pauseBtn", "limitsBtn", "fundBtn"]) $(id).disabled = BOOT.read_only || working;
   $("allow").innerHTML = S.contacts.map((c) => `<div class="item"><div class="grow"><div><b>${esc(c.name)}</b> ${c.alias ? `<span class="small">${esc(c.alias)}</span>` : ""}</div><div class="addr small" title="${esc(c.address)}">${esc(short(c.address))}</div></div>
     ${c.allowlisted ? `<span class="ok-mark">✓ allowed</span>` : `<span class="no-mark">not allowed</span>`}
     ${BOOT.read_only ? "" : `<button class="btn xs" data-allow="${esc(c.address)}" data-to="${c.allowlisted ? "0" : "1"}">${c.allowlisted ? "Remove" : "Allow"}</button>`}</div>`).join("");
   const a = S.account, st = S.student;
   const stmtOpen = $("family").querySelector("details")?.open;
-  $("family").innerHTML = `
+  const typing = $("family").contains(document.activeElement) && document.activeElement.tagName === "INPUT";
+  const invite = a && a.invite;
+  const link = invite ? `${BOOT.student_url}?invite=${encodeURIComponent(invite)}` : "";
+  const studentRow = st ? `
+    <div class="item"><div class="avatar">${esc((st.chinese_name || st.name)[0])}</div><div class="grow">
+      <div><b>${esc(st.name)}</b> ${st.chinese_name ? `<span class="small">${esc(st.chinese_name)}</span>` : ""} <span class="small">student</span></div>
+      <div class="small">registered ${when(st.created)} with your one-time code · holds no key</div>
+      ${revoking ? `<div class="confirm small-confirm"><p>Type <b>${esc(st.name)}</b> to remove this account. Their sign-in stops at once; you get a new invite code.</p>
+        <div class="actions"><input id="revokeName" autocomplete="off" placeholder="${esc(st.name)}"><button class="btn danger" data-revoke="1" type="button">Remove access</button>
+        <button class="btn" data-revoke-cancel="1" type="button">Cancel</button></div></div>`
+        : `<div><button class="linkish danger-text" data-revoke-open="1" type="button">Revoke access</button></div>`}</div></div>`
+    : `<div class="invite-box">
+        <div class="invite-title">Invite your student · 邀请学生</div>
+        <div class="invite-code mono">${esc(invite || "—")}</div>
+        <div class="small">One-time code. Your student enters it on the sign-up page, or opens the link.</div>
+        <div class="actions"><button class="btn xs" data-copy-invite="${esc(link)}" type="button" ${invite ? "" : "disabled"}>Copy invite link</button>
+          ${invite ? `<a class="btn xs" href="${esc(link)}" target="_blank" rel="noopener">Open student sign-up ↗</a>` : ""}
+          <button class="btn xs" data-new-invite="1" type="button" ${BOOT.read_only ? "disabled" : ""}>New code</button></div>
+      </div>`;
+  if (!typing) $("family").innerHTML = `
     <div class="item"><div class="avatar" style="background:var(--ink);color:var(--card)">家</div><div class="grow"><div><b>${esc(a ? a.name : "—")}</b> <span class="small">parent · owner</span></div>
       <div class="small">${a ? `owner key verified by signature <span class="addr" title="${esc(a.signature)}">${esc(short(a.signature, 10, 6))}</span>` : ""}</div>
       ${a && a.policy_tx ? `<div class="small"><a href="${proofUrl(a.policy_tx)}" target="_blank" rel="noopener">limits set at registration: proof →</a></div>` : ""}
       ${a ? `<details class="stmt" ${stmtOpen ? "open" : ""}><summary>signed statement</summary><pre>${esc(a.statement)}</pre></details>` : ""}</div></div>
-    <div class="item"><div class="avatar">${esc(st ? (st.chinese_name || st.name)[0] : "学")}</div><div class="grow">
-      ${st ? `<div><b>${esc(st.name)}</b> ${st.chinese_name ? `<span class="small">${esc(st.chinese_name)}</span>` : ""} <span class="small">student</span></div><div class="small">registered ${when(st.created)} · uses Shouhu, holds no key</div>`
-           : `<div><b>No student yet</b></div><div class="small">The student registers in the chat app.</div>`}</div></div>`;
+    ${studentRow}`;
   const act = S.activity || [];
-  $("activity").innerHTML = act.length ? act.map((x) => `<div class="item"><div class="grow"><div>${esc(x.text)}</div>
+  $("activity").innerHTML = act.length ? act.map((x) => `<div class="item"><span class="kind-badge k-${esc(x.kind)}">${esc(ACT[x.kind] || x.kind)}</span><div class="grow"><div>${esc(x.text)}</div>
       <div class="small">${when(x.ts)} · <span class="addr">${esc(short(x.tx, 10, 6))}</span></div></div>
       <a class="proof-link" href="${proofUrl(x.tx)}" target="_blank" rel="noopener">proof →</a></div>`).join("")
-    : `<div class="empty">No owner transactions yet. Registering a contact, approving a request or pausing shows up here.</div>`;
+    : `<div class="empty">No owner transactions yet. Registering a contact, approving a request, changing the limits, adding money or pausing shows up here.</div>`;
   const pend = S.requests.filter((r) => r.status === "pending");
   const done = S.requests.filter((r) => r.status !== "pending");
   // keep the confirmation panel stable while the owner types
@@ -138,7 +157,7 @@ document.addEventListener("click", async (e) => {
     working = false;
     open = null;
     if (r.error) toast(esc(r.error), 6000);
-    else toast(`Approved ${esc(r.id)} on-chain. ${r.explorer ? `<a style="color:inherit;text-decoration:underline" href="${r.explorer}" target="_blank" rel="noopener">tx ↗</a>` : esc(short(r.tx, 10, 6))} Shouhu can now complete it.`, 7000);
+    else toast(`Approved ${esc(r.id)} on-chain; Shouhu can now complete it. <a style="color:inherit;text-decoration:underline" href="${proofUrl(r.tx)}" target="_blank" rel="noopener">proof →</a>`, 7000);
     document.activeElement?.blur();
     return load();
   }
@@ -149,6 +168,37 @@ document.addEventListener("click", async (e) => {
     const r = await api("/api/allowlist", { address: t.dataset.allow, allowed: t.dataset.to === "1" });
     working = false;
     toast(r.error ? esc(r.error) : `Allowlist updated on-chain. <a style="color:inherit;text-decoration:underline" href="${proofUrl(r.tx)}" target="_blank" rel="noopener">proof →</a>`, 6000);
+    return load();
+  }
+  if (t.id === "limitsBtn") {
+    const f = $("limitsForm");
+    f.hidden = !f.hidden;
+    $("fundForm").hidden = true;
+    if (!f.hidden) { f.per_transfer_cap.value = S.per_transfer_cap.split(" ")[0]; f.rolling_cap.value = S.rolling_cap.split(" ")[0]; f.per_transfer_cap.focus(); }
+    return;
+  }
+  if (t.id === "fundBtn") { $("fundForm").hidden = !$("fundForm").hidden; $("limitsForm").hidden = true; return; }
+  if (t.dataset.close) { $(t.dataset.close).hidden = true; return; }
+  if (t.dataset.copyInvite !== undefined && t.dataset.copyInvite) {
+    try { await navigator.clipboard.writeText(t.dataset.copyInvite); toast("Invite link copied. Send it to your student."); }
+    catch (_) { toast(`Invite link: ${esc(t.dataset.copyInvite)}`, 9000); }
+    return;
+  }
+  if (t.dataset.newInvite) {
+    const r = await api("/api/invite", {});
+    toast(r.error ? esc(r.error) : `New invite code ${esc(r.invite)}. The old one no longer works.`);
+    return load();
+  }
+  if (t.dataset.revokeOpen) { revoking = true; render(); $("revokeName")?.focus(); return; }
+  if (t.dataset.revokeCancel) { revoking = false; render(); return; }
+  if (t.dataset.revoke) {
+    working = true;
+    const r = await api("/api/student/revoke", { confirm: $("revokeName").value });
+    working = false;
+    if (r.error) { toast(esc(r.error)); return; }
+    revoking = false;
+    document.activeElement?.blur();
+    toast(`Access removed. New invite code ${esc(r.invite)}.`, 6000);
     return load();
   }
   if (t.id === "pauseBtn") {
@@ -181,8 +231,27 @@ $("contactForm").addEventListener("submit", async (e) => {
              : r.error ? esc(r.error) : `${esc(r.contact.name)} registered (not allowlisted).`, 8000);
   load();
 });
+async function sendForm(form, path, btn, waitText, okText) {
+  if (working) return;
+  const data = Object.fromEntries(new FormData(form).entries());
+  working = true;
+  const label = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = waitText;
+  const r = await api(path, data);
+  working = false;
+  btn.disabled = false;
+  btn.textContent = label;
+  if (r.error) { toast(esc(r.error), 6000); return; }
+  form.hidden = true;
+  toast(`${okText} <a style="color:inherit;text-decoration:underline" href="${proofUrl(r.tx)}" target="_blank" rel="noopener">proof →</a>`, 8000);
+  load();
+}
+$("limitsForm").addEventListener("submit", (e) => { e.preventDefault(); sendForm(e.target, "/api/policy", $("limitsSave"), "Signing and waiting for the block…", "New limits are on-chain."); });
+$("fundForm").addEventListener("submit", (e) => { e.preventDefault(); sendForm(e.target, "/api/topup", $("fundSave"), "Minting and waiting for the block…", "Test money added to the wallet."); });
+document.addEventListener("keydown", (e) => { if (e.key === "Enter" && e.target.id === "revokeName") document.querySelector("[data-revoke]")?.click(); });
 if (BOOT.read_only) { $("readonly").hidden = false; $("contactBtn").disabled = true; }
-window.addEventListener("shouhu-registered", (e) => toast(`Registered. The owner key signed your statement and it matches the contract's owner.`, 5000));
+window.addEventListener("shouhu-registered", (e) => toast(`Registered. The owner key signed your statement and it matches the contract's owner. Next: invite your student with the code in the Family panel.`, 7000));
 window.ShouhuAuth.ready(() => {
   load();
   setInterval(() => { if (!working && window.ShouhuAuth.account) load(); }, 5000);

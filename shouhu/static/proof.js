@@ -4,11 +4,10 @@ const $ = (id) => document.getElementById(id);
 { const t = new URLSearchParams(location.search).get("theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; }
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const short = (h, a = 10, b = 8) => (h && h.length > a + b + 2 ? `${h.slice(0, a)}…${h.slice(-b)}` : h || "");
-const proofUrl = (h) => `/proof?tx=${encodeURIComponent(h)}`;
+const proofUrl = (h) => `/proof?tx=${encodeURIComponent(h)}${document.documentElement.dataset.theme ? `&theme=${document.documentElement.dataset.theme}` : ""}`;   // keep a forced theme
 let last = null;
 
-if (BOOT.side === "owner") { $("seal").style.background = "var(--ink)"; $("back").textContent = "← Owner console"; }
-else $("back").textContent = "← Chat";
+if (BOOT.side === "owner") $("seal").style.background = "var(--ink)";
 $("chainName").textContent = BOOT.chain === "anvil" ? "Local chain (Anvil)" : BOOT.chain === "sepolia" ? "Ethereum Sepolia" : BOOT.chain;
 
 function toast(text, ms = 3200) {
@@ -29,7 +28,31 @@ function render(p) {
     $("out").innerHTML = `<div class="verdict bad"><div class="mark">✗</div><div><h2>Not found</h2><p>${esc(p.error || "")}</p></div></div>`;
     return;
   }
-  const kindTag = { payment: "Payment", approval: "Owner approval", allowlist: "Contact registration / allowlist", policy: "Spending limits", pause: "Pause switch" }[p.kind] || "Transaction";
+  const kindTag = { payment: "Payment", approval: "Owner approval", allowlist: "Contact registration / allowlist", policy: "Spending limits",
+    pause: "Pause switch", deposit: "Money added" }[p.kind] || "Transaction";
+  const rc = p.receipt;
+  const receipt = rc ? `<section class="receipt">
+      <div class="receipt-head"><div class="seal small" aria-hidden="true">守</div>
+        <div><b>Shouhu payment receipt</b><span>交易凭证 · No. ${esc(rc.number)}</span></div>
+        ${rc.tier ? `<span class="tag t${rc.tier}">Tier ${rc.tier} · ${rc.tier === 2 ? "parent approval" : "within policy"}</span>` : ""}</div>
+      <dl class="receipt-rows">
+        <dt>Paid to</dt><dd><b>${esc(rc.paid_to || "an address")}</b><span class="addr">${esc(rc.address)}</span></dd>
+        <dt>Amount</dt><dd class="amt">${esc(rc.amount)}</dd>
+        <dt>Date</dt><dd>${esc(when(rc.time))}</dd>
+        <dt>From</dt><dd>Family wallet <span class="addr">${esc(rc.from_wallet)}</span></dd>
+        ${rc.memo ? `<dt>Memo</dt><dd>${esc(rc.memo)}</dd>` : ""}
+        ${rc.approval_tx ? `<dt>Approval</dt><dd>The parent's one-time approval: <a href="${proofUrl(rc.approval_tx)}">${esc(short(rc.approval_tx))} →</a></dd>` : ""}
+        <dt>Status</dt><dd>${p.success ? "Confirmed" : "Reverted"} on ${esc(p.chain)}, block ${p.block.toLocaleString("en-US")}</dd>
+      </dl>
+      <p class="receipt-foot">tUSDC is a test token with no value. This receipt is rebuilt from the chain each time it is opened.</p>
+    </section>` : "";
+  const verify = `<section class="panel"><h3>Check it yourself</h3>
+      <ol class="steps">
+        ${p.explorer ? `<li>Open it on the public explorer: <a href="${p.explorer}" target="_blank" rel="noopener">Etherscan ↗</a>. Look for status Success and, under Logs, the events listed here.</li>`
+          : `<li>This is the local test chain, so there is no public explorer; this page reads the node directly.</li>`}
+        <li>From the repository, with no keys at all: <code class="copy" data-copy="${esc(p.verify_command)}" title="Click to copy">${esc(p.verify_command.replace(p.tx_hash, short(p.tx_hash, 10, 6)))}</code></li>
+        ${p.intent_id ? `<li>The intent id on-chain is the keccak-256 hash of the policy decision in the audit log, so the decision shown here cannot be swapped afterwards.</li>` : ""}
+      </ol></section>`;
   const facts = [
     ["Transaction hash", copyable(p.tx_hash)],
     ["Status", p.success ? `<span class="ok-mark">✓ success</span>` : `<span class="no-mark">reverted</span>`],
@@ -68,6 +91,7 @@ function render(p) {
       <div><div class="small kind">${esc(kindTag)}</div><h2>${esc(p.title)}</h2>
         <p>${p.all_ok ? "Verified on-chain: every check below passed." : "Some checks did not pass; see below."} Checked ${esc(when(p.verified_at))}.</p></div>
     </div>
+    ${receipt}
     <div class="actions no-print">
       ${p.explorer ? `<a class="btn" href="${p.explorer}" target="_blank" rel="noopener">Open on Etherscan ↗</a>` : `<span class="small">Local chain: no public explorer. This page is the record.</span>`}
       <button class="btn" id="print" type="button">Print or save as PDF</button>
@@ -77,7 +101,7 @@ function render(p) {
       <section class="panel"><h3>Checks</h3><ul class="checks">${p.checks.map((c) => `<li class="${c.ok ? "ok" : "bad"}"><span>${c.ok ? "✓" : "✗"}</span>${esc(c.text)}</li>`).join("")}</ul></section>
       <section class="panel"><h3>Transaction</h3><dl class="facts">${facts.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl></section>
       ${ev ? `<section class="panel"><h3>Events emitted by the contract</h3>${ev}</section>` : ""}
-      ${decision}${req}
+      ${decision}${req}${verify}
     </div>`;
   $("print").onclick = () => window.print();
   $("dl").onclick = () => {
@@ -94,7 +118,7 @@ async function verify(h) {
   h = (h || "").trim();
   if (!h) return;
   $("tx").value = h;
-  history.replaceState(null, "", proofUrl(h) + (new URLSearchParams(location.search).get("theme") ? `&theme=${new URLSearchParams(location.search).get("theme")}` : ""));
+  history.replaceState(null, "", proofUrl(h));
   $("out").innerHTML = `<div class="empty">Reading the transaction, its receipt and its block from ${esc($("chainName").textContent)}…</div>`;
   const r = await fetch(`/api/proof?tx=${encodeURIComponent(h)}`);
   if (r.status === 401) return window.ShouhuAuth.expired();

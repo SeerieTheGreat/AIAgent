@@ -1,7 +1,8 @@
 """Local sign-up and sign-in for the two people in the family: the student (agent side) and the parent (owner side).
 
 One account per role, kept in data/accounts.json. Passwords are stored only as salted scrypt hashes. The parent's
-account also keeps a message signed with the wallet's owner key, which proves the person who registered controls it."""
+account also keeps a message signed with the wallet's owner key, which proves the person who registered controls it,
+and a one-time invite code: the student can only register with it, so the family's trust starts from the owner key."""
 from __future__ import annotations
 
 import hashlib
@@ -16,11 +17,25 @@ from pathlib import Path
 from . import config
 
 ROLES = ("student", "owner")
+INVITE_ALPHABET = "23456789ABCDEFGHJKMNPQRSTUVWXYZ"   # no 0/O, 1/I/L: easy to read aloud and type
 _LOCK = threading.Lock()
 
 
 class AccountError(ValueError):
     pass
+
+
+class InviteError(AccountError):
+    """A wrong invite code; counted like a wrong password, so codes cannot be guessed."""
+
+
+def make_invite() -> str:
+    code = "".join(secrets.choice(INVITE_ALPHABET) for _ in range(6))
+    return f"{code[:3]}-{code[3:]}"
+
+
+def norm_invite(code) -> str:
+    return re.sub(r"[^0-9A-Z]", "", str(code or "").upper())
 
 
 def _hash(password: str, salt: bytes) -> str:
@@ -97,22 +112,37 @@ def add_routes(app, accounts: Accounts, role: str, prepare=None) -> None:
     """Sign-up, sign-in and sign-out routes for one app. prepare(name, body) runs after the fields are checked and
     before the account is saved; it returns extra profile fields, or raises AccountError to stop the registration."""
     app.role = role
+    app.account_exists = lambda: accounts.exists(role)   # removing the account ends its sessions at once
+
+    def family() -> dict:
+        parent = accounts.public("owner")
+        return {"owner_registered": parent is not None, "owner_name": parent["name"] if parent else None,
+                "owner_verified": bool(parent and parent.get("signature")), "student_registered": accounts.exists("student")}
 
     @app.get("/api/me", public=True)
     def _me(q):
-        return 200, {"role": role, "registered": accounts.exists(role), "signed_in": app.signed_in(getattr(app.req, "sid", None)),
-                     "account": accounts.public(role) if app.signed_in(getattr(app.req, "sid", None)) else None}
+        signed = app.signed_in(getattr(app.req, "sid", None))
+        mine = accounts.public(role) if signed else None
+        if mine:
+            mine.pop("invite", None)
+        return 200, {"role": role, "registered": accounts.exists(role), "signed_in": signed, "account": mine, "family": family()}
 
     @app.post("/api/register", public=True)
     def _register(body):
         if accounts.exists(role):
             return 409, {"error": f"a {role} account is already registered on this computer; sign in instead"}
+        wait = app.sign_in_wait()
+        if wait:
+            return 429, {"error": f"too many wrong attempts; try again in {wait} seconds"}
         try:
             name, password = check_fields(body.get("name"), body.get("password"))
             if str(body.get("password2", password)) != password:
                 raise AccountError("the two passwords do not match")
             profile = prepare(name, body) if prepare else {}
             acct = accounts.register(role, name, password, **profile)
+        except InviteError as e:
+            app.failures.append(time.time())
+            return 400, {"error": str(e)}
         except AccountError as e:
             return 400, {"error": str(e)}
         return 200, {"ok": True, "account": acct}, app.start_session()

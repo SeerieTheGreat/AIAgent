@@ -15,6 +15,7 @@ from .audit import Audit
 from .chain import Chain, account_from
 from .money import fmt
 from .requests_store import Requests
+from .rules import RulesModel
 from .tools import ToolContext, get_portfolio
 
 console = Console()
@@ -40,19 +41,21 @@ def main(argv=None):
     ap.add_argument("--model", default=config.MODEL)
     ap.add_argument("--effort", default=config.EFFORT)
     ap.add_argument("--verbose", action="store_true", help="show tool calls")
+    ap.add_argument("--rules", action="store_true", help="rules only: no model and no API key; the same tools and checks decide")
     a = ap.parse_args(argv)
-    ensure_api_key()
+    if not a.rules:
+        ensure_api_key()
     chain = Chain(a.chain)
     if not chain.deployment:
         sys.exit(f"no deployment for {a.chain}; run: uv run shouhu-deploy --chain {a.chain}")
     ctx = ToolContext(chain=chain, contacts=contacts_mod.load(), audit=Audit(), requests=Requests(),
                       agent_account=account_from(config.agent_key()))
-    agent = ShouhuAgent(ModelClient(a.model, a.effort), ctx)
+    agent = ShouhuAgent(RulesModel(ctx) if a.rules else ModelClient(a.model, a.effort), ctx)
     if a.verbose:
         agent.on_tool = lambda name, args, res: console.print(f"[dim]  tool {name}({args}) -> {res[:160]}[/dim]")
     s = chain.wallet_state()
     console.print(Panel(f"Shouhu 守护 on [bold]{a.chain}[/bold]\nwallet {s['wallet']}\nbalance {fmt(s['balance'])}   per-transfer cap {fmt(s['per_transfer_cap'])}   24h cap {fmt(s['rolling_cap'])}\n"
-                        f"commands: /portfolio /requests /quit", title="guarded agent wallet"))
+                        f"assistant: {'rules only (no model)' if a.rules else 'AI model'}   commands: /portfolio /requests /quit", title="guarded agent wallet"))
     while True:
         try:
             text = console.input("[bold cyan]you>[/bold cyan] ").strip()

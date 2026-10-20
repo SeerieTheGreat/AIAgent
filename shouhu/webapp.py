@@ -1,7 +1,9 @@
 """Browser interface for the student's chat with Shouhu. The process holds only the agent key.
 
 The owner console (approvals, pause, contacts) is a different process started next to it, see owner_web.py.
-The student signs up and signs in here; every payment has a proof page that re-reads it from the chain."""
+The student signs up here with the one-time invite code the parent got at registration. Two assistant modes: the AI
+model, or rules only (no model at all); the policy engine and the contract decide in both. Every transaction has a proof
+page that re-reads it from the chain, and /transactions lists the wallet's whole ledger."""
 from __future__ import annotations
 
 import argparse
@@ -16,53 +18,47 @@ from concurrent.futures import ThreadPoolExecutor
 from contextlib import nullcontext
 
 from . import accounts as accounts_mod, config, contacts as contacts_mod
-from .accounts import AccountError, Accounts
+from .accounts import AccountError, Accounts, InviteError, norm_invite
 from .agent import ModelClient, ShouhuAgent
 from .audit import Audit
 from .chain import Chain, ChainError, account_from
+from .ledger import describe
 from .localchain import Anvil
 from .money import fmt
 from .proof import verify_tx
 from .requests_store import Requests
+from .rules import RulesModel
 from .scenarios import scripted_tasks
 from .tools import ToolContext
 from .webserver import App, serve
-
-# Sepolia endpoints that still serve old logs (publicnode prunes after ~20,000 blocks); used for history only.
-SEPOLIA_HISTORY_RPCS = ("https://0xrpc.io/sep", "https://gateway.tenderly.co/public/sepolia",
-                        "https://eth-sepolia.api.onfinality.io/public")
-
 
 # short chip labels so all eight scripted lines fit above the input box; the full line is in the tooltip and the chat
 CHIPS = {1: "Wallet", 2: "Mama 20", 3: "Landlord 800", 4: "New address", 5: "Lookalike", 6: "Injection",
          7: "Fake owner", 8: "给哥转 10"}
 
+WebChain = Chain     # kept for older imports; history fallback is part of Chain now
 
-class WebChain(Chain):
-    """Default endpoints for reads and sends; payment history falls back to endpoints that keep old logs."""
 
-    def payments(self, limit: int = 50) -> list[dict]:
-        try:
-            return super().payments(limit)
-        except Exception as first:
-            if self.name != "sepolia":
-                raise ChainError(f"payment history unavailable: {first}") from first
-            for url in SEPOLIA_HISTORY_RPCS:
-                try:
-                    return Chain(self.name, deployment=self.deployment, rpc_url=url).payments(limit)
-                except Exception:
-                    continue
-            raise ChainError(f"payment history unavailable on every endpoint: {first}") from first
+def wallet_ledger(chain: Chain, contacts) -> dict:
+    """The whole ledger with names and summary numbers (Chain falls back to endpoints that keep old logs)."""
+    raw = chain.ledger()
+    entries, stats = describe(raw, chain, contacts)
+    return {"entries": entries, "stats": stats, "tx_explorer": chain.cfg["explorer_tx"], "chain": chain.name}
 
 
 class Session:
     """One conversation at a time, like the terminal chat; the lock serializes turns."""
 
+    MODES = ("model", "rules")
+
     def __init__(self, chain: Chain, model: str, effort: str, offline_reason: str | None, *, model_client=None,
-                 contacts=None, requests: Requests | None = None, agent_account=None, audit_path=None):
+                 contacts=None, requests: Requests | None = None, agent_account=None, audit_path=None, mode: str | None = None):
         self.chain = chain
         self.model, self.effort = model, effort
-        self.offline_reason = offline_reason
+        self.offline_reason = offline_reason          # why the AI model is unavailable (no key); rules only then
+        self.model_available = offline_reason is None
+        self.mode = mode if mode in self.MODES and (mode == "rules" or self.model_available) else \
+            ("model" if self.model_available else "rules")
         self.model_client = model_client
         self.watch_contacts = contacts is None     # pick up contacts the owner registers in the other process
         self.contacts = contacts if contacts is not None else contacts_mod.load()
@@ -83,10 +79,25 @@ class Session:
         self.audit = Audit(self.audit_path, session=f"web-{stamp}")
         self.ctx = ToolContext(chain=self.chain, contacts=self.contacts, audit=self.audit, requests=self.requests,
                                agent_account=self.agent_account)
-        self.agent = None if self.offline_reason else ShouhuAgent(self.model_client or ModelClient(self.model, self.effort), self.ctx)
-        if self.agent:
-            self.agent.on_tool = lambda name, args, res: self.progress.append(_card(name, args, res, self.chain))
+        if self.mode == "rules":
+            client = RulesModel(self.ctx)       # no model: fixed rules read the request, the same tools and checks run
+        else:
+            client = self.model_client or ModelClient(self.model, self.effort)
+        self.agent = ShouhuAgent(client, self.ctx)
+        self.agent.on_tool = lambda name, args, res: self.progress.append(_card(name, args, res, self.chain))
         self.log: list = []
+
+    def set_mode(self, mode: str) -> str | None:
+        """Switch between the AI model and rules only; starts a new conversation. Returns an error or None."""
+        if mode not in self.MODES:
+            return "unknown mode"
+        if mode == "model" and not self.model_available:
+            return self.offline_reason or "the AI model is not available"
+        if self.busy:
+            return "wait for the current reply"
+        self.mode = mode
+        self.new()
+        return None
 
     # --------------------------------------------------------------- reads, cached so polling stays cheap
     def _cached(self, key: str, ttl: float, fn):
@@ -145,10 +156,12 @@ class Session:
     def history(self) -> list:
         return self._cached("history", 45, lambda: named_payments(self.chain, self.contacts))
 
+    def ledger(self) -> dict:
+        self.sync_contacts()
+        return self._cached("ledger", 45, lambda: wallet_ledger(self.chain, self.contacts))
+
     # --------------------------------------------------------------- chat
     def chat(self, text: str) -> dict:
-        if self.offline_reason:
-            return {"error": self.offline_reason}
         if not self.lock.acquire(blocking=False):
             return {"error": "Shouhu is still answering the previous message."}
         try:
@@ -160,7 +173,7 @@ class Session:
                 err = None
             except Exception as e:      # keep the session alive and show the error, as the terminal chat does
                 reply, err = "", f"{type(e).__name__}: {e}"
-            entry = {"user": text, "reply": reply, "error": err, "cards": list(self.progress),
+            entry = {"user": text, "reply": reply, "error": err, "cards": list(self.progress), "mode": self.mode,
                      "seconds": round(time.time() - started, 1), "ts": time.time()}
             self.log.append(entry)
             if any(c["kind"] in ("paid", "request") for c in self.progress):
@@ -227,20 +240,31 @@ def _card(name: str, args: dict, result_text: str, chain: Chain) -> dict:
 def build_app(session: Session, owner_port: int | None, accounts: Accounts | None = None) -> App:
     app = App("index.html", "Shouhu")
     app.pages["/proof"] = "proof.html"
+    app.pages["/transactions"] = "transactions.html"
     tasks = scripted_tasks(session.contacts)
     app.page_vars = {"owner_url": f"http://127.0.0.1:{owner_port}/" if owner_port else None,
                      "examples": [{"n": t["n"], "text": t["user"], "label": t["criterion"], "chip": f"{t['n']} {CHIPS.get(t['n'], '')}"}
                                   for t in tasks],
-                     "offline": session.offline_reason, "chain": session.chain.name, "home": "/", "side": "student"}
+                     "notice": session.offline_reason, "mode": session.mode, "model_available": session.model_available,
+                     "chain": session.chain.name, "wallet": session.chain.deployment["wallet"], "home": "/", "side": "student"}
     accounts = accounts or Accounts()
 
     def prepare(name: str, body: dict) -> dict:
         chinese = str(body.get("chinese_name") or "").strip()
         if len(chinese) > 12:
             raise AccountError("keep the Chinese name under 12 characters")
+        # the parent registers first (proving the owner key) and hands the student a one-time invite code
+        parent = accounts.public("owner")
+        if not parent:
+            raise AccountError("your parent registers first in the owner console, then gives you an invite code")
+        if not parent.get("invite") or norm_invite(body.get("invite")) != norm_invite(parent["invite"]):
+            raise InviteError("that invite code is not valid; use the code shown in your parent's owner console")
+        accounts.update("owner", invite=None, invite_used_at=time.time())
+        session.new()                           # a new account starts with a clean conversation
         d = session.chain.deployment
         # the student account is bound to this wallet and its agent key; it never gets a key of its own
-        return {"chinese_name": chinese, "wallet": d["wallet"], "agent": d["agent"], "chain": session.chain.name}
+        return {"chinese_name": chinese, "wallet": d["wallet"], "agent": d["agent"], "chain": session.chain.name,
+                "invited_by": parent["name"]}
 
     accounts_mod.add_routes(app, accounts, "student", prepare)
 
@@ -274,6 +298,21 @@ def build_app(session: Session, owner_port: int | None, accounts: Accounts | Non
             return 400, {"error": "empty message"}
         return 200, session.chat(text)
 
+    @app.get("/api/ledger")
+    def _ledger(q):
+        try:
+            return 200, session.ledger()
+        except Exception as e:
+            return 200, {"entries": [], "stats": None, "error": str(e), "chain": session.chain.name}
+
+    @app.post("/api/mode")
+    def _mode(body):
+        err = session.set_mode(str(body.get("mode", "")))
+        if err:
+            return 400, {"error": err}
+        app.page_vars["mode"] = session.mode          # the next page load shows the current mode
+        return 200, {"ok": True, "mode": session.mode}
+
     @app.post("/api/new")
     def _new(body):
         if session.busy:
@@ -302,13 +341,17 @@ def main(argv=None):
     ap.add_argument("--no-browser", action="store_true")
     ap.add_argument("--model", default=config.MODEL)
     ap.add_argument("--effort", default=config.EFFORT)
+    ap.add_argument("--assistant", choices=["auto", "model", "rules"], default="auto",
+                    help="start with the AI model or with rules only (auto: the model when a key is set)")
     a = ap.parse_args(argv)
 
     if not config.agent_key():
         from .keys import ensure_keys
         ensure_keys()
     offline = None if os.environ.get("ANTHROPIC_API_KEY") else \
-        "No model key: add ANTHROPIC_API_KEY to .env and restart shouhu-web. The wallet panels still work."
+        ("No model key found, so Shouhu runs in rules-only mode: it understands simple requests in English and Chinese, "
+         "and the policy engine and the contract decide every payment exactly as before. "
+         "Add ANTHROPIC_API_KEY to .env and restart for the AI assistant.")
 
     def stop(*_):                         # a plain kill should also stop the local chain and the owner console
         raise KeyboardInterrupt
@@ -336,21 +379,22 @@ def main(argv=None):
             Requests().clear()
             for name in ("contacts_registered.json", "owner_actions.json"):
                 (config.DATA_DIR / name).unlink(missing_ok=True)
-        session = Session(chain, a.model, a.effort, offline)
+        session = Session(chain, a.model, a.effort, offline, mode=None if a.assistant == "auto" else a.assistant)
         owner_proc = None
         if not a.no_owner:
             # a separate process: the owner key is read there and never enters this one
             owner_proc = subprocess.Popen([sys.executable, "-m", "shouhu.owner_web", "--chain", a.chain,
                                            "--port", str(a.owner_port), "--rpc", chain.rpc_url, "--no-browser",
-                                           "--parent-pid", str(os.getpid())],
+                                           "--student-url", f"http://127.0.0.1:{a.port}/", "--parent-pid", str(os.getpid())],
                                           cwd=config.ROOT)
         httpd = serve(build_app(session, None if a.no_owner else a.owner_port), a.port, open_browser=not a.no_browser)
         print(f"Shouhu 守护 on {a.chain} via {chain.rpc_url}")
         print(f"  student app    http://127.0.0.1:{a.port}/")
         if owner_proc:
             print(f"  owner console  http://127.0.0.1:{a.owner_port}/   (separate process, owner key)")
+        print(f"  assistant      {'AI model' if session.mode == 'model' else 'rules only (no model)'}")
         if offline:
-            print(f"  note: {offline}")
+            print("  note: no ANTHROPIC_API_KEY, so the AI model is off; rules-only mode works without it")
         print("press Ctrl+C to stop", flush=True)
         try:
             httpd.serve_forever()

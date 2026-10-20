@@ -37,6 +37,7 @@ class App:
         self.pages: dict = {"/": page, "/index.html": page}
         self.page_vars: dict = {}
         self.sessions: dict = {}          # session id -> expiry
+        self.account_exists = None        # callable; a session only counts while its account still exists
         self.failures: list = []          # times of recent failed sign-ins
         self.req = threading.local()      # the session id of the request being handled
 
@@ -63,7 +64,7 @@ class App:
 
     def signed_in(self, sid: str | None) -> bool:
         exp = self.sessions.get(sid or "")
-        if exp and exp > time.time():
+        if exp and exp > time.time() and (self.account_exists is None or self.account_exists()):
             return True
         self.sessions.pop(sid or "", None)
         return False

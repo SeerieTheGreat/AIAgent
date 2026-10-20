@@ -5,12 +5,14 @@ const $ = (id) => document.getElementById(id);
 let STATE = null;
 let busy = false;
 let lastRequests = "";
+let MODE = BOOT.mode || "model";
 
 // ------------------------------------------------------------------ helpers
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const money = (s) => { const [amt, sym] = String(s ?? "").split(" "); return amt && !isNaN(amt) ? `${Number(amt).toLocaleString("en-US", { maximumFractionDigits: 2 })} ${sym || ""}`.trim() : String(s ?? ""); };   // "1200 tUSDC" -> "1,200 tUSDC"
 const short = (h, a = 6, b = 4) => (h && h.length > a + b + 2 ? `${h.slice(0, a)}…${h.slice(-b)}` : h || "");
 const txUrl = (h) => (STATE && STATE.tx_explorer ? STATE.tx_explorer.replace("{}", h) : null);
-const proofUrl = (h) => `/proof?tx=${encodeURIComponent(h)}`;
+const proofUrl = (h) => `/proof?tx=${encodeURIComponent(h)}${document.documentElement.dataset.theme ? `&theme=${document.documentElement.dataset.theme}` : ""}`;   // keep a forced theme
 
 async function api(path, body) {
   const opt = body === undefined ? {} : {
@@ -105,14 +107,15 @@ function fillBot(el, turn) {
   bubble.classList.remove("typing");
   bubble.removeAttribute("aria-label");
   if (turn.error) {
-    bubble.innerHTML = `<p class="err">${esc(turn.error)}</p>`;
+    bubble.innerHTML = `<p class="err">${esc(turn.error)}</p>` + (MODE === "model"
+      ? `<p class="small">Nothing was paid by this reply. You can try again, or switch to <button type="button" class="linkish inline" data-switch="rules">Rules only</button>, which needs no model.</p>` : "");
   } else {
     bubble.innerHTML = md(turn.reply || "(no reply)");
   }
   if (turn.seconds !== undefined) {
     const m = document.createElement("div");
     m.className = "meta";
-    m.textContent = `${turn.seconds}s · ${(turn.cards || []).length} tool call${(turn.cards || []).length === 1 ? "" : "s"}`;
+    m.textContent = `${turn.seconds}s · ${(turn.cards || []).length} tool call${(turn.cards || []).length === 1 ? "" : "s"}${turn.mode === "rules" ? " · rules only, no model" : ""}`;
     body.appendChild(m);
   }
   scrollDown();
@@ -121,7 +124,6 @@ function fillBot(el, turn) {
 async function send(text) {
   text = (text || "").trim();
   if (!text || busy) return;
-  if (BOOT.offline) { toast(BOOT.offline, 5000); return; }
   busy = true;
   $("send").disabled = true;
   $("input").value = "";
@@ -159,13 +161,13 @@ function renderState(s) {
   if (s.wallet_explorer) { $("walletLink").href = s.wallet_explorer; $("walletLink").hidden = false; } else $("walletLink").hidden = true;
   $("paused").textContent = s.paused ? "paused by the owner" : "active";
   $("paused").className = `status ${s.paused ? "bad" : "ok"}`;
-  $("perCap").textContent = s.per_transfer_cap;
-  $("rollCap").textContent = s.rolling_cap;
+  $("perCap").textContent = money(s.per_transfer_cap);
+  $("rollCap").textContent = money(s.rolling_cap);
   const pct = s.rolling_cap_units ? Math.min(100, (100 * s.spent_24h_units) / s.rolling_cap_units) : 0;
   $("barFill").style.width = `${pct}%`;
   $("bar").className = `bar${pct > 80 ? " hot" : ""}`;
-  $("spent").textContent = s.spent_24h;
-  $("headroom").textContent = s.headroom;
+  $("spent").textContent = money(s.spent_24h);
+  $("headroom").textContent = money(s.headroom);
 
   $("contacts").innerHTML = s.contacts.map((c) => `
     <div class="item"><div class="avatar">${esc(c.alias ? c.alias[0] : c.name[0])}</div>
@@ -191,7 +193,7 @@ function renderState(s) {
   lastRequests = sig;
   renderChips();
 
-  $("footnote").innerHTML = `Agent key <a href="${s.agent_explorer || "#"}" target="_blank" rel="noopener" class="addr">${short(s.agent)}</a> · gas ${s.agent_gas_eth} ETH<br>
+  $("footnote").innerHTML = `Assistant: ${MODE === "rules" ? "rules only (no model)" : "AI model"}<br>Agent key <a href="${s.agent_explorer || "#"}" target="_blank" rel="noopener" class="addr">${short(s.agent)}</a> · gas ${s.agent_gas_eth} ETH<br>
     Owner <span class="addr">${short(s.owner)}</span> · RPC ${esc(new URL(s.rpc).host)}<br>This page holds no owner key. Approvals happen only in the owner console, a separate process.`;
 }
 
@@ -252,7 +254,25 @@ $("newChat").addEventListener("click", async () => {
 if (BOOT.owner_url) {
   for (const id of ["ownerLink", "ownerLink2"]) { $(id).href = BOOT.owner_url; $(id).hidden = false; }
 }
-if (BOOT.offline) { $("offline").textContent = BOOT.offline; $("offline").hidden = false; }
+if (BOOT.notice) { $("notice").textContent = BOOT.notice; $("notice").hidden = false; }
+
+function renderMode() {
+  document.querySelectorAll("#modeSeg button").forEach((b) => {
+    b.classList.toggle("on", b.dataset.mode === MODE);
+    if (b.dataset.mode === "model" && !BOOT.model_available) { b.disabled = true; b.title = "Add ANTHROPIC_API_KEY to .env and restart to use the AI model"; }
+  });
+  $("modeNote").hidden = MODE !== "rules";
+}
+
+async function switchMode(mode) {
+  if (busy || mode === MODE) return;
+  const r = await api("/api/mode", { mode });
+  if (r.error) return toast(r.error, 5000);
+  location.reload();          // a new conversation in the other mode
+}
+$("modeSeg").addEventListener("click", (e) => { const b = e.target.closest("button[data-mode]"); if (b && !b.disabled) switchMode(b.dataset.mode); });
+$("stream").addEventListener("click", (e) => { const b = e.target.closest("[data-switch]"); if (b) switchMode(b.dataset.switch); });
+renderMode();
 
 renderExamples();
 renderChips();

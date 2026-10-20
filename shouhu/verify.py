@@ -39,8 +39,9 @@ def audit_index() -> dict:
 
 
 def describe_tx(chain: Chain, tx_hash: str, names: dict, index: dict) -> None:
-    r = chain.w3.eth.get_transaction_receipt(tx_hash)
-    tx = chain.w3.eth.get_transaction(tx_hash)
+    # public endpoints prune old receipts; with_history tries the endpoints that keep them
+    chain, r, tx = chain.with_history(lambda c: (c, c.w3.eth.get_transaction_receipt(tx_hash), c.w3.eth.get_transaction(tx_hash)),
+                                      "the transaction")
     who = {chain.deployment["agent"].lower(): "the AGENT key", chain.deployment["owner"].lower(): "the OWNER key"}
     print(f"transaction {tx_hash}")
     print(f"  block {r['blockNumber']}   status {'SUCCESS' if r['status'] == 1 else 'FAILED'}   from {tx['from']} ({who.get(tx['from'].lower(), 'other')})")
@@ -58,13 +59,22 @@ def describe_tx(chain: Chain, tx_hash: str, names: dict, index: dict) -> None:
         print(f"  event ApprovalGranted: owner approved {fmt(a['amount'])} to {names.get(a['to'].lower(), a['to'])} ({a['to']}) once")
         print(f"    intent id {iid}")
         _print_audit(iid, index)
+    for ev in chain.wallet.events.AllowlistUpdated().process_receipt(r, errors=DISCARD):
+        a = ev["args"]; found = True
+        print(f"  event AllowlistUpdated: {names.get(a['to'].lower(), a['to'])} ({a['to']}) {'added to' if a['allowed'] else 'removed from'} the allowlist")
+    for ev in chain.wallet.events.PolicyUpdated().process_receipt(r, errors=DISCARD):
+        a = ev["args"]; found = True
+        print(f"  event PolicyUpdated: per-transfer cap {fmt(a['perTransferCap'])}, 24-hour cap {fmt(a['rollingCap'])}")
+    for ev in chain.wallet.events.PausedSet().process_receipt(r, errors=DISCARD):
+        found = True
+        print(f"  event PausedSet: agent {'paused' if ev['args']['paused'] else 'resumed'}")
     for ev in chain.token.events.Transfer().process_receipt(r, errors=DISCARD):
         a = ev["args"]
         print(f"  event tUSDC Transfer: {fmt(a['value'])} from {names.get(a['from'].lower(), a['from'])} to {names.get(a['to'].lower(), a['to'])}")
     if r.get("contractAddress"):
         print(f"  created contract {r['contractAddress']}")
     if not found and not r.get("contractAddress"):
-        print("  no PolicyWallet event in this transaction")
+        print("  no PolicyWallet event in this transaction (a tUSDC transfer above means money moved into or out of the wallet)")
 
 
 def _print_audit(iid: str, index: dict) -> None:

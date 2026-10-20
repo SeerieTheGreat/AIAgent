@@ -27,6 +27,8 @@ def to_units(amount) -> int:
     return units
 
 
-def fmt(units: int) -> str:
+def fmt(units: int, group: bool = False) -> str:
+    """'1000 tUSDC'; with group=True '1,000 tUSDC' (display only: the plain form is what other code parses)."""
     d = Decimal(units) / UNIT
-    return f"{d.quantize(Decimal(1) if d == d.to_integral() else Decimal('0.01'))} {TOKEN_SYMBOL}"
+    q = d.quantize(Decimal(1) if d == d.to_integral() else Decimal('0.01'))
+    return f"{q:,} {TOKEN_SYMBOL}" if group else f"{q} {TOKEN_SYMBOL}"

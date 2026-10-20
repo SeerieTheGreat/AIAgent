@@ -20,6 +20,12 @@ class ChainError(RuntimeError):
     pass
 
 
+# Public endpoints prune old logs and receipts (publicnode keeps about 20,000 blocks on Sepolia). History reads fall
+# back to these endpoints, which still serve the whole deployment's history.
+HISTORY_RPCS = {"sepolia": ("https://0xrpc.io/sep", "https://gateway.tenderly.co/public/sepolia",
+                            "https://eth-sepolia.api.onfinality.io/public")}
+
+
 def hx(h) -> str:
     """Hex string with a 0x prefix for hashes/bytes regardless of web3 version."""
     t = h.hex() if hasattr(h, "hex") else str(h)
@@ -125,7 +131,39 @@ class Chain:
     def token_balance(self, addr: str) -> int:
         return self.token.functions.balanceOf(to_checksum_address(addr)).call()
 
+    def history_chains(self):
+        """This chain first, then the same chain on endpoints that keep old logs and receipts."""
+        yield self
+        for url in HISTORY_RPCS.get(self.name, ()):
+            if url == getattr(self, "rpc_url", None):
+                continue
+            try:
+                yield Chain(self.name, deployment=self.deployment, rpc_url=url)
+            except ChainError:
+                continue
+
+    def with_history(self, fn, what: str):
+        """Run fn(chain) on this endpoint, falling back to the history endpoints when it fails or returns nothing."""
+        last = None
+        for c in self.history_chains():
+            try:
+                out = fn(c)
+                if out is not None:
+                    return out
+            except Exception as e:  # pruned history, rate limit, timeout: try the next endpoint
+                last = e
+        raise ChainError(f"{what} unavailable on every endpoint: {last}")
+
     def payments(self, limit: int = 50) -> list[dict]:
+        """Payment events of our wallet, newest first; falls back to endpoints that keep old logs."""
+        return self.with_history(lambda c: c._payments(limit), "payment history")
+
+    def ledger(self, limit: int = 300) -> list[dict]:
+        """Every wallet event and every deposit, newest first (see ledger.py)."""
+        from .ledger import read_ledger
+        return self.with_history(lambda c: read_ledger(c, limit), "the wallet's ledger")
+
+    def _payments(self, limit: int = 50) -> list[dict]:
         """Payment events of our wallet, newest first, read in block chunks that public endpoints accept."""
         start = int(self.deployment.get("deploy_block", 0))
         latest = self.w3.eth.block_number

@@ -14,9 +14,9 @@
     <h1>Owner console · 家长</h1>
     <p>Separate process with the owner key. The agent cannot reach this page.</p>
   </div>
+  <nav class="nav" id="nav" aria-label="Pages"></nav>
   <div class="spacer"></div>
   <span class="pill"><span class="dot" id="dot"></span><span id="chainName">connecting…</span></span>
-  <a class="btn hide-sm" href="/proof">Verify a transaction</a>
   <span class="user-chip" id="userChip" hidden></span>
 </header>
 <div class="banner" id="readonly" hidden>No owner key on this computer (.owner.env), so this console is read-only.</div>
@@ -39,7 +39,7 @@
     </form>
     <div class="section-title" style="margin-top:22px">Settled</div>
     <div id="settled"><div class="empty">Nothing settled yet.</div></div>
-    <div class="section-title" style="margin-top:22px">On-chain activity from this console</div>
+    <div class="section-title" style="margin-top:22px">On-chain activity from this console <span class="spacer"></span><a href="/transactions" class="small">the wallet's full ledger →</a></div>
     <div class="req"><div class="list" id="activity"><div class="empty">No owner transactions yet.</div></div></div>
   </section>
 
@@ -53,10 +53,23 @@
         <div><b id="spent">—</b><span>agent spent, 24 h</span></div>
         <div><b id="headroom">—</b><span>agent headroom</span></div>
       </div>
-      <div style="margin-top:12px; display:flex; align-items:center; gap:10px">
-        <span class="status ok" id="paused">active</span><span class="spacer" style="flex:1"></span>
-        <button class="btn danger" id="pauseBtn">Pause the agent</button>
+      <div class="wallet-actions">
+        <span class="status ok" id="paused">active</span><span class="spacer"></span>
+        <button class="btn xs" id="limitsBtn" type="button">Edit limits</button>
+        <button class="btn xs" id="fundBtn" type="button">Add test money</button>
+        <button class="btn xs danger" id="pauseBtn" type="button">Pause the agent</button>
       </div>
+      <form class="inline-form" id="limitsForm" hidden>
+        <div class="two"><label>Per payment, tUSDC<input name="per_transfer_cap" inputmode="decimal" required></label>
+          <label>Per 24 hours, tUSDC<input name="rolling_cap" inputmode="decimal" required></label></div>
+        <p class="small">Signed with the owner key and written to the contract (<code>setPolicy</code>). Shouhu has no way to change these.</p>
+        <div class="actions"><button class="btn primary" type="submit" id="limitsSave">Save on-chain</button><button class="btn" type="button" data-close="limitsForm">Cancel</button></div>
+      </form>
+      <form class="inline-form" id="fundForm" hidden>
+        <label>Test money to add<select name="amount"><option value="500">500 tUSDC</option><option value="1000" selected>1,000 tUSDC</option><option value="5000">5,000 tUSDC</option></select></label>
+        <p class="small">tUSDC is a test token with a public mint and no value. Adding money is a transaction with its own proof.</p>
+        <div class="actions"><button class="btn primary" type="submit" id="fundSave">Add to the wallet</button><button class="btn" type="button" data-close="fundForm">Cancel</button></div>
+      </form>
     </section>
     <section class="panel">
       <h3>Family · 家庭</h3>
