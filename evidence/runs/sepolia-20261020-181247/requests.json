@@ -1,0 +1,17 @@
+[
+ {
+  "id": "R1",
+  "intent_id": "0x7d995750af810fe379b0900fe31a664b767e5c5f881937c7304dced4a76dbd6d",
+  "to": "0x98e0BF3d07f999A160F44ec80Bb90fBCf0ff480B",
+  "name": "Landlord Zhang",
+  "amount": 800000000,
+  "memo": "Apartment deposit",
+  "reasons": [
+   "800 tUSDC exceeds the per-transfer cap of 500 tUSDC"
+  ],
+  "status": "executed",
+  "created": 1792490019.8183522,
+  "approve_tx": "0x7da075360343b7c5ad0846376880123248ecac27c184ae0261bf6c777c2a3a51",
+  "exec_tx": "0x3b577f89b3b46e565385ea3655036d2084b7108b357d5c26c39de47d136d282e"
+ }
+]
