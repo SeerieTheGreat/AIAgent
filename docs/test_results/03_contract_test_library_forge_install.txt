@@ -1,0 +1,8 @@
+Shouhu source code: README steps run on a fresh copy of commit 05785df (https://github.com/SeerieTheGreat/AIAgent), 20 October 2026 16:38 UTC+8, macOS 26.4, uv 0.13.1, Python 3.12.15, Foundry 1.8.5.
+Paths are shown relative to the repository folder AIAgent.
+
+$ forge install foundry-rs/forge-std@v1.17.0 --no-git
+Installing forge-std in AIAgent/contracts/lib/forge-std (url: https://github.com/foundry-rs/forge-std, tag: v1.17.0)
+Cloning into 'AIAgent/contracts/lib/forge-std'...
+    Installed forge-std v1.17.0
+[exit 0]

@@ -1,0 +1,8 @@
+Shouhu source code: README steps run on a fresh copy of commit 05785df (https://github.com/SeerieTheGreat/AIAgent), 20 October 2026 16:38 UTC+8, macOS 26.4, uv 0.13.1, Python 3.12.15, Foundry 1.8.5.
+Paths are shown relative to the repository folder AIAgent.
+
+$ uv run shouhu-try --chain sepolia mama 600
+asking PolicyWallet 0xb9D959da30680e86E9bF0A287Abee354033a0525 on sepolia: may the agent key send 600 tUSDC to 0x76782b840f864dA37F8CA7ecB2B1354782D4bf33?
+contract answer: REJECTED with ExceedsPerTransferCap(amount=600000000, cap=500000000)
+The model never had a say in this; the limits live on-chain and only the owner key can change them.
+[exit 0]

@@ -1,0 +1,15 @@
+Shouhu source code: README steps run on a fresh copy of commit 05785df (https://github.com/SeerieTheGreat/AIAgent), 20 October 2026 16:38 UTC+8, macOS 26.4, uv 0.13.1, Python 3.12.15, Foundry 1.8.5.
+Paths are shown relative to the repository folder AIAgent.
+
+$ uv run shouhu-deploy --chain anvil
+chain anvil via http://127.0.0.1:8545; owner 0x622A95B92F4c6323fcf23F4DC080c5805F843174 has 1000.0000 ETH
+TestUSDC    0xCc57B8C4868DA4DCE5231074f158B49b0543BB2F  tx 0x7898dd3d722df3e6e5ce2ae7dd47fbdf9655417161e392901cf46f4d87ac61e8
+PolicyWallet 0x2Ebb500B01181676AF08d508d092FC09aa284987  tx 0x6b48b82b70f96fff7c295005f37aa756ec772f0e3eb84569b6a3514a2e71575b
+minted 10000 tUSDC to the wallet  tx 0xab0c2f66f742c81a11d8ec42114873d7e709091d00d47010ee2cdbc81c561de0
+allowlisted Mama               0x76782b840f864dA37F8CA7ecB2B1354782D4bf33  tx 0xfcafa6c19d54fe896eb085d9cab094913f47caf4821d29eed9efa3e200e59e58
+allowlisted Ge                 0xa61A132925b7Eb4B32f3201a7D31cDD80de12e49  tx 0x247590140e116ccee14be898de051d742dcbcdde2d1de1ce91e0b8073645a757
+allowlisted Landlord Zhang     0x98e0BF3d07f999A160F44ec80Bb90fBCf0ff480B  tx 0x07084a5db5238171306d87d1d5d5903d17d99518ce02996f2cc3123e385d786b
+allowlisted University Bursar  0x0B2B01EEABE600DaAC40B9B5bd2B26F30ce3439F  tx 0x83ca92d4067e151204e6aded80d3d79472f79818320fa05f23e5f41fa2b32512
+allowlisted Xiao Wang          0x3Aa49018675B446F69DB93818A924675CF28b01E  tx 0x380e46fa012f130a9ede0094a776023860ecf58cdeba4f440b9aef9cd83aa7b0
+saved deployments/anvil.json
+[exit 0]

@@ -138,6 +138,8 @@ only: `.env` and `.owner.env` are git-ignored, and the owner key is read only by
 
 Every case and what it checks: [`docs/test_cases.md`](docs/test_cases.md). Results of the attacks:
 `evidence/redteam_results.md` (AI model) and `evidence/redteam_results_rules.md` (rules only), 8 of 8 passed in both.
+Logs of a full run of these steps on a fresh copy of the repository (20 October 2026): [`docs/test_results/`](docs/test_results/).
+A three-page guide to the source code, deployment and tests: [`docs/Shouhu_Source_Code_Guide.pdf`](docs/Shouhu_Source_Code_Guide.pdf).
 
 ## Permission tiers
 
@@ -187,7 +189,7 @@ tests/                    Python tests (58)
 scripts/verify_sourcify.sh  publishes the verified contract source on Sourcify
 deployments/              deployed addresses per chain
 evidence/                 audit logs, red-team results, exported runs with hashes and explorer links
-docs/                     technical documentation (PDF and Markdown), test cases, security self-assessment, demo guide and script
+docs/                     technical documentation (PDF and Markdown), source code guide, test cases and test logs, security self-assessment, demo guide and script
 ```
 
 ## Known limits (see docs/security_self_assessment.md)

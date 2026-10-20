@@ -1,0 +1,25 @@
+Shouhu source code: README steps run on a fresh copy of commit 05785df (https://github.com/SeerieTheGreat/AIAgent), 20 October 2026 16:38 UTC+8, macOS 26.4, uv 0.13.1, Python 3.12.15, Foundry 1.8.5.
+Paths are shown relative to the repository folder AIAgent.
+
+$ forge test -vv
+Compiling 22 files with Solc 0.8.28
+Solc 0.8.28 finished in 447.59ms
+Compiler run successful!
+
+Ran 12 tests for test/PolicyWallet.t.sol:PolicyWalletTest
+[PASS] test_approvalFlow() (gas: 286147)
+[PASS] test_approvalMismatchAmountOrRecipient() (gas: 180389)
+[PASS] test_bucketReuseAfterADay() (gas: 414248)
+[PASS] test_eventCarriesIntentId() (gas: 181768)
+[PASS] test_onlyAgentPaths() (gas: 34864)
+[PASS] test_onlyOwnerGovernance() (gas: 137563)
+[PASS] test_ownerCanAlwaysMoveFunds() (gas: 140833)
+[PASS] test_pauseBlocksAgentPaths() (gas: 190705)
+[PASS] test_revertNotAllowlisted() (gas: 42093)
+[PASS] test_revertPerTransferCap() (gas: 44550)
+[PASS] test_rollingCapAcrossHours() (gas: 721308)
+[PASS] test_routinePaymentWithinPolicy() (gas: 310544)
+Suite result: ok. 12 passed; 0 failed; 0 skipped; finished in 1.20ms (6.02ms CPU time)
+
+Ran 1 test suite in 3.51ms (1.20ms CPU time): 12 tests passed, 0 failed, 0 skipped (12 total tests)
+[exit 0]

@@ -1,0 +1,18 @@
+Shouhu source code: README steps run on a fresh copy of commit 05785df (https://github.com/SeerieTheGreat/AIAgent), 20 October 2026 16:38 UTC+8, macOS 26.4, uv 0.13.1, Python 3.12.15, Foundry 1.8.5.
+Paths are shown relative to the repository folder AIAgent.
+
+$ uv run shouhu-verify --chain sepolia 0x8c592d12ed8df4d7dfcca63d2021c6542c4995e31d689357cb882915c3b9d7fe
+PolicyWallet 0xb9D959da30680e86E9bF0A287Abee354033a0525 on sepolia; audit entries indexed: 60
+
+transaction 0x8c592d12ed8df4d7dfcca63d2021c6542c4995e31d689357cb882915c3b9d7fe
+  block 11952885   status SUCCESS   from 0xe46Ab06dF31a8E03BAAe6aA5912b60B10e0Fb291 (the AGENT key)
+  to    0xb9D959da30680e86E9bF0A287Abee354033a0525   (the PolicyWallet contract)
+  explorer https://sepolia.etherscan.io/tx/0x8c592d12ed8df4d7dfcca63d2021c6542c4995e31d689357cb882915c3b9d7fe
+  event Payment: 800 tUSDC to Landlord Zhang (0x98e0BF3d07f999A160F44ec80Bb90fBCf0ff480B), via owner approval = True
+    intent id 0xc2c3a8967688e3c2156dcb06d4c3c413b780152803c8e72149d8dfbf04a61d28
+    audit entry (evidence/runs/sepolia-20261020-124109-web-v2/audit_log.jsonl, 2026-10-20 04:19:50 UTC):
+      user said   : 'Pay the landlord 800 USDC for the apartment deposit.'
+      decision    : request (tier 2) for 800 tUSDC to Landlord Zhang
+      reasons     : 800 tUSDC exceeds the per-transfer cap of 500 tUSDC
+  event tUSDC Transfer: 800 tUSDC from the PolicyWallet to Landlord Zhang
+[exit 0]
