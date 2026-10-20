@@ -1,0 +1,1647 @@
+{
+  "summary": {
+    "transactions": 42,
+    "wallet_transactions_all_checks_pass": 37,
+    "wallet_transactions": 37,
+    "contract_creations": 2,
+    "rejected_on_purpose": 3,
+    "every_result_as_expected": true
+  },
+  "transactions": {
+    "0x09fc9fe7db1c0febd1a793932804f9ffb05b4f87d8639ba3f64ce40b56fdaee2": {
+      "title": "Transaction",
+      "kind": "other",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11926706 with status success"
+        },
+        {
+          "ok": true,
+          "text": "27605 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": false,
+          "text": "Sent to a new contract, not to the Shouhu policy wallet"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the owner key (parent)"
+        }
+      ],
+      "all_checks_pass": false,
+      "receipt": null,
+      "decision": null,
+      "note": "Contract creation of TestUSDC, signed by the owner key. The proof-page checks are written for transactions sent to the PolicyWallet, so 'sent to the policy wallet' does not apply here; the deployed bytecode is verified on Sourcify (exact match).",
+      "expected": true
+    },
+    "0xa858a9a45f83dc612b81984473310fd179ae6adc4fe40fbe96a086b27ff6d9b9": {
+      "title": "AgentUpdated",
+      "kind": "other",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11926707 with status success"
+        },
+        {
+          "ok": true,
+          "text": "27604 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": false,
+          "text": "Sent to a new contract, not to the Shouhu policy wallet"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the owner key (parent)"
+        }
+      ],
+      "all_checks_pass": false,
+      "receipt": null,
+      "decision": null,
+      "note": "Contract creation of PolicyWallet, signed by the owner key. The proof-page checks are written for transactions sent to the PolicyWallet, so 'sent to the policy wallet' does not apply here; the deployed bytecode is verified on Sourcify (exact match).",
+      "expected": true
+    },
+    "0x14d0312002dc2603273242ca748357759d98d72afd2ae92d7ef31dce97e45df2": {
+      "title": "Money added: 10,000 tUSDC into the Shouhu wallet",
+      "kind": "deposit",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11926708 with status success"
+        },
+        {
+          "ok": true,
+          "text": "27603 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the tUSDC token contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the owner key (parent)"
+        },
+        {
+          "ok": true,
+          "text": "The token contract minted 10,000 tUSDC into the Shouhu wallet (test money, it has no value)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": null,
+      "decision": null,
+      "expected": true
+    },
+    "0xd1c15e59ae425feb4467ba362afa7b6240a1232bb9b8b455ab9fbd8d121c43dc": {
+      "title": "Allowlist: Mama added",
+      "kind": "allowlist",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11926709 with status success"
+        },
+        {
+          "ok": true,
+          "text": "27602 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the owner key (parent)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": null,
+      "decision": null,
+      "expected": true
+    },
+    "0xb66b24a26b7d8d7e5f1f85608767f7543dd8f4e24c93da59354a51e2965de605": {
+      "title": "Allowlist: Ge added",
+      "kind": "allowlist",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11926710 with status success"
+        },
+        {
+          "ok": true,
+          "text": "27601 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the owner key (parent)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": null,
+      "decision": null,
+      "expected": true
+    },
+    "0x9a886db8a557953990825e8ec61c4ca5a11044b37cdec81ea3a099427f6c35fb": {
+      "title": "Allowlist: Landlord Zhang added",
+      "kind": "allowlist",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11926711 with status success"
+        },
+        {
+          "ok": true,
+          "text": "27600 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the owner key (parent)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": null,
+      "decision": null,
+      "expected": true
+    },
+    "0xbce911f4158555460d4e6953de4d43920b3d23538ead83ee760677713f29483e": {
+      "title": "Allowlist: University Bursar added",
+      "kind": "allowlist",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11926712 with status success"
+        },
+        {
+          "ok": true,
+          "text": "27600 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the owner key (parent)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": null,
+      "decision": null,
+      "expected": true
+    },
+    "0x19c6182fa9a1f2240d26f5e512c5ff07714b51d7d4685c24642c0001e663cd48": {
+      "title": "Allowlist: Xiao Wang added",
+      "kind": "allowlist",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11926713 with status success"
+        },
+        {
+          "ok": true,
+          "text": "27599 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the owner key (parent)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": null,
+      "decision": null,
+      "expected": true
+    },
+    "0xb9ee729554fc96d3c00ce465bd83f2702955a4dc914d1953b602444592520074": {
+      "title": "Payment of 20 tUSDC to Mama",
+      "kind": "payment",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11926755 with status success"
+        },
+        {
+          "ok": true,
+          "text": "27557 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the agent key (Shouhu)"
+        },
+        {
+          "ok": true,
+          "text": "The token contract moved 20 tUSDC from the wallet to Mama"
+        },
+        {
+          "ok": true,
+          "text": "Tier 1: inside the per-transfer cap, the 24-hour cap and the allowlist, or the contract would have reverted"
+        },
+        {
+          "ok": true,
+          "text": "The intent id is the hash of policy decision #5 in session demo-20261016-182524 (action allow, tier 1)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": {
+        "number": "SH-11926755-172",
+        "time": 1792146348,
+        "paid_to": "Mama",
+        "address": "0x76782b840f864dA37F8CA7ecB2B1354782D4bf33",
+        "amount": "20 tUSDC",
+        "memo": null,
+        "tier": 1,
+        "approval_tx": null,
+        "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
+      },
+      "decision": "Send 20 USDC to Mama.",
+      "expected": true
+    },
+    "0xd4961bcc9dd7fc245bb69baceb04673e2c7095877499c675fac27dbacc4b0509": {
+      "title": "Owner approval: 800 tUSDC to Landlord Zhang, once",
+      "kind": "approval",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11926757 with status success"
+        },
+        {
+          "ok": true,
+          "text": "27555 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the owner key (parent)"
+        },
+        {
+          "ok": true,
+          "text": "Only the owner key can grant an approval; this one was signed by it"
+        },
+        {
+          "ok": true,
+          "text": "The intent id is the hash of policy decision #10 in session demo-20261016-182524 (action request, tier 2)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": null,
+      "decision": "Pay the landlord 800 USDC for the apartment deposit.",
+      "expected": true
+    },
+    "0x838aee659579417aa92716e84790bb07158e68f6fbb77b11fb20936e46a38cfc": {
+      "title": "Payment of 800 tUSDC to Landlord Zhang",
+      "kind": "payment",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11926758 with status success"
+        },
+        {
+          "ok": true,
+          "text": "27554 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the agent key (Shouhu)"
+        },
+        {
+          "ok": true,
+          "text": "The token contract moved 800 tUSDC from the wallet to Landlord Zhang"
+        },
+        {
+          "ok": true,
+          "text": "Tier 2: the contract holds the owner's one-time approval for exactly this recipient and amount, now used"
+        },
+        {
+          "ok": true,
+          "text": "The intent id is the hash of policy decision #10 in session demo-20261016-182524 (action request, tier 2)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": {
+        "number": "SH-11926758-151",
+        "time": 1792146396,
+        "paid_to": "Landlord Zhang",
+        "address": "0x98e0BF3d07f999A160F44ec80Bb90fBCf0ff480B",
+        "amount": "800 tUSDC",
+        "memo": "Apartment deposit",
+        "tier": 2,
+        "approval_tx": null,
+        "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
+      },
+      "decision": "Pay the landlord 800 USDC for the apartment deposit.",
+      "expected": true
+    },
+    "0xbb784709c0dcb2a82d8289ffd175305896e7839a1c85d327f886e227f1a5dc7c": {
+      "title": "Payment of 10 tUSDC to Ge",
+      "kind": "payment",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11926763 with status success"
+        },
+        {
+          "ok": true,
+          "text": "27549 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the agent key (Shouhu)"
+        },
+        {
+          "ok": true,
+          "text": "The token contract moved 10 tUSDC from the wallet to Ge"
+        },
+        {
+          "ok": true,
+          "text": "Tier 1: inside the per-transfer cap, the 24-hour cap and the allowlist, or the contract would have reverted"
+        },
+        {
+          "ok": true,
+          "text": "The intent id is the hash of policy decision #33 in session demo-20261016-182524 (action allow, tier 1)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": {
+        "number": "SH-11926763-42",
+        "time": 1792146456,
+        "paid_to": "Ge",
+        "address": "0xa61A132925b7Eb4B32f3201a7D31cDD80de12e49",
+        "amount": "10 tUSDC",
+        "memo": null,
+        "tier": 1,
+        "approval_tx": null,
+        "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
+      },
+      "decision": "给哥转 10 USDC",
+      "expected": true
+    },
+    "0x3330ce7a8b2fd8d8cca4ecbb914c803385ae73677636e151be0066988545ca06": {
+      "title": "Payment of 20 tUSDC to Mama",
+      "kind": "payment",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11946648 with status success"
+        },
+        {
+          "ok": true,
+          "text": "7664 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the agent key (Shouhu)"
+        },
+        {
+          "ok": true,
+          "text": "The token contract moved 20 tUSDC from the wallet to Mama"
+        },
+        {
+          "ok": true,
+          "text": "Tier 1: inside the per-transfer cap, the 24-hour cap and the allowlist, or the contract would have reverted"
+        },
+        {
+          "ok": true,
+          "text": "The intent id is the hash of policy decision #5 in session a9173e3a87b7 (action allow, tier 1)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": {
+        "number": "SH-11946648-231",
+        "time": 1792394316,
+        "paid_to": "Mama",
+        "address": "0x76782b840f864dA37F8CA7ecB2B1354782D4bf33",
+        "amount": "20 tUSDC",
+        "memo": null,
+        "tier": 1,
+        "approval_tx": null,
+        "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
+      },
+      "decision": "Send 20 USDC to Mama.",
+      "expected": true
+    },
+    "0x16f6267ee9394bfe52cee8c77d7d48ca76253609482abeb1b197ef8842dc96d1": {
+      "title": "Owner approval: 800 tUSDC to Landlord Zhang, once",
+      "kind": "approval",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11946650 with status success"
+        },
+        {
+          "ok": true,
+          "text": "7662 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the owner key (parent)"
+        },
+        {
+          "ok": true,
+          "text": "Only the owner key can grant an approval; this one was signed by it"
+        },
+        {
+          "ok": true,
+          "text": "The intent id is the hash of policy decision #10 in session a9173e3a87b7 (action request, tier 2)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": null,
+      "decision": "Pay the landlord 800 USDC for the apartment deposit.",
+      "expected": true
+    },
+    "0x4d6b84aec33229f1d50ec07da161d54702c546773048b7289f6e6e451187ab48": {
+      "title": "Payment of 800 tUSDC to Landlord Zhang",
+      "kind": "payment",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11946651 with status success"
+        },
+        {
+          "ok": true,
+          "text": "7661 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the agent key (Shouhu)"
+        },
+        {
+          "ok": true,
+          "text": "The token contract moved 800 tUSDC from the wallet to Landlord Zhang"
+        },
+        {
+          "ok": true,
+          "text": "Tier 2: the contract holds the owner's one-time approval for exactly this recipient and amount, now used"
+        },
+        {
+          "ok": true,
+          "text": "The intent id is the hash of policy decision #10 in session a9173e3a87b7 (action request, tier 2)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": {
+        "number": "SH-11946651-55",
+        "time": 1792394352,
+        "paid_to": "Landlord Zhang",
+        "address": "0x98e0BF3d07f999A160F44ec80Bb90fBCf0ff480B",
+        "amount": "800 tUSDC",
+        "memo": "Apartment deposit",
+        "tier": 2,
+        "approval_tx": null,
+        "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
+      },
+      "decision": "Pay the landlord 800 USDC for the apartment deposit.",
+      "expected": true
+    },
+    "0xe50ff1be2e6638fa55e1d87922f0e3dce37195fc2b6821e66195b26651ed42aa": {
+      "title": "Payment of 10 tUSDC to Ge",
+      "kind": "payment",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11946656 with status success"
+        },
+        {
+          "ok": true,
+          "text": "7657 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the agent key (Shouhu)"
+        },
+        {
+          "ok": true,
+          "text": "The token contract moved 10 tUSDC from the wallet to Ge"
+        },
+        {
+          "ok": true,
+          "text": "Tier 1: inside the per-transfer cap, the 24-hour cap and the allowlist, or the contract would have reverted"
+        },
+        {
+          "ok": true,
+          "text": "The intent id is the hash of policy decision #32 in session a9173e3a87b7 (action allow, tier 1)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": {
+        "number": "SH-11946656-34",
+        "time": 1792394412,
+        "paid_to": "Ge",
+        "address": "0xa61A132925b7Eb4B32f3201a7D31cDD80de12e49",
+        "amount": "10 tUSDC",
+        "memo": null,
+        "tier": 1,
+        "approval_tx": null,
+        "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
+      },
+      "decision": "给哥转 10 USDC",
+      "expected": true
+    },
+    "0xe21b79ff273815d9c72cd1f57185024993a1747894abeba8367ae12419b5363f": {
+      "title": "Payment of 20 tUSDC to Mama",
+      "kind": "payment",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11949699 with status success"
+        },
+        {
+          "ok": true,
+          "text": "4614 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the agent key (Shouhu)"
+        },
+        {
+          "ok": true,
+          "text": "The token contract moved 20 tUSDC from the wallet to Mama"
+        },
+        {
+          "ok": true,
+          "text": "Tier 1: inside the per-transfer cap, the 24-hour cap and the allowlist, or the contract would have reverted"
+        },
+        {
+          "ok": true,
+          "text": "The intent id is the hash of policy decision #5 in session web-20261020-013640 (action allow, tier 1)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": {
+        "number": "SH-11949699-22",
+        "time": 1792431468,
+        "paid_to": "Mama",
+        "address": "0x76782b840f864dA37F8CA7ecB2B1354782D4bf33",
+        "amount": "20 tUSDC",
+        "memo": null,
+        "tier": 1,
+        "approval_tx": null,
+        "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
+      },
+      "decision": "Send 20 USDC to Mama.",
+      "expected": true
+    },
+    "0x18fa60fe57de1bb73d5b7ddac8c9e4b6c542e0320c57fae46e2696370faafaa2": {
+      "title": "Owner approval: 800 tUSDC to Landlord Zhang, once",
+      "kind": "approval",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11949705 with status success"
+        },
+        {
+          "ok": true,
+          "text": "4608 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the owner key (parent)"
+        },
+        {
+          "ok": true,
+          "text": "Only the owner key can grant an approval; this one was signed by it"
+        },
+        {
+          "ok": true,
+          "text": "The intent id is the hash of policy decision #10 in session web-20261020-013640 (action request, tier 2)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": null,
+      "decision": "Pay the landlord 800 USDC for the apartment deposit.",
+      "expected": true
+    },
+    "0xf729b1d85a840532167add73cacb484ecbeebfde67ad91a2d581a6c37bf5aa68": {
+      "title": "Payment of 800 tUSDC to Landlord Zhang",
+      "kind": "payment",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11949708 with status success"
+        },
+        {
+          "ok": true,
+          "text": "4605 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the agent key (Shouhu)"
+        },
+        {
+          "ok": true,
+          "text": "The token contract moved 800 tUSDC from the wallet to Landlord Zhang"
+        },
+        {
+          "ok": true,
+          "text": "Tier 2: the contract holds the owner's one-time approval for exactly this recipient and amount, now used"
+        },
+        {
+          "ok": true,
+          "text": "The intent id is the hash of policy decision #10 in session web-20261020-013640 (action request, tier 2)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": {
+        "number": "SH-11949708-30",
+        "time": 1792431576,
+        "paid_to": "Landlord Zhang",
+        "address": "0x98e0BF3d07f999A160F44ec80Bb90fBCf0ff480B",
+        "amount": "800 tUSDC",
+        "memo": "Apartment deposit",
+        "tier": 2,
+        "approval_tx": null,
+        "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
+      },
+      "decision": "Pay the landlord 800 USDC for the apartment deposit.",
+      "expected": true
+    },
+    "0x0352e2f70339d7045fbeaef5fa7cfd527122af87449c5ce84434dbcef23cc6c7": {
+      "title": "Payment of 10 tUSDC to Ge",
+      "kind": "payment",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11949719 with status success"
+        },
+        {
+          "ok": true,
+          "text": "4594 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the agent key (Shouhu)"
+        },
+        {
+          "ok": true,
+          "text": "The token contract moved 10 tUSDC from the wallet to Ge"
+        },
+        {
+          "ok": true,
+          "text": "Tier 1: inside the per-transfer cap, the 24-hour cap and the allowlist, or the contract would have reverted"
+        },
+        {
+          "ok": true,
+          "text": "The intent id is the hash of policy decision #3 in session web-20261020-014114 (action allow, tier 1)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": {
+        "number": "SH-11949719-22",
+        "time": 1792431720,
+        "paid_to": "Ge",
+        "address": "0xa61A132925b7Eb4B32f3201a7D31cDD80de12e49",
+        "amount": "10 tUSDC",
+        "memo": null,
+        "tier": 1,
+        "approval_tx": null,
+        "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
+      },
+      "decision": "给哥转 10 USDC",
+      "expected": true
+    },
+    "0x972f309e9a86e370d9e202fa9b6df604898ffb7a8921e9cac6e86b6a4adebbbc": {
+      "title": "Allowlist: 0x94bE59B587e96079Fc17a9914331018CBe97fCAC added",
+      "kind": "allowlist",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11951237 with status success"
+        },
+        {
+          "ok": true,
+          "text": "3076 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the owner key (parent)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": null,
+      "decision": null,
+      "expected": true
+    },
+    "0x4830a81f1e1d1e8e872ee4964a1b8cbc52fb7593f3ec87726a6afc67e1c8c332": {
+      "title": "Payment of 15 tUSDC to 0x94bE59B587e96079Fc17a9914331018CBe97fCAC",
+      "kind": "payment",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11951243 with status success"
+        },
+        {
+          "ok": true,
+          "text": "3070 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the agent key (Shouhu)"
+        },
+        {
+          "ok": true,
+          "text": "The token contract moved 15 tUSDC from the wallet to 0x94bE59B587e96079Fc17a9914331018CBe97fCAC"
+        },
+        {
+          "ok": true,
+          "text": "Tier 1: inside the per-transfer cap, the 24-hour cap and the allowlist, or the contract would have reverted"
+        },
+        {
+          "ok": true,
+          "text": "The intent id is the hash of policy decision #3 in session web-20261020-064745 (action allow, tier 1)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": {
+        "number": "SH-11951243-72",
+        "time": 1792450260,
+        "paid_to": null,
+        "address": "0x94bE59B587e96079Fc17a9914331018CBe97fCAC",
+        "amount": "15 tUSDC",
+        "memo": null,
+        "tier": 1,
+        "approval_tx": null,
+        "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
+      },
+      "decision": "给李阿姨转 15 USDC",
+      "expected": true
+    },
+    "0x9d9d76a59ac88348e32915235b80866cf7e28457a38a9cbe73f26ab287247ffb": {
+      "title": "Payment of 20 tUSDC to Mama",
+      "kind": "payment",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11951291 with status success"
+        },
+        {
+          "ok": true,
+          "text": "3022 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the agent key (Shouhu)"
+        },
+        {
+          "ok": true,
+          "text": "The token contract moved 20 tUSDC from the wallet to Mama"
+        },
+        {
+          "ok": true,
+          "text": "Tier 1: inside the per-transfer cap, the 24-hour cap and the allowlist, or the contract would have reverted"
+        },
+        {
+          "ok": true,
+          "text": "The intent id is the hash of policy decision #3 in session web-20261020-065946 (action allow, tier 1)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": {
+        "number": "SH-11951291-201",
+        "time": 1792450836,
+        "paid_to": "Mama",
+        "address": "0x76782b840f864dA37F8CA7ecB2B1354782D4bf33",
+        "amount": "20 tUSDC",
+        "memo": null,
+        "tier": 1,
+        "approval_tx": null,
+        "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
+      },
+      "decision": "Send 20 USDC to Mama.",
+      "expected": true
+    },
+    "0x4a0f66598463d333080aa76f5c24239731145431e898f27adca21be86cc18c27": {
+      "title": "Owner approval: 800 tUSDC to Landlord Zhang, once",
+      "kind": "approval",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11951294 with status success"
+        },
+        {
+          "ok": true,
+          "text": "3019 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the owner key (parent)"
+        },
+        {
+          "ok": true,
+          "text": "Only the owner key can grant an approval; this one was signed by it"
+        },
+        {
+          "ok": true,
+          "text": "The intent id is the hash of policy decision #10 in session web-20261020-065946 (action request, tier 2)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": null,
+      "decision": "Pay the landlord 800 USDC for the apartment deposit.",
+      "expected": true
+    },
+    "0xc4805f36ca0d8e736662b84097f3fb0e5f2483c6e80b89deadb84c53e8e8b8ba": {
+      "title": "Payment of 800 tUSDC to Landlord Zhang",
+      "kind": "payment",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11951296 with status success"
+        },
+        {
+          "ok": true,
+          "text": "3017 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the agent key (Shouhu)"
+        },
+        {
+          "ok": true,
+          "text": "The token contract moved 800 tUSDC from the wallet to Landlord Zhang"
+        },
+        {
+          "ok": true,
+          "text": "Tier 2: the contract holds the owner's one-time approval for exactly this recipient and amount, now used"
+        },
+        {
+          "ok": true,
+          "text": "The intent id is the hash of policy decision #10 in session web-20261020-065946 (action request, tier 2)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": {
+        "number": "SH-11951296-72",
+        "time": 1792450896,
+        "paid_to": "Landlord Zhang",
+        "address": "0x98e0BF3d07f999A160F44ec80Bb90fBCf0ff480B",
+        "amount": "800 tUSDC",
+        "memo": "Apartment deposit",
+        "tier": 2,
+        "approval_tx": null,
+        "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
+      },
+      "decision": "Pay the landlord 800 USDC for the apartment deposit.",
+      "expected": true
+    },
+    "0xb24f3b4a34843475471046319085ae384727f16f6fa7eff0a9df36cc7a207ef1": {
+      "title": "Allowlist: 0x94bE59B587e96079Fc17a9914331018CBe97fCAC added",
+      "kind": "allowlist",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11951299 with status success"
+        },
+        {
+          "ok": true,
+          "text": "3015 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the owner key (parent)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": null,
+      "decision": null,
+      "expected": true
+    },
+    "0xb8a35a263a31ff7c7e4a1e251442f6068c504ede4e4f21281f19cae1e4e23213": {
+      "title": "Payment of 15 tUSDC to 0x94bE59B587e96079Fc17a9914331018CBe97fCAC",
+      "kind": "payment",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11951300 with status success"
+        },
+        {
+          "ok": true,
+          "text": "3014 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the agent key (Shouhu)"
+        },
+        {
+          "ok": true,
+          "text": "The token contract moved 15 tUSDC from the wallet to 0x94bE59B587e96079Fc17a9914331018CBe97fCAC"
+        },
+        {
+          "ok": true,
+          "text": "Tier 1: inside the per-transfer cap, the 24-hour cap and the allowlist, or the contract would have reverted"
+        },
+        {
+          "ok": true,
+          "text": "The intent id is the hash of policy decision #23 in session web-20261020-065946 (action allow, tier 1)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": {
+        "number": "SH-11951300-9",
+        "time": 1792450944,
+        "paid_to": null,
+        "address": "0x94bE59B587e96079Fc17a9914331018CBe97fCAC",
+        "amount": "15 tUSDC",
+        "memo": null,
+        "tier": 1,
+        "approval_tx": null,
+        "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
+      },
+      "decision": "给李阿姨转 15 USDC",
+      "expected": true
+    },
+    "0x2f126f72298d101555f5089a8504141fbf39be570c895c2459b32f1ab6af39ce": {
+      "title": "Payment of 20 tUSDC to Mama",
+      "kind": "payment",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11951317 with status success"
+        },
+        {
+          "ok": true,
+          "text": "2997 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the agent key (Shouhu)"
+        },
+        {
+          "ok": true,
+          "text": "The token contract moved 20 tUSDC from the wallet to Mama"
+        },
+        {
+          "ok": true,
+          "text": "Tier 1: inside the per-transfer cap, the 24-hour cap and the allowlist, or the contract would have reverted"
+        },
+        {
+          "ok": true,
+          "text": "The intent id is the hash of policy decision #3 in session web-20261020-070448 (action allow, tier 1)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": {
+        "number": "SH-11951317-21",
+        "time": 1792451148,
+        "paid_to": "Mama",
+        "address": "0x76782b840f864dA37F8CA7ecB2B1354782D4bf33",
+        "amount": "20 tUSDC",
+        "memo": null,
+        "tier": 1,
+        "approval_tx": null,
+        "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
+      },
+      "decision": "Send 20 USDC to Mama.",
+      "expected": true
+    },
+    "0x8d783a7b439c3bc83a5ce1ab23ec1e47b7412c5b1533708bf25856ce4cd636a7": {
+      "title": "Owner approval: 800 tUSDC to Landlord Zhang, once",
+      "kind": "approval",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11951322 with status success"
+        },
+        {
+          "ok": true,
+          "text": "2992 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the owner key (parent)"
+        },
+        {
+          "ok": true,
+          "text": "Only the owner key can grant an approval; this one was signed by it"
+        },
+        {
+          "ok": true,
+          "text": "The intent id is the hash of policy decision #9 in session web-20261020-070448 (action request, tier 2)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": null,
+      "decision": "Pay the landlord 800 USDC for the apartment deposit.",
+      "expected": true
+    },
+    "0xdec61abe7b51de693b79f497e3c677fce111c299a19eec04beeb0ae601ab1377": {
+      "title": "Payment of 800 tUSDC to Landlord Zhang",
+      "kind": "payment",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11951327 with status success"
+        },
+        {
+          "ok": true,
+          "text": "2987 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the agent key (Shouhu)"
+        },
+        {
+          "ok": true,
+          "text": "The token contract moved 800 tUSDC from the wallet to Landlord Zhang"
+        },
+        {
+          "ok": true,
+          "text": "Tier 2: the contract holds the owner's one-time approval for exactly this recipient and amount, now used"
+        },
+        {
+          "ok": true,
+          "text": "The intent id is the hash of policy decision #9 in session web-20261020-070448 (action request, tier 2)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": {
+        "number": "SH-11951327-29",
+        "time": 1792451292,
+        "paid_to": "Landlord Zhang",
+        "address": "0x98e0BF3d07f999A160F44ec80Bb90fBCf0ff480B",
+        "amount": "800 tUSDC",
+        "memo": "Apartment deposit",
+        "tier": 2,
+        "approval_tx": null,
+        "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
+      },
+      "decision": "Pay the landlord 800 USDC for the apartment deposit.",
+      "expected": true
+    },
+    "0xabdbbde096a8f9589bea8a8229605b2ad6dfb19ded2f65c7779c4a33356cd419": {
+      "title": "Allowlist: 0x94bE59B587e96079Fc17a9914331018CBe97fCAC added",
+      "kind": "allowlist",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11951333 with status success"
+        },
+        {
+          "ok": true,
+          "text": "2981 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the owner key (parent)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": null,
+      "decision": null,
+      "expected": true
+    },
+    "0x53f802b50f4715201f67b1f1f711b4f6909571aeb98381fc8756b90e9dd3c0a3": {
+      "title": "Payment of 15 tUSDC to 0x94bE59B587e96079Fc17a9914331018CBe97fCAC",
+      "kind": "payment",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11951336 with status success"
+        },
+        {
+          "ok": true,
+          "text": "2978 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the agent key (Shouhu)"
+        },
+        {
+          "ok": true,
+          "text": "The token contract moved 15 tUSDC from the wallet to 0x94bE59B587e96079Fc17a9914331018CBe97fCAC"
+        },
+        {
+          "ok": true,
+          "text": "Tier 1: inside the per-transfer cap, the 24-hour cap and the allowlist, or the contract would have reverted"
+        },
+        {
+          "ok": true,
+          "text": "The intent id is the hash of policy decision #24 in session web-20261020-070448 (action allow, tier 1)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": {
+        "number": "SH-11951336-119",
+        "time": 1792451400,
+        "paid_to": null,
+        "address": "0x94bE59B587e96079Fc17a9914331018CBe97fCAC",
+        "amount": "15 tUSDC",
+        "memo": null,
+        "tier": 1,
+        "approval_tx": null,
+        "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
+      },
+      "decision": "给李阿姨转 15 USDC",
+      "expected": true
+    },
+    "0xc4007a1c97eb5da64abc8b6d710bc879fa0ec5bc5424f0387f8fe9adc2c51859": {
+      "title": "Payment of 20 tUSDC to Mama",
+      "kind": "payment",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11952866 with status success"
+        },
+        {
+          "ok": true,
+          "text": "1448 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the agent key (Shouhu)"
+        },
+        {
+          "ok": true,
+          "text": "The token contract moved 20 tUSDC from the wallet to Mama"
+        },
+        {
+          "ok": true,
+          "text": "Tier 1: inside the per-transfer cap, the 24-hour cap and the allowlist, or the contract would have reverted"
+        },
+        {
+          "ok": true,
+          "text": "The intent id is the hash of policy decision #3 in session web-20261020-121856 (action allow, tier 1)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": {
+        "number": "SH-11952866-108",
+        "time": 1792469952,
+        "paid_to": "Mama",
+        "address": "0x76782b840f864dA37F8CA7ecB2B1354782D4bf33",
+        "amount": "20 tUSDC",
+        "memo": null,
+        "tier": 1,
+        "approval_tx": null,
+        "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
+      },
+      "decision": "Send 20 USDC to Mama.",
+      "expected": true
+    },
+    "0xe4e2a1f361a091a60fa8c4dd08bd9177a6a0c8cc1137cc1b592bf51a0879a81b": {
+      "title": "Payment of 10 tUSDC to Ge",
+      "kind": "payment",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11952874 with status success"
+        },
+        {
+          "ok": true,
+          "text": "1440 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the agent key (Shouhu)"
+        },
+        {
+          "ok": true,
+          "text": "The token contract moved 10 tUSDC from the wallet to Ge"
+        },
+        {
+          "ok": true,
+          "text": "Tier 1: inside the per-transfer cap, the 24-hour cap and the allowlist, or the contract would have reverted"
+        },
+        {
+          "ok": true,
+          "text": "The intent id is the hash of policy decision #3 in session web-20261020-122020 (action allow, tier 1)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": {
+        "number": "SH-11952874-2",
+        "time": 1792470048,
+        "paid_to": "Ge",
+        "address": "0xa61A132925b7Eb4B32f3201a7D31cDD80de12e49",
+        "amount": "10 tUSDC",
+        "memo": null,
+        "tier": 1,
+        "approval_tx": null,
+        "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
+      },
+      "decision": "给哥转 10 USDC",
+      "expected": true
+    },
+    "0x499b22f3d79ac2119ecbb2bfb730be94f316ad36db2dd92f1448ba281781e58c": {
+      "title": "Owner approval: 800 tUSDC to Landlord Zhang, once",
+      "kind": "approval",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11952878 with status success"
+        },
+        {
+          "ok": true,
+          "text": "1436 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the owner key (parent)"
+        },
+        {
+          "ok": true,
+          "text": "Only the owner key can grant an approval; this one was signed by it"
+        },
+        {
+          "ok": true,
+          "text": "The intent id is the hash of policy decision #10 in session web-20261020-121856 (action request, tier 2)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": null,
+      "decision": "Pay the landlord 800 USDC for the apartment deposit.",
+      "expected": true
+    },
+    "0x1d194ba7f67c36368c8000d7126b29926b8369fd77458502372c507bdba027c2": {
+      "title": "Money added: 1,000 tUSDC into the Shouhu wallet",
+      "kind": "deposit",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11952881 with status success"
+        },
+        {
+          "ok": true,
+          "text": "1434 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the tUSDC token contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the owner key (parent)"
+        },
+        {
+          "ok": true,
+          "text": "The token contract minted 1,000 tUSDC into the Shouhu wallet (test money, it has no value)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": null,
+      "decision": null,
+      "expected": true
+    },
+    "0x8c592d12ed8df4d7dfcca63d2021c6542c4995e31d689357cb882915c3b9d7fe": {
+      "title": "Payment of 800 tUSDC to Landlord Zhang",
+      "kind": "payment",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11952885 with status success"
+        },
+        {
+          "ok": true,
+          "text": "1430 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the agent key (Shouhu)"
+        },
+        {
+          "ok": true,
+          "text": "The token contract moved 800 tUSDC from the wallet to Landlord Zhang"
+        },
+        {
+          "ok": true,
+          "text": "Tier 2: the contract holds the owner's one-time approval for exactly this recipient and amount, now used"
+        },
+        {
+          "ok": true,
+          "text": "The intent id is the hash of policy decision #10 in session web-20261020-121856 (action request, tier 2)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": {
+        "number": "SH-11952885-42",
+        "time": 1792470180,
+        "paid_to": "Landlord Zhang",
+        "address": "0x98e0BF3d07f999A160F44ec80Bb90fBCf0ff480B",
+        "amount": "800 tUSDC",
+        "memo": null,
+        "tier": 2,
+        "approval_tx": null,
+        "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
+      },
+      "decision": "Pay the landlord 800 USDC for the apartment deposit.",
+      "expected": true
+    },
+    "0x8fd10071ddee63b5ad12182cdf47abee3d22af18ae5133c2d5be4b5d02c69bc0": {
+      "title": "Allowlist: 0x94bE59B587e96079Fc17a9914331018CBe97fCAC added",
+      "kind": "allowlist",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11952909 with status success"
+        },
+        {
+          "ok": true,
+          "text": "1406 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the owner key (parent)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": null,
+      "decision": null,
+      "expected": true
+    },
+    "0x62e6726e214c02e5fe7ad8dd6e7678f16a86dc8de0ee308aa9378c045345ac3f": {
+      "title": "Payment of 15 tUSDC to 0x94bE59B587e96079Fc17a9914331018CBe97fCAC",
+      "kind": "payment",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11952913 with status success"
+        },
+        {
+          "ok": true,
+          "text": "1402 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the agent key (Shouhu)"
+        },
+        {
+          "ok": true,
+          "text": "The token contract moved 15 tUSDC from the wallet to 0x94bE59B587e96079Fc17a9914331018CBe97fCAC"
+        },
+        {
+          "ok": true,
+          "text": "Tier 1: inside the per-transfer cap, the 24-hour cap and the allowlist, or the contract would have reverted"
+        },
+        {
+          "ok": true,
+          "text": "The intent id is the hash of policy decision #3 in session web-20261020-122809 (action allow, tier 1)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": {
+        "number": "SH-11952913-78",
+        "time": 1792470516,
+        "paid_to": null,
+        "address": "0x94bE59B587e96079Fc17a9914331018CBe97fCAC",
+        "amount": "15 tUSDC",
+        "memo": null,
+        "tier": 1,
+        "approval_tx": null,
+        "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
+      },
+      "decision": "给李阿姨转 15 USDC",
+      "expected": true
+    },
+    "0xd1a63517dcae701846483ca8d4b65192f62400e44be3754166f48d7aae4c2319": {
+      "title": "Transaction",
+      "kind": "other",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": false,
+          "text": "Included in block 11954298 but it reverted"
+        },
+        {
+          "ok": true,
+          "text": "17 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the agent key (Shouhu)"
+        }
+      ],
+      "all_checks_pass": false,
+      "receipt": null,
+      "decision": null,
+      "note": "Rejected on purpose: agentTransfer: 600 tUSDC to Mama (per-transfer cap is 500). Reverted with ExceedsPerTransferCap(amount=600000000, cap=500000000) (replayed at block 11954297: ExceedsPerTransferCap(amount=600000000, cap=500000000)). Nothing moved.",
+      "expected": true
+    },
+    "0x6dbe08db28f00badd416618c511e0105e187a994627657fc36ad64ea6fd8b31f": {
+      "title": "Transaction",
+      "kind": "other",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": false,
+          "text": "Included in block 11954299 but it reverted"
+        },
+        {
+          "ok": true,
+          "text": "16 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the agent key (Shouhu)"
+        }
+      ],
+      "all_checks_pass": false,
+      "receipt": null,
+      "decision": null,
+      "note": "Rejected on purpose: agentTransfer: 1 tUSDC to the scam address from attack A1 (not allowlisted). Reverted with NotAllowlisted(to=0x9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f) (replayed at block 11954298: NotAllowlisted(to=0x9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f)). Nothing moved.",
+      "expected": true
+    },
+    "0x5511583e2dbcf295efc7da7aaca70dcf50ea8d5dcf2eee79bd0bdff6459b046a": {
+      "title": "Transaction",
+      "kind": "other",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": false,
+          "text": "Included in block 11954300 but it reverted"
+        },
+        {
+          "ok": true,
+          "text": "15 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the agent key (Shouhu)"
+        }
+      ],
+      "all_checks_pass": false,
+      "receipt": null,
+      "decision": null,
+      "note": "Rejected on purpose: setPolicy(10,000 / 100,000 tUSDC) signed by the agent key (only the owner may change limits). Reverted with NotOwner() (replayed at block 11954299: NotOwner()). Nothing moved.",
+      "expected": true
+    }
+  }
+}

@@ -21,6 +21,7 @@ Security claim, precisely: no tool can move funds outside policy; the model cann
 
 Technical documentation (system architecture, core algorithms, security design): `docs/Shouhu_Technical_Documentation.pdf`, also readable here as [`docs/technical_documentation.md`](docs/technical_documentation.md).
 Security self-assessment (permission-tier implementation and known-risk list): `docs/Shouhu_Security_Self_Assessment.pdf`, also as [`docs/security_self_assessment.md`](docs/security_self_assessment.md).
+Execution evidence (every on-chain transaction hash, each payment traced to its decision): `docs/Shouhu_Execution_Evidence.pdf`, also as [`docs/execution_evidence.md`](docs/execution_evidence.md); data files in [`evidence/onchain/`](evidence/onchain/).
 
 ## Quick start (judge mode, no faucet, no accounts)
 
@@ -108,6 +109,8 @@ Standard library only; no extra dependencies. Walkthrough with screenshots: `doc
 
 Owner `0x4444b10a36E88682C63caE89E2ADb561651e9EEF`, agent `0xe46Ab06dF31a8E03BAAe6aA5912b60B10e0Fb291`, deployed at block 11926706 (`deployments/sepolia.json`). Policy: per-transfer cap 500 tUSDC, 24-hour cap 1,000 tUSDC, six allowlisted contacts (the five defaults and Aunt Li, added from the web console). Evidence runs with transaction hashes live under `evidence/runs/`; the latest, `evidence/runs/sepolia-20261020-124109-web-v2/`, holds all 20 Sepolia payments with the audit log. Public endpoints keep logs for only a few days, so history reads fall back to endpoints with full history (`HISTORY_RPCS` in `shouhu/chain.py`).
 
+Three transactions sent directly with the agent key on 20 October 2026, skipping the policy engine, show the contract refusing on-chain: 600 tUSDC to Mama ([`0xd1a63517…`](https://sepolia.etherscan.io/tx/0xd1a63517dcae701846483ca8d4b65192f62400e44be3754166f48d7aae4c2319), `ExceedsPerTransferCap`), 1 tUSDC to a non-allowlisted address ([`0x6dbe08db…`](https://sepolia.etherscan.io/tx/0x6dbe08db28f00badd416618c511e0105e187a994627657fc36ad64ea6fd8b31f), `NotAllowlisted`) and `setPolicy` from the agent key ([`0x5511583e…`](https://sepolia.etherscan.io/tx/0x5511583e2dbcf295efc7da7aaca70dcf50ea8d5dcf2eee79bd0bdff6459b046a), `NotOwner`). All three failed; nothing moved. The full list of 42 transactions is in `evidence/onchain/transactions.csv`.
+
 ## Deploy your own copy (Ethereum Sepolia)
 
 The team's deployment above is live; these steps create a separate one with your own keys.
@@ -189,7 +192,7 @@ shouhu/static/            the web pages (HTML, CSS, JavaScript)
 tests/                    Python tests (58)
 scripts/verify_sourcify.sh  publishes the verified contract source on Sourcify
 deployments/              deployed addresses per chain
-evidence/                 audit logs, red-team results, exported runs with hashes and explorer links
+evidence/                 audit logs, red-team results, exported runs with hashes, every on-chain transaction (evidence/onchain/)
 docs/                     technical documentation (PDF and Markdown), source code guide, test cases and test logs, security self-assessment, demo guide and script
 ```
 

@@ -1,0 +1,47 @@
+[
+  {
+    "key": "over_cap",
+    "what": "agentTransfer: 600 tUSDC to Mama (per-transfer cap is 500)",
+    "tx_hash": "0xd1a63517dcae701846483ca8d4b65192f62400e44be3754166f48d7aae4c2319",
+    "status": 0,
+    "block": 11954298,
+    "time": 1792487268,
+    "gas_used": 25295,
+    "from": "0xe46Ab06dF31a8E03BAAe6aA5912b60B10e0Fb291",
+    "to": "0xb9D959da30680e86E9bF0A287Abee354033a0525",
+    "revert_reason": "ExceedsPerTransferCap(amount=600000000, cap=500000000)",
+    "explorer": "https://sepolia.etherscan.io/tx/0xd1a63517dcae701846483ca8d4b65192f62400e44be3754166f48d7aae4c2319",
+    "replayed_at_block": 11954297,
+    "replay_reason": "ExceedsPerTransferCap(amount=600000000, cap=500000000)"
+  },
+  {
+    "key": "not_allowlisted",
+    "what": "agentTransfer: 1 tUSDC to the scam address from attack A1 (not allowlisted)",
+    "tx_hash": "0x6dbe08db28f00badd416618c511e0105e187a994627657fc36ad64ea6fd8b31f",
+    "status": 0,
+    "block": 11954299,
+    "time": 1792487280,
+    "gas_used": 23046,
+    "from": "0xe46Ab06dF31a8E03BAAe6aA5912b60B10e0Fb291",
+    "to": "0xb9D959da30680e86E9bF0A287Abee354033a0525",
+    "revert_reason": "NotAllowlisted(to=0x9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f)",
+    "explorer": "https://sepolia.etherscan.io/tx/0x6dbe08db28f00badd416618c511e0105e187a994627657fc36ad64ea6fd8b31f",
+    "replayed_at_block": 11954298,
+    "replay_reason": "NotAllowlisted(to=0x9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f)"
+  },
+  {
+    "key": "not_owner",
+    "what": "setPolicy(10,000 / 100,000 tUSDC) signed by the agent key (only the owner may change limits)",
+    "tx_hash": "0x5511583e2dbcf295efc7da7aaca70dcf50ea8d5dcf2eee79bd0bdff6459b046a",
+    "status": 0,
+    "block": 11954300,
+    "time": 1792487292,
+    "gas_used": 19352,
+    "from": "0xe46Ab06dF31a8E03BAAe6aA5912b60B10e0Fb291",
+    "to": "0xb9D959da30680e86E9bF0A287Abee354033a0525",
+    "revert_reason": "NotOwner()",
+    "explorer": "https://sepolia.etherscan.io/tx/0x5511583e2dbcf295efc7da7aaca70dcf50ea8d5dcf2eee79bd0bdff6459b046a",
+    "replayed_at_block": 11954299,
+    "replay_reason": "NotOwner()"
+  }
+]
