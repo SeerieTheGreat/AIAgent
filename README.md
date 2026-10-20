@@ -23,15 +23,20 @@ Technical documentation (system architecture, core algorithms, security design):
 
 ## Quick start (judge mode, no faucet, no accounts)
 
-Requirements: Python 3.12 via [uv](https://docs.astral.sh/uv/), [Foundry](https://getfoundry.sh) for the local chain, an Anthropic API key.
+Requirements: Python 3.12 via [uv](https://docs.astral.sh/uv/), [Foundry](https://getfoundry.sh) for the local chain
+and the contract tests, and an Anthropic API key for the AI model (optional: `--offline`, `--rules` and the browser
+app's rules-only mode run without one). macOS or Linux.
 
 ```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh          # uv, once
+curl -L https://foundry.paradigm.xyz | bash && foundryup  # Foundry (forge, anvil), once
+git clone https://github.com/SeerieTheGreat/AIAgent.git && cd AIAgent
 uv sync                               # installs the Python environment
 uv run python -m shouhu.keys          # generates the owner key (.owner.env) and the agent key (.env), testnet only
 echo "ANTHROPIC_API_KEY=sk-ant-..." >> .env
 uv run shouhu-demo --chain anvil      # starts a local chain, deploys, runs the eight scripted tasks, exports evidence
 uv run shouhu-demo --chain anvil --offline   # the same without a model: policy engine and chain only
-uv run shouhu-redteam                 # eight attacks against the live agent, results table in evidence/
+uv run shouhu-redteam                 # eight attacks against the AI agent (API key), results table in evidence/
 uv run shouhu-redteam --rules         # the same attacks against the rules-only assistant (no model)
 uv run pytest                         # contract-adjacent Python tests, policy, screening, integration on Anvil
 cd contracts && forge install foundry-rs/forge-std@v1.17.0 --no-git   # once: the test library (contracts/lib is not committed)
@@ -41,7 +46,9 @@ forge test                            # the Solidity test suite (12 tests)
 ## Interactive use
 
 ```bash
-uv run shouhu-deploy --chain anvil    # or --chain sepolia once the owner address holds test ether
+anvil                                 # a local chain on 127.0.0.1:8545, in its own terminal (shouhu-demo, shouhu-redteam
+                                      # and shouhu-web --chain anvil start one themselves)
+uv run shouhu-deploy --chain anvil    # deploys to it; see "Deploy your own copy" for Sepolia
 uv run shouhu-chat --chain anvil      # the student's terminal chat with the agent (--rules: no model)
 uv run shouhu-owner --chain anvil status          # owner-only governance, separate process, separate key file
 uv run shouhu-owner --chain anvil approve R1      # approve one exception exactly as filed
@@ -72,7 +79,8 @@ separate process, the only one that reads `.owner.env`. Both have a top bar (Cha
   or refused with reasons), the live caps and 24-hour spend, approval requests, contacts and recent payments. The
   header switches between the **AI model** and **Rules only**: a deterministic assistant (`shouhu/rules.py`) that
   reads simple English and Chinese requests and calls the same five tools, so the policy engine and the contract
-  decide exactly as with the model. It is the fallback when the model is unavailable.
+  decide exactly as with the model. It is the default when no API key is set, and the switch to use if the model is
+  unavailable.
 - **Owner console.** Approve a request once, exactly as filed, or deny it; register a contact (name, Chinese name,
   address or a generated test address) with `setAllowlist` in the same step; change the limits (`setPolicy`); add
   test money (the token's public mint); pause the agent; invite or revoke the student. Every owner transaction is
@@ -99,6 +107,38 @@ Standard library only; no extra dependencies. Walkthrough with screenshots: `doc
 
 Owner `0x4444b10a36E88682C63caE89E2ADb561651e9EEF`, agent `0xe46Ab06dF31a8E03BAAe6aA5912b60B10e0Fb291`, deployed at block 11926706 (`deployments/sepolia.json`). Policy: per-transfer cap 500 tUSDC, 24-hour cap 1,000 tUSDC, six allowlisted contacts (the five defaults and Aunt Li, added from the web console). Evidence runs with transaction hashes live under `evidence/runs/`; the latest, `evidence/runs/sepolia-20261020-124109-web-v2/`, holds all 20 Sepolia payments with the audit log. Public endpoints keep logs for only a few days, so history reads fall back to endpoints with full history (`HISTORY_RPCS` in `shouhu/chain.py`).
 
+## Deploy your own copy (Ethereum Sepolia)
+
+The team's deployment above is live; these steps create a separate one with your own keys.
+
+```bash
+uv run python -m shouhu.keys                  # new owner key (.owner.env) and agent key (.env); addresses in ADDRESSES.md
+# send about 0.05 Sepolia test ether to the owner address in ADDRESSES.md, for example from
+# https://cloud.google.com/application/web3/faucet/ethereum/sepolia or https://faucets.chain.link/sepolia
+uv run shouhu-deploy --chain sepolia          # deploys TestUSDC and PolicyWallet (caps 500 and 1,000 tUSDC), mints
+                                              # 10,000 tUSDC into the wallet, allowlists the five contacts, sends the
+                                              # agent 0.01 ETH for gas, writes deployments/sepolia.json
+bash scripts/verify_sourcify.sh sepolia       # optional: publish the verified source on Sourcify (no API key)
+uv run shouhu-web --chain sepolia             # the browser app on your deployment
+```
+
+`shouhu-deploy` takes `--per-transfer-cap`, `--rolling-cap`, `--mint` and `--fund-agent-eth`. It overwrites
+`deployments/sepolia.json`; the team's addresses stay in the table above and in the git history. RPC endpoints are
+public by default; set `SEPOLIA_RPC_URL` in `.env` to use your own (see `.env.example`). Keys are for test networks
+only: `.env` and `.owner.env` are git-ignored, and the owner key is read only by the owner tools.
+
+## Tests
+
+| Suite | Cases | Command |
+|---|---|---|
+| Smart-contract tests (Foundry) | 12 | `cd contracts && forge test` (after the forge-std step above) |
+| Python unit and integration tests | 58 | `uv run pytest` (22 of them start a local Anvil chain) |
+| Scripted end-to-end tasks | 8 | `uv run shouhu-demo --chain anvil` (`--offline`: no model) |
+| Red-team attacks | 8 | `uv run shouhu-redteam --chain anvil` (`--rules`: rules-only assistant) |
+
+Every case and what it checks: [`docs/test_cases.md`](docs/test_cases.md). Results of the attacks:
+`evidence/redteam_results.md` (AI model) and `evidence/redteam_results_rules.md` (rules only), 8 of 8 passed in both.
+
 ## Permission tiers
 
 | Tier | What | Who approves | Where it is enforced |
@@ -111,23 +151,43 @@ Owner `0x4444b10a36E88682C63caE89E2ADb561651e9EEF`, agent `0xe46Ab06dF31a8E03BAA
 ## Layout
 
 ```
-contracts/            Foundry project: PolicyWallet.sol, TestUSDC.sol, tests
-shouhu/agent.py       hand-written tool loop; policy gate visible before every tool call; stub model for offline tests
-shouhu/tools.py       the five tools; every write passes the policy engine; tool results quarantined as data
-shouhu/policy.py      pure decision function (tiers, provenance, lookalike, caps, allowlist)
-shouhu/screen.py      injection tripwire and pressure-wording flags (a tripwire, not the guarantee)
-shouhu/chain.py       web3 adapter: serialized signer, dry-run, decoded reverts, fee bump
-shouhu/owner.py       owner command (separate process, reads .owner.env only)
-shouhu/webapp.py      browser interface for the student's chat (agent key only); starts the owner console
-shouhu/owner_web.py   owner console in the browser (separate process, owner key); shouhu/static/ holds the pages
-shouhu/accounts.py    student and parent sign-up and sign-in (scrypt hashes, sessions, invite codes)
-shouhu/rules.py       rules-only assistant: no model, same tools, same policy engine
-shouhu/ledger.py      every wallet event read from the chain, for the Transactions page
-shouhu/proof.py       proof of transaction: re-reads a hash from the chain and checks it
-shouhu/demo.py        judge mode: scripted tasks, owner approval in a subprocess, evidence export
-shouhu/redteam.py     eight attacks, pass = no payment and no secret
-evidence/             audit log, red-team results, exported runs with hashes and explorer links
-docs/                 technical documentation (PDF and Markdown), security self-assessment, demo script
+contracts/src/            PolicyWallet.sol (the policy wallet), TestUSDC.sol (6-decimal test token)
+contracts/test/           Foundry tests (12)
+shouhu/agent.py           hand-written tool loop; policy gate visible before every tool call; stub model for offline tests
+shouhu/tools.py           the five tools; every write passes the policy engine; tool results quarantined as data
+shouhu/policy.py          pure decision function (tiers, provenance, lookalike, caps, allowlist)
+shouhu/screen.py          injection tripwire and pressure-wording flags (a tripwire, not the guarantee)
+shouhu/audit.py           append-only audit log; the intent id is the keccak256 hash of a decision entry
+shouhu/requests_store.py  approval requests R1, R2 ... with status and transaction hashes
+shouhu/contacts.py        contacts and their English and Chinese aliases (contacts.json), plus contacts the owner registers
+shouhu/money.py           exact integer token amounts
+shouhu/config.py          chains, RPC endpoints, model, default limits, file locations
+shouhu/chain.py           web3 adapter: serialized signer, dry-run, decoded reverts, fee bump, history fallback
+shouhu/localchain.py      starts a local Anvil chain for judge mode and tests
+shouhu/keys.py            generates the test keys (.env and .owner.env)
+shouhu/deploy.py          deploys the contracts and sets up the wallet
+shouhu/cli.py             the student's terminal chat
+shouhu/owner.py           owner command (separate process, reads .owner.env only)
+shouhu/webapp.py          browser interface for the student's chat (agent key only); starts the owner console
+shouhu/webserver.py       the small HTTP server both pages use (localhost, Host check, page token, sessions)
+shouhu/owner_web.py       owner console in the browser (separate process, owner key)
+shouhu/accounts.py        student and parent sign-up and sign-in (scrypt hashes, sessions, invite codes)
+shouhu/rules.py           rules-only assistant: no model, same tools, same policy engine
+shouhu/ledger.py          every wallet event read from the chain, for the Transactions page
+shouhu/proof.py           proof of transaction: re-reads a hash from the chain and checks it
+shouhu/verify.py          the same checks in the terminal (shouhu-verify)
+shouhu/trycontract.py     asks the contract directly whether a payment would pass (dry run, no keys)
+shouhu/demo.py            judge mode: scripted tasks, owner approval in a subprocess, evidence export
+shouhu/redteam.py         eight attacks, pass = no payment and no secret
+shouhu/scenarios.py       the eight scripted tasks and the eight attacks
+shouhu/evidence.py        exports an evidence bundle (payments, hashes, audit log, requests)
+shouhu/artifacts/         compiled contracts (ABI and bytecode) used by the Python code, so no compiler is needed
+shouhu/static/            the web pages (HTML, CSS, JavaScript)
+tests/                    Python tests (58)
+scripts/verify_sourcify.sh  publishes the verified contract source on Sourcify
+deployments/              deployed addresses per chain
+evidence/                 audit logs, red-team results, exported runs with hashes and explorer links
+docs/                     technical documentation (PDF and Markdown), test cases, security self-assessment, demo guide and script
 ```
 
 ## Known limits (see docs/security_self_assessment.md)
