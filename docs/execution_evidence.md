@@ -4,14 +4,14 @@
 
 2026 Shenzhen International FinTech Competition (FinTechathon) · International Track · Topic F: Agent Wallet — Autonomous On-chain Wallet  
 Team Shouhu · De La Salle University Manila · Yohann Manuel Miranda (team leader), Aleana Sia, Weihong Chen, Aaron Hester Chong, Jon Austin Lin  
-Version 1.0 · 20 October 2026 · read from the chain on 2026-10-20 17:11 UTC+8 (Beijing time)  
+Version 1.0 · 20 October 2026 · read from the chain on 2026-10-20 18:19 UTC+8 (Beijing time)  
 
 **Evidence at a glance**
 
 - **Network and contracts:** Ethereum Sepolia (chain id 11155111). PolicyWallet [`0xb9D959da30680e86E9bF0A287Abee354033a0525`](https://sepolia.etherscan.io/address/0xb9D959da30680e86E9bF0A287Abee354033a0525) and TestUSDC [`0x6b2f3F61DB4e45D07453D58dF2F4eB27C5284931`](https://sepolia.etherscan.io/address/0x6b2f3F61DB4e45D07453D58dF2F4eB27C5284931), both source-verified on Sourcify (exact match).
-- **42 transactions:** 2 deployments, 11 rule changes, 2 deposits of test money (11,000 tUSDC), 6 one-time owner approvals, **20 payments by the AI agent (14 Tier 1 inside the limits, 6 Tier 2 with the parent’s approval)**, and **3 transactions the contract rejected**.
-- **Traceable:** 20 of 20 payments link to the student’s words and the policy decision through the intent id written on-chain (audit log committed in the public repository).
-- **Checked:** every wallet transaction passes the proof checks (37 of 37); no payment left the wallet outside policy; balance 5,980 tUSDC.
+- **46 transactions:** 2 deployments, 11 rule changes, 2 deposits of test money (11,000 tUSDC), 7 one-time owner approvals, **23 payments by the AI agent (16 Tier 1 inside the limits, 7 Tier 2 with the parent’s approval)**, and **3 transactions the contract rejected**.
+- **Traceable:** 23 of 23 payments link to the student’s words and the policy decision through the intent id written on-chain (audit log committed in the public repository).
+- **Checked:** every wallet transaction passes the proof checks (41 of 41); no payment left the wallet outside policy; balance 5,150 tUSDC.
 - **Machine-readable:** `transactions.csv` and `transactions.json` (every hash with its Etherscan link), `proof_checks.json`, `rejections.json`, `verify_all_payments.txt`, `audit_log.jsonl`.
 
 > Every payment the agent made is on-chain, inside the parent’s policy, and traceable to the student’s own words. The contract refused every attempt to go around the policy.
@@ -24,7 +24,7 @@ A print version of this report is in [`Shouhu_Execution_Evidence.pdf`](Shouhu_Ex
 
 1. Open the hash on Etherscan (every hash in this report is a link). Check **Status: Success**, **From** (the agent key `0xe46A…b291` or the owner key `0x4444…9EEF`), **To** the PolicyWallet, and under **Logs** the `Payment` or `ApprovalGranted` event and the tUSDC `Transfer`.
 2. Compare the contract source on Sourcify ([PolicyWallet](https://repo.sourcify.dev/11155111/0xb9D959da30680e86E9bF0A287Abee354033a0525), exact match) with `contracts/src/PolicyWallet.sol` in the repository.
-3. Read the intent id in the `Payment` event: it is the keccak-256 hash of the policy decision in the audit log (`evidence/runs/sepolia-20261020-124109-web-v2/audit_log.jsonl`). Recompute it, or run `uv run shouhu-verify --chain sepolia <hash>` to see the student’s words, the decision, its tier and reasons.
+3. Read the intent id in the `Payment` event: it is the keccak-256 hash of the policy decision in the audit log (`evidence/runs/sepolia-20261020-181247/audit_log.jsonl`). Recompute it, or run `uv run shouhu-verify --chain sepolia <hash>` to see the student’s words, the decision, its tier and reasons.
 4. Ask the live contract directly, with no keys: `uv run shouhu-try --chain sepolia mama 600` answers REJECTED (`ExceedsPerTransferCap`).
 
 Repository: [https://github.com/SeerieTheGreat/AIAgent](https://github.com/SeerieTheGreat/AIAgent). Contract addresses: PolicyWallet [`0xb9D959da30680e86E9bF0A287Abee354033a0525`](https://sepolia.etherscan.io/address/0xb9D959da30680e86E9bF0A287Abee354033a0525), TestUSDC [`0x6b2f3F61DB4e45D07453D58dF2F4eB27C5284931`](https://sepolia.etherscan.io/address/0x6b2f3F61DB4e45D07453D58dF2F4eB27C5284931), owner key `0x4444b10a36E88682C63caE89E2ADb561651e9EEF`, agent key `0xe46Ab06dF31a8E03BAAe6aA5912b60B10e0Fb291`.
@@ -48,7 +48,7 @@ The PolicyWallet constructor set the agent key and the limits (500 tUSDC per tra
 
 ## 3. Payments by the AI agent
 
-### 3.1 Tier 1: inside the parent’s limits (14 payments)
+### 3.1 Tier 1: inside the parent’s limits (16 payments)
 
 Signed by the agent key with `agentTransfer`. The policy engine allowed each one, and the contract re-checked the allowlist, the per-transfer cap and the rolling 24-hour cap.
 
@@ -68,8 +68,10 @@ Signed by the agent key with `agentTransfer`. The policy engine allowed each one
 | 10-20 12:19 | 20 tUSDC to Mama | “Send 20 USDC to Mama.” | [`0xc4007a1c…c51859`](https://sepolia.etherscan.io/tx/0xc4007a1c97eb5da64abc8b6d710bc879fa0ec5bc5424f0387f8fe9adc2c51859) |
 | 10-20 12:20 | 10 tUSDC to Ge | “给哥转 10 USDC” | [`0xe4e2a1f3…79a81b`](https://sepolia.etherscan.io/tx/0xe4e2a1f361a091a60fa8c4dd08bd9177a6a0c8cc1137cc1b592bf51a0879a81b) |
 | 10-20 12:28 | 15 tUSDC to Aunt Li 李阿姨 | “给李阿姨转 15 USDC” | [`0x62e6726e…45ac3f`](https://sepolia.etherscan.io/tx/0x62e6726e214c02e5fe7ad8dd6e7678f16a86dc8de0ee308aa9378c045345ac3f) |
+| 10-20 17:53 | 20 tUSDC to Mama | “Send 20 USDC to Mama.” | [`0xe2dbb06c…67e502`](https://sepolia.etherscan.io/tx/0xe2dbb06cd1d699ba135ef11232c766f5a22c440b3542abc9b9a17eb0bd67e502) |
+| 10-20 17:55 | 10 tUSDC to Ge | “给哥转 10 USDC” | [`0x5f3bbedc…8a517d`](https://sepolia.etherscan.io/tx/0x5f3bbedca4e630015ba51820660304dc5c5f47badde580cd7ec71504178a517d) |
 
-### 3.2 Tier 2: with the parent’s one-time approval (6 payments)
+### 3.2 Tier 2: with the parent’s one-time approval (7 payments)
 
 Each request went above the 500 tUSDC per-transfer cap, so the policy engine filed it for the parent. The parent approved exactly that recipient and amount once with the owner key (`approveOnce`), and the agent then executed it with `agentTransferWithApproval`, which marks the approval used.
 
@@ -81,6 +83,7 @@ Each request went above the 500 tUSDC per-transfer cap, so the policy engine fil
 | 10-20 07:01 | 800 tUSDC to Landlord Zhang | “Pay the landlord 800 USDC for the apartment deposit.” → 800 tUSDC exceeds the per-transfer cap of 500 tUSDC | [`0x4a0f6659…c18c27`](https://sepolia.etherscan.io/tx/0x4a0f66598463d333080aa76f5c24239731145431e898f27adca21be86cc18c27) | [`0xc4805f36…e8b8ba`](https://sepolia.etherscan.io/tx/0xc4805f36ca0d8e736662b84097f3fb0e5f2483c6e80b89deadb84c53e8e8b8ba) |
 | 10-20 07:08 | 800 tUSDC to Landlord Zhang | “Pay the landlord 800 USDC for the apartment deposit.” → 800 tUSDC exceeds the per-transfer cap of 500 tUSDC | [`0x8d783a7b…d636a7`](https://sepolia.etherscan.io/tx/0x8d783a7b439c3bc83a5ce1ab23ec1e47b7412c5b1533708bf25856ce4cd636a7) | [`0xdec61abe…ab1377`](https://sepolia.etherscan.io/tx/0xdec61abe7b51de693b79f497e3c677fce111c299a19eec04beeb0ae601ab1377) |
 | 10-20 12:23 | 800 tUSDC to Landlord Zhang | “Pay the landlord 800 USDC for the apartment deposit.” → 800 tUSDC exceeds the per-transfer cap of 500 tUSDC | [`0x499b22f3…81e58c`](https://sepolia.etherscan.io/tx/0x499b22f3d79ac2119ecbb2bfb730be94f316ad36db2dd92f1448ba281781e58c) | [`0x8c592d12…b9d7fe`](https://sepolia.etherscan.io/tx/0x8c592d12ed8df4d7dfcca63d2021c6542c4995e31d689357cb882915c3b9d7fe) |
+| 10-20 17:54 | 800 tUSDC to Landlord Zhang | “Pay the landlord 800 USDC for the apartment deposit.” → 800 tUSDC exceeds the per-transfer cap of 500 tUSDC | [`0x7da07536…2a3a51`](https://sepolia.etherscan.io/tx/0x7da075360343b7c5ad0846376880123248ecac27c184ae0261bf6c777c2a3a51) | [`0x3b577f89…6d282e`](https://sepolia.etherscan.io/tx/0x3b577f89b3b46e565385ea3655036d2084b7108b357d5c26c39de47d136d282e) |
 
 The approval and the payment share one intent id, and the same id identifies the policy decision in the audit log. A second attempt with the same approval reverts with `ApprovalUsed` (contract test `test_approvalFlow`).
 
@@ -121,6 +124,7 @@ Aunt Li 李阿姨 was registered as a contact from the owner console in several 
 | 20 Oct 01:37–07:10 | Browser app (student chat and owner console) on Sepolia, including contact registration (Aunt Li) | 10 (7 Tier 1, 3 Tier 2) |
 | 20 Oct 12:19–12:28 | Browser app v2: parent registration with the owner key, student invite, AI model and rules-only assistant, owner console approval, test money. Bundle `evidence/runs/sepolia-20261020-124109-web-v2/` | 4 (3 Tier 1, 1 Tier 2) |
 | 20 Oct 17:07–17:08 | Contract rejection tests with the agent key (section 4) | 0 (3 rejected) |
+| 20 Oct 17:52–17:55 | Demo video, recorded live: parent registration, student invite, AI model and rules-only assistant, the parent’s approval in the owner console. Bundle `evidence/runs/sepolia-20261020-181247/` | 3 (2 Tier 1, 1 Tier 2) |
 
 Every payment’s decision is in the committed audit log; each run used its own session id (`demo-20261016-182524`, `web-20261020-121856` and others), shown in `transactions.csv`.
 
@@ -138,11 +142,11 @@ Every payment’s decision is in the committed audit log; each run used its own 
 
 | File (in this folder) | Contents |
 |---|---|
-| `transactions.csv`, `transactions.json` | All 44 records (42 transactions): time, block, event, amount, tier, signer, status, full hash, Etherscan link, intent id, the student’s words, the decision and its reasons |
+| `transactions.csv`, `transactions.json` | All 48 records (46 transactions): time, block, event, amount, tier, signer, status, full hash, Etherscan link, intent id, the student’s words, the decision and its reasons |
 | `proof_checks.json` | For every transaction, the checks of the app’s proof page (status, signer, target contract, token movement, tier, intent id to decision); contract creations and the three rejected transactions are expected to fail the payment checks |
 | `rejections.json` | The three rejected transactions with the decoded revert reason and the replay confirmation |
 | `verify_all_payments.txt` | `shouhu-verify --chain sepolia --all` on a fresh copy of the public repository: each payment, its events and its audit entry; then the three rejected transactions |
-| `audit_log.jsonl` | The audit log behind the payments (the same file as `evidence/runs/sepolia-20261020-124109-web-v2/audit_log.jsonl`) |
+| `audit_log.jsonl` | The audit log behind the payments (the same file as `evidence/runs/sepolia-20261020-181247/audit_log.jsonl`) |
 
 The same files are public in the repository under `evidence/onchain/`. Other evidence there: the red-team results (`evidence/redteam_results.md`, `evidence/redteam_results_rules.md`, 8 of 8 in both modes), the scripted-task bundles with transcripts (`evidence/runs/`), and the fresh-copy test logs (`docs/test_results/`).
 
@@ -194,6 +198,10 @@ All transactions of the deployment, oldest first, with full hashes. Each opens o
 | 10-20 17:07 | Rejected: 600 tUSDC to Mama (over the cap) | agent key | Failed | [`0xd1a63517dcae701846483ca8d4b65192f62400e44be3754166f48d7aae4c2319`](https://sepolia.etherscan.io/tx/0xd1a63517dcae701846483ca8d4b65192f62400e44be3754166f48d7aae4c2319) |
 | 10-20 17:08 | Rejected: 1 tUSDC to the A1 scam address | agent key | Failed | [`0x6dbe08db28f00badd416618c511e0105e187a994627657fc36ad64ea6fd8b31f`](https://sepolia.etherscan.io/tx/0x6dbe08db28f00badd416618c511e0105e187a994627657fc36ad64ea6fd8b31f) |
 | 10-20 17:08 | Rejected: agent key calls setPolicy | agent key | Failed | [`0x5511583e2dbcf295efc7da7aaca70dcf50ea8d5dcf2eee79bd0bdff6459b046a`](https://sepolia.etherscan.io/tx/0x5511583e2dbcf295efc7da7aaca70dcf50ea8d5dcf2eee79bd0bdff6459b046a) |
+| 10-20 17:53 | 20 tUSDC to Mama | agent key | Success | [`0xe2dbb06cd1d699ba135ef11232c766f5a22c440b3542abc9b9a17eb0bd67e502`](https://sepolia.etherscan.io/tx/0xe2dbb06cd1d699ba135ef11232c766f5a22c440b3542abc9b9a17eb0bd67e502) |
+| 10-20 17:54 | approve 800 tUSDC to Landlord Zhang once | owner key | Success | [`0x7da075360343b7c5ad0846376880123248ecac27c184ae0261bf6c777c2a3a51`](https://sepolia.etherscan.io/tx/0x7da075360343b7c5ad0846376880123248ecac27c184ae0261bf6c777c2a3a51) |
+| 10-20 17:54 | 800 tUSDC to Landlord Zhang · memo: Apartment deposit | agent key | Success | [`0x3b577f89b3b46e565385ea3655036d2084b7108b357d5c26c39de47d136d282e`](https://sepolia.etherscan.io/tx/0x3b577f89b3b46e565385ea3655036d2084b7108b357d5c26c39de47d136d282e) |
+| 10-20 17:55 | 10 tUSDC to Ge | agent key | Success | [`0x5f3bbedca4e630015ba51820660304dc5c5f47badde580cd7ec71504178a517d`](https://sepolia.etherscan.io/tx/0x5f3bbedca4e630015ba51820660304dc5c5f47badde580cd7ec71504178a517d) |
 
 ---
 

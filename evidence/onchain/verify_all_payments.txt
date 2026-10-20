@@ -1,6 +1,42 @@
 $ uv run shouhu-verify --chain sepolia --all
-(run on a fresh copy of the public repository, 20 October 2026, 17:12 UTC+8)
-PolicyWallet 0xb9D959da30680e86E9bF0A287Abee354033a0525 on sepolia; audit entries indexed: 55
+(run on a fresh copy of the public repository, 20 October 2026, 18:19 UTC+8)
+PolicyWallet 0xb9D959da30680e86E9bF0A287Abee354033a0525 on sepolia; audit entries indexed: 73
+
+transaction 0x5f3bbedca4e630015ba51820660304dc5c5f47badde580cd7ec71504178a517d
+  block 11954533   status SUCCESS   from 0xe46Ab06dF31a8E03BAAe6aA5912b60B10e0Fb291 (the AGENT key)
+  to    0xb9D959da30680e86E9bF0A287Abee354033a0525   (the PolicyWallet contract)
+  explorer https://sepolia.etherscan.io/tx/0x5f3bbedca4e630015ba51820660304dc5c5f47badde580cd7ec71504178a517d
+  event Payment: 10 tUSDC to Ge (0xa61A132925b7Eb4B32f3201a7D31cDD80de12e49), via owner approval = False
+    intent id 0xd89f2667db0eff4308ba8ac7015ce961c76abf3b6e971ab59a86dcd9d157b257
+    audit entry (evidence/runs/sepolia-20261020-181247/audit_log.jsonl, 2026-10-20 09:55:29 UTC):
+      user said   : '给哥转 10 USDC'
+      decision    : allow (tier 1) for 10 tUSDC to Ge
+      reasons     : allowlisted recipient within the per-transfer and 24-hour caps
+  event tUSDC Transfer: 10 tUSDC from the PolicyWallet to Ge
+
+transaction 0x3b577f89b3b46e565385ea3655036d2084b7108b357d5c26c39de47d136d282e
+  block 11954528   status SUCCESS   from 0xe46Ab06dF31a8E03BAAe6aA5912b60B10e0Fb291 (the AGENT key)
+  to    0xb9D959da30680e86E9bF0A287Abee354033a0525   (the PolicyWallet contract)
+  explorer https://sepolia.etherscan.io/tx/0x3b577f89b3b46e565385ea3655036d2084b7108b357d5c26c39de47d136d282e
+  event Payment: 800 tUSDC to Landlord Zhang (0x98e0BF3d07f999A160F44ec80Bb90fBCf0ff480B), via owner approval = True
+    intent id 0x7d995750af810fe379b0900fe31a664b767e5c5f881937c7304dced4a76dbd6d
+    audit entry (evidence/runs/sepolia-20261020-181247/audit_log.jsonl, 2026-10-20 09:53:39 UTC):
+      user said   : 'Pay the landlord 800 USDC for the apartment deposit.'
+      decision    : request (tier 2) for 800 tUSDC to Landlord Zhang
+      reasons     : 800 tUSDC exceeds the per-transfer cap of 500 tUSDC
+  event tUSDC Transfer: 800 tUSDC from the PolicyWallet to Landlord Zhang
+
+transaction 0xe2dbb06cd1d699ba135ef11232c766f5a22c440b3542abc9b9a17eb0bd67e502
+  block 11954521   status SUCCESS   from 0xe46Ab06dF31a8E03BAAe6aA5912b60B10e0Fb291 (the AGENT key)
+  to    0xb9D959da30680e86E9bF0A287Abee354033a0525   (the PolicyWallet contract)
+  explorer https://sepolia.etherscan.io/tx/0xe2dbb06cd1d699ba135ef11232c766f5a22c440b3542abc9b9a17eb0bd67e502
+  event Payment: 20 tUSDC to Mama (0x76782b840f864dA37F8CA7ecB2B1354782D4bf33), via owner approval = False
+    intent id 0x2a09c18249700f5c8d190eefab76b6e4983a516dc1d5ca3358fcba8ca13fb5b8
+    audit entry (evidence/runs/sepolia-20261020-181247/audit_log.jsonl, 2026-10-20 09:52:55 UTC):
+      user said   : 'Send 20 USDC to Mama.'
+      decision    : allow (tier 1) for 20 tUSDC to Mama
+      reasons     : allowlisted recipient within the per-transfer and 24-hour caps
+  event tUSDC Transfer: 20 tUSDC from the PolicyWallet to Mama
 
 transaction 0x62e6726e214c02e5fe7ad8dd6e7678f16a86dc8de0ee308aa9378c045345ac3f
   block 11952913   status SUCCESS   from 0xe46Ab06dF31a8E03BAAe6aA5912b60B10e0Fb291 (the AGENT key)
@@ -243,7 +279,7 @@ transaction 0xb9ee729554fc96d3c00ce465bd83f2702955a4dc914d1953b602444592520074
   event tUSDC Transfer: 20 tUSDC from the PolicyWallet to Mama
 
 $ uv run shouhu-verify --chain sepolia 0xd1a63517dcae701846483ca8d4b65192f62400e44be3754166f48d7aae4c2319
-PolicyWallet 0xb9D959da30680e86E9bF0A287Abee354033a0525 on sepolia; audit entries indexed: 55
+PolicyWallet 0xb9D959da30680e86E9bF0A287Abee354033a0525 on sepolia; audit entries indexed: 73
 
 transaction 0xd1a63517dcae701846483ca8d4b65192f62400e44be3754166f48d7aae4c2319
   block 11954298   status FAILED   from 0xe46Ab06dF31a8E03BAAe6aA5912b60B10e0Fb291 (the AGENT key)
@@ -252,7 +288,7 @@ transaction 0xd1a63517dcae701846483ca8d4b65192f62400e44be3754166f48d7aae4c2319
   no PolicyWallet event in this transaction (a tUSDC transfer above means money moved into or out of the wallet)
 
 $ uv run shouhu-verify --chain sepolia 0x6dbe08db28f00badd416618c511e0105e187a994627657fc36ad64ea6fd8b31f
-PolicyWallet 0xb9D959da30680e86E9bF0A287Abee354033a0525 on sepolia; audit entries indexed: 55
+PolicyWallet 0xb9D959da30680e86E9bF0A287Abee354033a0525 on sepolia; audit entries indexed: 73
 
 transaction 0x6dbe08db28f00badd416618c511e0105e187a994627657fc36ad64ea6fd8b31f
   block 11954299   status FAILED   from 0xe46Ab06dF31a8E03BAAe6aA5912b60B10e0Fb291 (the AGENT key)
@@ -261,7 +297,7 @@ transaction 0x6dbe08db28f00badd416618c511e0105e187a994627657fc36ad64ea6fd8b31f
   no PolicyWallet event in this transaction (a tUSDC transfer above means money moved into or out of the wallet)
 
 $ uv run shouhu-verify --chain sepolia 0x5511583e2dbcf295efc7da7aaca70dcf50ea8d5dcf2eee79bd0bdff6459b046a
-PolicyWallet 0xb9D959da30680e86E9bF0A287Abee354033a0525 on sepolia; audit entries indexed: 55
+PolicyWallet 0xb9D959da30680e86E9bF0A287Abee354033a0525 on sepolia; audit entries indexed: 73
 
 transaction 0x5511583e2dbcf295efc7da7aaca70dcf50ea8d5dcf2eee79bd0bdff6459b046a
   block 11954300   status FAILED   from 0xe46Ab06dF31a8E03BAAe6aA5912b60B10e0Fb291 (the AGENT key)

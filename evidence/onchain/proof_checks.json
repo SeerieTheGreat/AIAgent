@@ -1,8 +1,8 @@
 {
   "summary": {
-    "transactions": 42,
-    "wallet_transactions_all_checks_pass": 37,
-    "wallet_transactions": 37,
+    "transactions": 46,
+    "wallet_transactions": 41,
+    "wallet_transactions_all_checks_pass": 41,
     "contract_creations": 2,
     "rejected_on_purpose": 3,
     "every_result_as_expected": true
@@ -19,7 +19,7 @@
         },
         {
           "ok": true,
-          "text": "27605 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "27937 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": false,
@@ -47,7 +47,7 @@
         },
         {
           "ok": true,
-          "text": "27604 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "27938 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": false,
@@ -75,7 +75,7 @@
         },
         {
           "ok": true,
-          "text": "27603 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "27938 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -106,7 +106,7 @@
         },
         {
           "ok": true,
-          "text": "27602 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "27937 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -133,7 +133,7 @@
         },
         {
           "ok": true,
-          "text": "27601 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "27936 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -160,7 +160,7 @@
         },
         {
           "ok": true,
-          "text": "27600 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "27936 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -187,7 +187,7 @@
         },
         {
           "ok": true,
-          "text": "27600 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "27935 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -214,7 +214,7 @@
         },
         {
           "ok": true,
-          "text": "27599 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "27934 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -241,7 +241,7 @@
         },
         {
           "ok": true,
-          "text": "27557 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "27892 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -290,7 +290,7 @@
         },
         {
           "ok": true,
-          "text": "27555 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "27890 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -325,7 +325,7 @@
         },
         {
           "ok": true,
-          "text": "27554 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "27890 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -374,7 +374,7 @@
         },
         {
           "ok": true,
-          "text": "27549 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "27885 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -423,7 +423,7 @@
         },
         {
           "ok": true,
-          "text": "7664 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "8000 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -472,7 +472,7 @@
         },
         {
           "ok": true,
-          "text": "7662 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "7998 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -507,7 +507,7 @@
         },
         {
           "ok": true,
-          "text": "7661 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "7997 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -556,7 +556,7 @@
         },
         {
           "ok": true,
-          "text": "7657 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "7992 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -605,7 +605,7 @@
         },
         {
           "ok": true,
-          "text": "4614 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "4949 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -654,7 +654,7 @@
         },
         {
           "ok": true,
-          "text": "4608 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "4944 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -689,7 +689,7 @@
         },
         {
           "ok": true,
-          "text": "4605 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "4941 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -738,7 +738,7 @@
         },
         {
           "ok": true,
-          "text": "4594 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "4930 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -787,7 +787,7 @@
         },
         {
           "ok": true,
-          "text": "3076 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "3412 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -814,7 +814,7 @@
         },
         {
           "ok": true,
-          "text": "3070 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "3406 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -863,7 +863,7 @@
         },
         {
           "ok": true,
-          "text": "3022 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "3358 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -912,7 +912,7 @@
         },
         {
           "ok": true,
-          "text": "3019 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "3355 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -947,7 +947,7 @@
         },
         {
           "ok": true,
-          "text": "3017 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "3353 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -996,7 +996,7 @@
         },
         {
           "ok": true,
-          "text": "3015 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "3350 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -1023,7 +1023,7 @@
         },
         {
           "ok": true,
-          "text": "3014 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "3349 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -1072,7 +1072,7 @@
         },
         {
           "ok": true,
-          "text": "2997 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "3333 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -1121,7 +1121,7 @@
         },
         {
           "ok": true,
-          "text": "2992 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "3328 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -1156,7 +1156,7 @@
         },
         {
           "ok": true,
-          "text": "2987 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "3323 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -1205,7 +1205,7 @@
         },
         {
           "ok": true,
-          "text": "2981 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "3317 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -1232,7 +1232,7 @@
         },
         {
           "ok": true,
-          "text": "2978 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "3314 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -1281,7 +1281,7 @@
         },
         {
           "ok": true,
-          "text": "1448 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "1784 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -1330,7 +1330,7 @@
         },
         {
           "ok": true,
-          "text": "1440 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "1776 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -1379,7 +1379,7 @@
         },
         {
           "ok": true,
-          "text": "1436 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "1772 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -1414,7 +1414,7 @@
         },
         {
           "ok": true,
-          "text": "1434 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "1769 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -1445,7 +1445,7 @@
         },
         {
           "ok": true,
-          "text": "1430 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "1765 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -1494,7 +1494,7 @@
         },
         {
           "ok": true,
-          "text": "1406 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "1742 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -1521,7 +1521,7 @@
         },
         {
           "ok": true,
-          "text": "1402 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "1738 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -1570,7 +1570,7 @@
         },
         {
           "ok": true,
-          "text": "17 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "353 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -1598,7 +1598,7 @@
         },
         {
           "ok": true,
-          "text": "16 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "352 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -1626,7 +1626,7 @@
         },
         {
           "ok": true,
-          "text": "15 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "351 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -1641,6 +1641,188 @@
       "receipt": null,
       "decision": null,
       "note": "Rejected on purpose: setPolicy(10,000 / 100,000 tUSDC) signed by the agent key (only the owner may change limits). Reverted with NotOwner() (replayed at block 11954299: NotOwner()). Nothing moved.",
+      "expected": true
+    },
+    "0xe2dbb06cd1d699ba135ef11232c766f5a22c440b3542abc9b9a17eb0bd67e502": {
+      "title": "Payment of 20 tUSDC to Mama",
+      "kind": "payment",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11954521 with status success"
+        },
+        {
+          "ok": true,
+          "text": "130 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the agent key (Shouhu)"
+        },
+        {
+          "ok": true,
+          "text": "The token contract moved 20 tUSDC from the wallet to Mama"
+        },
+        {
+          "ok": true,
+          "text": "Tier 1: inside the per-transfer cap, the 24-hour cap and the allowlist, or the contract would have reverted"
+        },
+        {
+          "ok": true,
+          "text": "The intent id is the hash of policy decision #3 in session web-20261020-175236 (action allow, tier 1)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": {
+        "number": "SH-11954521-211",
+        "time": 1792489980,
+        "paid_to": "Mama",
+        "address": "0x76782b840f864dA37F8CA7ecB2B1354782D4bf33",
+        "amount": "20 tUSDC",
+        "memo": null,
+        "tier": 1,
+        "approval_tx": null,
+        "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
+      },
+      "decision": "Send 20 USDC to Mama.",
+      "expected": true
+    },
+    "0x7da075360343b7c5ad0846376880123248ecac27c184ae0261bf6c777c2a3a51": {
+      "title": "Owner approval: 800 tUSDC to Landlord Zhang, once",
+      "kind": "approval",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11954526 with status success"
+        },
+        {
+          "ok": true,
+          "text": "125 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the owner key (parent)"
+        },
+        {
+          "ok": true,
+          "text": "Only the owner key can grant an approval; this one was signed by it"
+        },
+        {
+          "ok": true,
+          "text": "The intent id is the hash of policy decision #10 in session web-20261020-175236 (action request, tier 2)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": null,
+      "decision": "Pay the landlord 800 USDC for the apartment deposit.",
+      "expected": true
+    },
+    "0x3b577f89b3b46e565385ea3655036d2084b7108b357d5c26c39de47d136d282e": {
+      "title": "Payment of 800 tUSDC to Landlord Zhang",
+      "kind": "payment",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11954528 with status success"
+        },
+        {
+          "ok": true,
+          "text": "123 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the agent key (Shouhu)"
+        },
+        {
+          "ok": true,
+          "text": "The token contract moved 800 tUSDC from the wallet to Landlord Zhang"
+        },
+        {
+          "ok": true,
+          "text": "Tier 2: the contract holds the owner's one-time approval for exactly this recipient and amount, now used"
+        },
+        {
+          "ok": true,
+          "text": "The intent id is the hash of policy decision #10 in session web-20261020-175236 (action request, tier 2)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": {
+        "number": "SH-11954528-54",
+        "time": 1792490076,
+        "paid_to": "Landlord Zhang",
+        "address": "0x98e0BF3d07f999A160F44ec80Bb90fBCf0ff480B",
+        "amount": "800 tUSDC",
+        "memo": "Apartment deposit",
+        "tier": 2,
+        "approval_tx": null,
+        "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
+      },
+      "decision": "Pay the landlord 800 USDC for the apartment deposit.",
+      "expected": true
+    },
+    "0x5f3bbedca4e630015ba51820660304dc5c5f47badde580cd7ec71504178a517d": {
+      "title": "Payment of 10 tUSDC to Ge",
+      "kind": "payment",
+      "status_ok": null,
+      "checks": [
+        {
+          "ok": true,
+          "text": "Included in block 11954533 with status success"
+        },
+        {
+          "ok": true,
+          "text": "118 confirmation(s) on sepolia (chain id 11155111)"
+        },
+        {
+          "ok": true,
+          "text": "Sent to the Shouhu policy wallet contract"
+        },
+        {
+          "ok": true,
+          "text": "Signed by the agent key (Shouhu)"
+        },
+        {
+          "ok": true,
+          "text": "The token contract moved 10 tUSDC from the wallet to Ge"
+        },
+        {
+          "ok": true,
+          "text": "Tier 1: inside the per-transfer cap, the 24-hour cap and the allowlist, or the contract would have reverted"
+        },
+        {
+          "ok": true,
+          "text": "The intent id is the hash of policy decision #3 in session web-20261020-175520 (action allow, tier 1)"
+        }
+      ],
+      "all_checks_pass": true,
+      "receipt": {
+        "number": "SH-11954533-22",
+        "time": 1792490136,
+        "paid_to": "Ge",
+        "address": "0xa61A132925b7Eb4B32f3201a7D31cDD80de12e49",
+        "amount": "10 tUSDC",
+        "memo": null,
+        "tier": 1,
+        "approval_tx": null,
+        "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
+      },
+      "decision": "给哥转 10 USDC",
       "expected": true
     }
   }
