@@ -17,9 +17,10 @@ the university bursar and a friend. Amounts are in tUSDC, a test token with no v
 2. **The policy engine** (`shouhu/policy.py`, a pure function) resolves the recipient, applies the address-provenance rule, the lookalike check, the caps and the allowlist, and returns allow, request or refuse with written reasons.
 3. **The PolicyWallet contract** (`contracts/src/PolicyWallet.sol`) enforces the same caps and allowlist for the agent key on-chain, and executes exceptions only against a one-time owner approval for that exact recipient, amount and intent id.
 
-Security claim, precisely: no tool can move funds outside policy; the model cannot change policy; the chain enforces the agent's caps. The red-team table (`evidence/redteam_results.md`) and a contract revert hash prove those three sentences.
+Security claim, precisely: no tool can move funds outside policy; the model cannot change policy; the chain enforces the agent's caps. The red-team tables (`evidence/redteam_results.md`, `evidence/redteam_results_rules.md`), the contract tests and a dry run against the live contract (`uv run shouhu-try --chain sepolia mama 600` answers REJECTED) support those three sentences.
 
 Technical documentation (system architecture, core algorithms, security design): `docs/Shouhu_Technical_Documentation.pdf`, also readable here as [`docs/technical_documentation.md`](docs/technical_documentation.md).
+Security self-assessment (permission-tier implementation and known-risk list): `docs/Shouhu_Security_Self_Assessment.pdf`, also as [`docs/security_self_assessment.md`](docs/security_self_assessment.md).
 
 ## Quick start (judge mode, no faucet, no accounts)
 
@@ -192,9 +193,9 @@ evidence/                 audit logs, red-team results, exported runs with hashe
 docs/                     technical documentation (PDF and Markdown), source code guide, test cases and test logs, security self-assessment, demo guide and script
 ```
 
-## Known limits (see docs/security_self_assessment.md)
+## Known limits
 
-The contract is small and tested but unaudited. The owner key lives in a file on the same machine for the demo; in production it would sit in the owner's own wallet. The injection screen is rule-based and is a tripwire only; the guarantee is structural. Testnet money only.
+The security self-assessment (`docs/Shouhu_Security_Self_Assessment.pdf`) lists 26 known risks, rated as if the wallet held real money: none critical, two high, nine medium, fifteen low. The two high risks: the owner key is a file on the same computer for the demo (in production the parent signs on their own device or a multisig is the owner), and a parent can still approve a harmful request (planned: a cooling-off delay for new recipients and approval expiry). The contract is small and tested but not externally audited, and the owner cannot be rotated. The injection screen is rule-based and is a tripwire only; the guarantee is structural. Test network and test money only.
 
 ## Rights
 
