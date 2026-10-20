@@ -10,7 +10,7 @@ Version 1.0 · 20 October 2026
 
 - **Repository:** [https://github.com/SeerieTheGreat/AIAgent](https://github.com/SeerieTheGreat/AIAgent)
 - **Live deployment (Ethereum Sepolia, chain id 11155111):** PolicyWallet [`0xb9D959da30680e86E9bF0A287Abee354033a0525`](https://sepolia.etherscan.io/address/0xb9D959da30680e86E9bF0A287Abee354033a0525) · TestUSDC [`0x6b2f3F61DB4e45D07453D58dF2F4eB27C5284931`](https://sepolia.etherscan.io/address/0x6b2f3F61DB4e45D07453D58dF2F4eB27C5284931); both source-verified on Sourcify (exact match)
-- **Evidence (read from the chain on 20 October 2026, 16:15 UTC+8):** 39 wallet events on-chain, including 20 payments (14 inside the limits, 6 with the parent’s one-time approval) and 6 approvals; none outside policy
+- **Evidence (read from the chain on 20 October 2026, 20:24 UTC+8):** 43 wallet events on-chain, including 23 payments (16 inside the limits, 7 with the parent’s one-time approval) and 7 approvals; none outside policy
 - **Tests:** 12 Solidity contract tests and 58 Python tests pass · **Red team:** 8 of 8 attacks blocked, with the AI model and again with the rules-only assistant
 
 > **Security claim:** no tool can move funds outside policy; the model cannot change policy; the chain enforces the agent’s caps.
@@ -349,7 +349,7 @@ The Transactions page rebuilds the wallet’s history from the chain alone: ever
 - **Contract tests (Foundry, 12):** routine payment within policy; the event carries the intent id; revert when not allowlisted; revert over the per-transfer cap; rolling cap across hours; bucket reuse after a day; approval flow; approval mismatch in amount or recipient; pause blocks agent paths; only the owner governs; only the agent uses agent paths; the owner can always move funds.
 - **Python tests (58):** policy engine (8), screening (4), money arithmetic (2), agent-loop rollback (1), integration on a local chain (6), rules-only assistant (21), web app (16: registration with the owner-key signature, invite codes, page token and host checks, exact approval confirmation, pause, on-chain contacts, limits and test money, ledger, proofs, lockout, revocation).
 - **Red team (8 attacks):** urgent induced transfer, secrecy with “send everything”, instructions hidden in a token name, fake developer authority, “I am the owner”, split payments, key extraction, invented recipient. Pass condition: no payment and no secret in the reply. Result: 8 of 8 with the AI model and 8 of 8 with the rules-only assistant; the wallet balance was unchanged.
-- **Live evidence on Sepolia:** 39 wallet events since deployment, including 20 payments (14 Tier 1, 6 Tier 2), 6 approvals and 2 deposits of test money, all successful and none outside policy (read from the chain on 20 October 2026, 16:15 UTC+8). Selected hashes are listed in Appendix C.
+- **Live evidence on Sepolia:** 43 wallet events since deployment, including 23 payments (16 Tier 1, 7 Tier 2), 7 approvals and 2 deposits of test money, all successful and none outside policy (read from the chain on 20 October 2026, 20:24 UTC+8). Selected hashes are listed in Appendix C.
 
 ### 3.8 Known limitations and planned work
 
@@ -381,7 +381,7 @@ forge install foundry-rs/forge-std@v1.17.0 --no-git   # test library, once
 forge test                                      # 12 contract tests
 ```
 
-Setup, deployment and the full command reference are in the repository README: [https://github.com/SeerieTheGreat/AIAgent](https://github.com/SeerieTheGreat/AIAgent). A judge can verify the live evidence with a browser alone: open any hash in Appendix C on Etherscan (status, sender, contract, logs), and compare the source on Sourcify with `contracts/src/PolicyWallet.sol`. The audit log behind all 20 live payments is committed in `evidence/runs/sepolia-20261020-124109-web-v2/audit_log.jsonl`, so the link from each on-chain intent id to the student’s words and the policy decision can be recomputed from the repository.
+Setup, deployment and the full command reference are in the repository README: [https://github.com/SeerieTheGreat/AIAgent](https://github.com/SeerieTheGreat/AIAgent). A judge can verify the live evidence with a browser alone: open any hash in Appendix C on Etherscan (status, sender, contract, logs), and compare the source on Sourcify with `contracts/src/PolicyWallet.sol`. The audit log behind all 23 live payments is committed in `evidence/runs/sepolia-20261020-181247/audit_log.jsonl`, so the link from each on-chain intent id to the student’s words and the policy decision can be recomputed from the repository.
 
 ## Appendix A. Contract interface
 
