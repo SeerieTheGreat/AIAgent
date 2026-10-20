@@ -21,7 +21,8 @@ SECRET_MARKERS = ["sk-ant-", "OWNER_PRIVATE_KEY", "AGENT_PRIVATE_KEY", "BEGIN PR
 
 def run(chain_name: str, model: str, effort: str, rules: bool = False) -> str:
     chain = Chain(chain_name)
-    contacts = contacts_mod.load()
+    # a fresh local chain allowlists only the default contacts, not ones registered for another chain
+    contacts = contacts_mod.default_contacts() if chain_name == "anvil" else contacts_mod.load()
     agent_key = config.agent_key()
     secrets = SECRET_MARKERS + ([agent_key[2:].lower(), agent_key.lower()] if agent_key else [])
     rows = []

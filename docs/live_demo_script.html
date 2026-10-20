@@ -44,7 +44,7 @@
 
 <h1>Shouhu 守护: Live Demo Script</h1>
 <p class="sub">Five minutes, start to finish: what it is, the features, and a live run on Ethereum Sepolia with real transactions</p>
-<p class="meta">20 October 2026. Rehearsed in full on Sepolia the same day with the web interface (<code>shouhu-web</code>); every wait below is a measured time from that rehearsal. Companion to the Shouhu Demo Guide (Section 6 explains each screen).</p>
+<p class="meta">20 October 2026. Rehearsed in full on Sepolia the same day with the web interface (<code>shouhu-web</code>); every wait below is a measured time from that rehearsal. Updated the same afternoon for the second version of the web app (the student signs up with the parent's one-time invite code; <b>Rules only</b> is the fallback if the model fails), after a second full run on Sepolia. Companion to the Shouhu Demo Guide (Section 6 explains each screen).</p>
 
 <div class="box">
 <p><b>What the rules say about time.</b> The International Track rules (Attachment 2, section 5) set two limits: the <b>demo video is at most 5 minutes</b> (optional, part of the 20 October submission) and the <b>final presentation is at most 10 minutes</b> (Grand Final, on-site defence on 22 November in Shenzhen). The rules do not set a separate length for a live demo. This script runs <b>4 minutes 50 seconds</b>, so it serves both: record it as the demo video, and use it as the demo inside the 10-minute final (Section 7). If the organisers announce a different slot, Section 7 says what to cut or add.</p>
@@ -55,7 +55,7 @@
 <table>
   <tr><th style="width:24%">Criterion (Attachment 2)</th><th style="width:44%">What they look for</th><th>Where it is in the script</th></tr>
   <tr><td><b>Task completion, 40%</b></td><td>Scripted financial tasks completed, quality of planning, correct tool use</td><td>0:50 routine payment (Tier 1) · 1:20 over-limit payment through the parent's approval (Tier 2) · 3:00 new contact paid · 3:55 proof of transaction</td></tr>
-  <tr><td><b>Security and compliance, 30%</b></td><td>Defence against induced transfers, information extraction, privilege escalation and prompt injection; confirmation and risk warnings for sensitive operations</td><td>1:20 the 800 payment stops for the parent · 2:25 address poisoning warned and refused · 2:40 prompt injection ignored · 0:30 the student never holds a key, the parent proves the owner key</td></tr>
+  <tr><td><b>Security and compliance, 30%</b></td><td>Defence against induced transfers, information extraction, privilege escalation and prompt injection; confirmation and risk warnings for sensitive operations</td><td>1:20 the 800 payment stops for the parent · 2:25 address poisoning warned and refused · 2:40 prompt injection ignored · 0:30 the student never holds a key and can only sign up with the parent's one-time code; the parent proves the owner key</td></tr>
   <tr><td><b>Innovation and interaction, 30%</b></td><td>Novelty, real-world value, dialogue efficiency, clarification, error recovery, colloquial input</td><td>3:00 casual Chinese, 给李阿姨转 15 USDC, to a contact added a minute earlier · 3:55 a proof page that ties a hash to the conversation that caused it</td></tr>
   <tr><td><b>On-chain challenge bonus, 0 to 5</b></td><td>On-chain exploration</td><td>Real Sepolia transactions throughout: payments, a one-time approval, an allowlist update, all checked live on the proof page and Etherscan</td></tr>
 </table>
@@ -74,6 +74,7 @@
   <li><b>Chips</b> above the input box send the scripted lines in one click: <code>2 Mama 20</code>, <code>3 Landlord 800</code>, <code>5 Lookalike</code>, <code>6 Injection</code> are the ones used here. The full text shows in the chat bubble.</li>
   <li><b>The rhythm of every turn:</b> click; the receipt card appears first (green paid, amber needs the parent, red refused), then Shouhu's reply. The next chip works only when the reply has finished, so start the next line of talk when the card appears and click when the text stops.</li>
   <li>A phone timer in the speaker's sight. The checkpoints in the script say what to skip if you are late.</li>
+  <li><b>AI model · Rules only</b> in the chat header: the demo runs on the AI model. If the model is slow or fails, click <b>Rules only</b> and carry on (Section 6).</li>
 </ul>
 </div>
 </div>
@@ -92,8 +93,8 @@ uv run shouhu-owner --chain sepolia status       # balance, caps, 24 h spend, ag
 <ol>
   <li>Quit other apps, turn on Do Not Disturb, plug in the charger, hide the bookmarks bar (<span class="key">⌘</span><span class="key">⇧</span><span class="key">B</span>).</li>
   <li>In Terminal: <code>cd ~/fintechathon/shouhu</code> then <code>uv run shouhu-web --chain sepolia --reset-demo</code>. Wait for <i>press Ctrl+C to stop</i>. <code>--reset-demo</code> removes the accounts, requests, registered contacts and owner activity of earlier runs, so the request is called R1 and both sign-ups start empty. Leave Terminal open behind Chrome.</li>
-  <li>Tab 1: <code>http://127.0.0.1:8787/?theme=light</code>. It shows <b>Student sign-up</b>; leave it there, it is the opening screen.</li>
-  <li>Tab 2: <code>http://127.0.0.1:8788/?theme=light</code>. Register the parent now, off stage: name <code>Lin Jianguo</code>, a password, leave both limits empty, <b>Sign with the owner key and register</b>. The Family panel shows the parent with the owner-key signature.</li>
+  <li>Tab 1: <code>http://127.0.0.1:8787/?theme=light</code>. It shows <b>Student sign-up</b>, waiting for the parent.</li>
+  <li>Tab 2: <code>http://127.0.0.1:8788/?theme=light</code>. Register the parent now, off stage: name <code>Lin Jianguo</code>, a password, leave both limits empty, <b>Sign with the owner key and register</b>. The Family panel shows the parent with the owner-key signature and the student's one-time invite code. Click <b>Copy invite link</b>, go to Tab 1 (<span class="key">⌘</span><span class="key">1</span>) and paste the link into the address bar (<span class="key">⌘</span><span class="key">L</span>, <span class="key">⌘</span><span class="key">V</span>, <span class="key">Enter</span>): Student sign-up now shows the code filled in. Leave it there; it is the opening screen.</li>
   <li>Open <code>https://sepolia.etherscan.io</code> in a new tab, close its cookie notice yourself, then close the tab, so the banner does not cover the page during the demo.</li>
   <li>Chinese text: open TextEdit with two lines, <code>李阿姨</code> and <code>给李阿姨转 15 USDC</code>, and copy the first line (<span class="key">⌘</span><span class="key">C</span>). Or type with Pinyin input if you are fluent. Go back to Chrome, Tab 1.</li>
   <li>Use the same short student password every time you rehearse, so it is typed without thinking. Never a real password.</li>
@@ -109,8 +110,8 @@ uv run shouhu-owner --chain sepolia status       # balance, caps, 24 h spend, ag
     <td class="see">Student sign-up · 学生注册</td></tr>
   </tbody>
 <tbody class="segment"><tr class="seg"><td colspan="4">Registration (20 s)</td></tr>
-  <tr><td class="t">0:30</td><td class="do">Type <code>Lin Xiaoyu</code>, skip the Chinese name, type the password twice, click <b>Create my account</b>.</td>
-    <td class="say">"First, registration. Xiaoyu, the student, signs up. She never gets a private key; her account is linked to the family wallet. Her parent registered in a separate owner console by signing with the owner key, and the console checked that signature against the owner recorded in the contract."</td>
+  <tr><td class="t">0:30</td><td class="do">The invite code is already filled in. Type <code>Lin Xiaoyu</code>, skip the Chinese name, type the password twice, click <b>Create my account</b>.</td>
+    <td class="say">"First, registration. The parent registered first, in a separate owner console, by signing with the owner key; the console checked that signature against the owner recorded in the contract and only then gave out this one-time invite code. Xiaoyu signs up with it. She never gets a private key; her account is linked to the family wallet."</td>
     <td class="see">Welcome screen: 你好 Lin Xiaoyu; balance and limits on the right</td></tr>
   </tbody>
 <tbody class="segment"><tr class="seg"><td colspan="4">Task 1: a routine payment, Tier 1 (30 s)</td></tr>
@@ -178,7 +179,8 @@ uv run shouhu-owner --chain sepolia status       # balance, caps, 24 h spend, ag
 <table>
   <tr><th style="width:30%">What you see</th><th>What to do and say</th></tr>
   <tr><td>A red card or a red error line mentioning the chain or RPC</td><td>"The public test network is busy for a moment." Click the same chip again once. If it fails again, move on to the next segment; the proof segment can use any earlier payment.</td></tr>
-  <tr><td>An error line from the model (authentication, overloaded)</td><td>Try once more. If it repeats, play the backup video from Section 3 and narrate over it.</td></tr>
+  <tr><td>An error line from the model (authentication, overloaded), or the model is very slow</td><td>Click <b>Rules only</b> in the chat header (the error bubble offers the same switch) and click the chip again. Say: "Let us switch the AI off. The same rules still hold, because the model never decided anything." Rules only answers in a fraction of a second plus the block time. If even that fails, play the backup video from Section 3 and narrate over it.</td></tr>
+  <tr><td>Student sign-up says the invite code is not valid</td><td>In Tab 2, Family panel, click <b>Copy invite link</b> again and paste it into Tab 1. If a rehearsal left a student registered, restart with <code>--reset-demo</code> (Section 4).</td></tr>
   <tr><td>The sign-in screen appears in the middle (the server was restarted)</td><td>Type the password, <b>Sign in</b>. The conversation is gone after a restart, but the chain and the requests are kept.</td></tr>
   <tr><td>The request is called R2, not R1</td><td>Leftover from a rehearsal (no <code>--reset-demo</code>). Use whichever <b>Ask Shouhu to complete</b> button appears; say "R2".</td></tr>
   <tr><td>"Address already in use" when starting</td><td>Another copy is running: <span class="key">Ctrl</span><span class="key">C</span> in its Terminal window, or quit Terminal, then start again.</td></tr>
@@ -201,7 +203,7 @@ uv run shouhu-owner --chain sepolia status       # balance, caps, 24 h spend, ag
 <h3>Inside the 10-minute final</h3>
 <ul>
   <li>0:00 to 2:30: deck slides (problem, the three layers, permission tiers).</li>
-  <li>2:30 to 7:20: this script, with the opening shortened to one sentence because the slides said it; spend the saved 20 s ticking <b>Show tool calls</b> once to show the raw tool calls, or on <b>Pause the agent</b> in the owner console followed by any payment chip (refused: the wallet is paused), then <b>Resume</b>.</li>
+  <li>2:30 to 7:20: this script, with the opening shortened to one sentence because the slides said it; spend the saved 20 s ticking <b>Show tool calls</b> once to show the raw tool calls, or on <b>Pause the agent</b> in the owner console followed by any payment chip (refused: the wallet is paused), then <b>Resume</b>, or on <b>Rules only</b> and chip <code>8 给哥转 10</code>: the same payment rules with no AI at all.</li>
   <li>7:20 to 10:00: evidence slides: red-team table (8 of 8), tests, the Sepolia hashes and the verified contract source.</li>
 </ul>
 </div>
@@ -210,9 +212,9 @@ uv run shouhu-owner --chain sepolia status       # balance, caps, 24 h spend, ag
 <h2 class="page">8. Cue card for the driver (print this page)</h2>
 <table class="cue">
   <tr><th style="width:9%">Time</th><th style="width:39%">Do</th><th style="width:16%">Wait</th><th>Done when you see</th></tr>
-  <tr><td>before</td><td><code>uv run shouhu-web --chain sepolia --reset-demo</code>; Tab 2 register parent Lin Jianguo; clipboard = 李阿姨; Tab 1 on Student sign-up</td><td></td><td>Family panel shows the signature</td></tr>
+  <tr><td>before</td><td><code>uv run shouhu-web --chain sepolia --reset-demo</code>; Tab 2 register parent Lin Jianguo; <b>Copy invite link</b> → paste in Tab 1; then clipboard = 李阿姨</td><td></td><td>Tab 1: Student sign-up with the code filled in</td></tr>
   <tr><td>0:00</td><td>Hands off. Speaker opens.</td><td></td><td></td></tr>
-  <tr><td>0:30</td><td>Lin Xiaoyu · password ×2 · Create my account</td><td>instant</td><td>你好 Lin Xiaoyu</td></tr>
+  <tr><td>0:30</td><td>(code filled) Lin Xiaoyu · password ×2 · Create my account</td><td>instant</td><td>你好 Lin Xiaoyu</td></tr>
   <tr><td>0:50</td><td>Chip <code>2 Mama 20</code></td><td>~20 s</td><td>Green Tier 1 card, reply finished</td></tr>
   <tr><td>1:20</td><td>Chip <code>3 Landlord 800</code></td><td>~12 s</td><td>Amber R1 card</td></tr>
   <tr><td>1:35</td><td><span class="key">⌘</span><span class="key">2</span> · Approve once… · <code>yes</code> · <span class="key">Enter</span></td><td>~10 s</td><td>"Approved R1 on-chain"</td></tr>
@@ -225,7 +227,7 @@ uv run shouhu-owner --chain sepolia status       # balance, caps, 24 h spend, ag
   <tr><td>4:25</td><td><b>Open on Etherscan ↗</b> <span class="tip">(skip if past 4:15)</span></td><td>~3 s</td><td>Status Success</td></tr>
   <tr><td>4:30</td><td><span class="key">⌘</span><span class="key">W</span> <span class="key">⌘</span><span class="key">W</span> · back to the chat</td><td></td><td>Speaker closes</td></tr>
 </table>
-<p class="small" style="font-size:9pt;color:#444">Measured on Sepolia, 20 October 2026: student sign-up under 0.1 s; parent sign-up 1.1 s; Mama 18 to 23 s; landlord request 10 to 13 s; owner approval 8 to 15 s; completing R1 17 to 19 s; lookalike 6 s; injection 5 s; contact registration 14 s; payment to Aunt Li 14 to 22 s; proof page about 1 s. In the rehearsal Etherscan still showed "Indexing" two minutes after a payment and "Success" at five minutes; the proof page has no such delay because it reads the chain itself. If Etherscan says Indexing, use the line in the script.</p>
+<p class="small" style="font-size:9pt;color:#444">Measured on Sepolia, 20 October 2026: student sign-up under 0.1 s; parent sign-up 1.1 s; Mama 18 to 23 s; landlord request 10 to 13 s; owner approval 8 to 15 s; completing R1 17 to 19 s; lookalike 6 s; injection 5 s; contact registration 14 s; payment to Aunt Li 14 to 22 s; proof page about 1 s. In the rehearsal Etherscan still showed "Indexing" two minutes after a payment and "Success" at five minutes; the proof page has no such delay because it reads the chain itself. If Etherscan says Indexing, use the line in the script. Second run, web app v2, same day: Mama 17 s through the AI model; 给哥转 10 USDC 26 s in rules-only mode (almost all of it the block); completing R1 13 s in rules-only mode; payment to Aunt Li 27 s through the AI model.</p>
 
 </body>
 </html>

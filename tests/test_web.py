@@ -75,7 +75,8 @@ def env(tmp_path_factory):
         servers = [webapp.serve(app, APP_PORT), webapp.serve(oapp, OWNER_PORT)]
         for s in servers:
             threading.Thread(target=s.serve_forever, daemon=True).start()
-        yield {"app": app, "owner_app": oapp, "chain": chain, "contacts": contacts, "owner": owner, "proofs": {}, "tmp": tmp}
+        yield {"app": app, "owner_app": oapp, "chain": chain, "contacts": contacts, "owner": owner, "proofs": {}, "tmp": tmp,
+               "session": session}
         for s in servers:
             s.shutdown()
             s.server_close()
@@ -141,6 +142,12 @@ def test_student_registration_needs_the_parents_invite(env):
     assert call(OWNER_PORT, "/api/state")[0] == 401
     COOKIES[OWNER_PORT] = parent_cookie
     assert call(OWNER_PORT, "/api/state")[1]["student"]["name"] == "Lin Xiaoyu"
+
+
+def test_model_is_told_who_the_parent_and_the_student_are(env):
+    system = env["session"].agent.system()
+    assert "The owner is the user's parent, Lin Jianguo" in system and "The user is Lin Xiaoyu (林小雨)." in system
+    assert "Mama included, are people the user pays, not the owner" in system
 
 
 def test_post_needs_page_token_and_local_host(env):

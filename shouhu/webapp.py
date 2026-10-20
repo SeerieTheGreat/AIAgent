@@ -66,6 +66,7 @@ class Session:
         self.requests = requests or Requests()
         self.agent_account = agent_account or account_from(config.agent_key())
         self.audit_path = audit_path
+        self.about = None                 # function naming the student and the parent for the model, set by build_app
         self.lock = threading.Lock()
         self.progress: list = []          # tool calls of the turn in flight
         self.busy = False
@@ -83,7 +84,7 @@ class Session:
             client = RulesModel(self.ctx)       # no model: fixed rules read the request, the same tools and checks run
         else:
             client = self.model_client or ModelClient(self.model, self.effort)
-        self.agent = ShouhuAgent(client, self.ctx)
+        self.agent = ShouhuAgent(client, self.ctx, about=lambda: self.about() if self.about else "")
         self.agent.on_tool = lambda name, args, res: self.progress.append(_card(name, args, res, self.chain))
         self.log: list = []
 
@@ -267,6 +268,19 @@ def build_app(session: Session, owner_port: int | None, accounts: Accounts | Non
                 "invited_by": parent["name"]}
 
     accounts_mod.add_routes(app, accounts, "student", prepare)
+
+    def family() -> str:
+        """Names for the model, so it calls the parent by name and never mistakes a contact (Mama) for the owner."""
+        parent, student = accounts.public("owner"), accounts.public("student")
+        if not parent:
+            return ""
+        line = f"The owner is the user's parent, {parent['name']}, who registered in the owner console with the owner key."
+        if student:
+            cn = f" ({student['chinese_name']})" if student.get("chinese_name") else ""
+            line += f" The user is {student['name']}{cn}."
+        return line
+
+    session.about = family
 
     @app.get("/api/proof")
     def _proof(q):

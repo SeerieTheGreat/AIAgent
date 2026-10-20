@@ -81,7 +81,8 @@ function render() {
   const stmtOpen = $("family").querySelector("details")?.open;
   const typing = $("family").contains(document.activeElement) && document.activeElement.tagName === "INPUT";
   const invite = a && a.invite;
-  const link = invite ? `${BOOT.student_url}?invite=${encodeURIComponent(invite)}` : "";
+  const theme = document.documentElement.dataset.theme;       // a forced theme carries over to the student's page
+  const link = invite ? `${BOOT.student_url}?invite=${encodeURIComponent(invite)}${theme ? `&theme=${theme}` : ""}` : "";
   const studentRow = st ? `
     <div class="item"><div class="avatar">${esc((st.chinese_name || st.name)[0])}</div><div class="grow">
       <div><b>${esc(st.name)}</b> ${st.chinese_name ? `<span class="small">${esc(st.chinese_name)}</span>` : ""} <span class="small">student</span></div>

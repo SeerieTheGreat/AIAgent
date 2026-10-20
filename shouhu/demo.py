@@ -29,8 +29,11 @@ def owner_approve(req_id: str, chain_name: str) -> str:
 
 
 def run_tasks(chain_name: str, offline: bool, model: str, effort: str, verbose: bool) -> Path:
+    if chain_name == "anvil":
+        config.set_data_dir(config.ROOT / "data" / "anvil")   # the live chain's requests in data/ stay untouched
     chain = Chain(chain_name)
-    contacts = contacts_mod.load()
+    # a fresh local chain allowlists only the default contacts, not ones registered for another chain
+    contacts = contacts_mod.default_contacts() if chain_name == "anvil" else contacts_mod.load()
     stamp = time.strftime("%Y%m%d-%H%M%S")
     reqs = Requests()
     reqs.clear()

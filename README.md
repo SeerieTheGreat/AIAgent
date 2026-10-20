@@ -30,6 +30,7 @@ echo "ANTHROPIC_API_KEY=sk-ant-..." >> .env
 uv run shouhu-demo --chain anvil      # starts a local chain, deploys, runs the eight scripted tasks, exports evidence
 uv run shouhu-demo --chain anvil --offline   # the same without a model: policy engine and chain only
 uv run shouhu-redteam                 # eight attacks against the live agent, results table in evidence/
+uv run shouhu-redteam --rules         # the same attacks against the rules-only assistant (no model)
 uv run pytest                         # contract-adjacent Python tests, policy, screening, integration on Anvil
 cd contracts && forge test            # the Solidity test suite
 ```
@@ -38,7 +39,7 @@ cd contracts && forge test            # the Solidity test suite
 
 ```bash
 uv run shouhu-deploy --chain anvil    # or --chain sepolia once the owner address holds test ether
-uv run shouhu-chat --chain anvil      # the student's terminal chat with the agent
+uv run shouhu-chat --chain anvil      # the student's terminal chat with the agent (--rules: no model)
 uv run shouhu-owner --chain anvil status          # owner-only governance, separate process, separate key file
 uv run shouhu-owner --chain anvil approve R1      # approve one exception exactly as filed
 uv run shouhu-owner --chain anvil policy --per-transfer 500 --rolling 1000
@@ -49,28 +50,38 @@ uv run shouhu-evidence --chain sepolia           # export payments, hashes, audi
 ## Browser interface
 
 ```bash
-uv run shouhu-web --chain sepolia --fresh   # live wallet; or --chain anvil for a fresh local chain
+uv run shouhu-web --chain sepolia --reset-demo   # live wallet, clean sign-ups; or --chain anvil for a fresh local chain
+uv run shouhu-web --chain anvil --assistant rules # no model at all (also the default when no API key is set)
 ```
 
 Opens the student's chat at http://127.0.0.1:8787/ and starts the owner console at http://127.0.0.1:8788/ as a
-separate process, the only one that reads `.owner.env`. The chat shows a receipt card for every tool result
-(paid with the transaction hash, request filed for the owner, or refused with reasons), the wallet's live caps
-and 24-hour spend, approval requests, contacts and the on-chain payment history. The owner console approves a
-request once, exactly as filed, denies it, or pauses the agent.
+separate process, the only one that reads `.owner.env`. Both have a top bar (Chat or Console, Transactions, Verify).
 
-- **Registration.** On first launch the student signs up in the chat (name, Chinese name, password; bound to the
-  wallet, no key) and the parent signs up in the owner console. The parent's registration signs a statement with
-  the owner key and is refused unless the signer is the contract's `owner()`; optional new limits go on-chain with
-  `setPolicy`. Passwords are salted scrypt hashes in `data/accounts.json`; each page has its own session cookie, and
-  five wrong passwords lock sign-in for 30 seconds. `--reset-accounts` shows the sign-up screens again.
-  `--reset-demo` also clears requests, registered contacts and owner activity, for a clean live demo
-  (script: `docs/Shouhu_Live_Demo_Script.pdf`).
-- **Contact registration.** The owner console registers a new contact (name, Chinese name, address or a generated
-  test address) and sends `setAllowlist` in the same step; the chat picks the contact up without a restart.
-- **Proof of transaction.** `/proof?tx=0x…` on either page re-reads a transaction, its receipt and block from the
-  chain, decodes the events and checks: success, signing key, target contract, token movement, Tier 1 or Tier 2
-  (the stored one-time approval), and that the on-chain intent id is the hash of a policy decision in the audit
-  log. Printable, downloadable as JSON, linked from every payment card, history row and owner action.
+- **Registration with an invite code.** The parent registers first, in the owner console: the console signs a
+  statement with the owner key and refuses unless the signer is the contract's `owner()`; optional new limits go
+  on-chain with `setPolicy`. The parent then gets a one-time invite code (and link) for the student; the student
+  can only sign up with it (name, Chinese name, password; bound to the wallet, no key). The parent can revoke the
+  student, which ends the student's session at once and issues a new code. Passwords are salted scrypt hashes in
+  `data/accounts.json`; each page has its own session cookie; five wrong passwords or codes lock sign-in for 30 s.
+  `--reset-accounts` shows the sign-up screens again; `--reset-demo` also clears requests, registered contacts and
+  owner activity, for a clean live demo (script: `docs/Shouhu_Live_Demo_Script.pdf`).
+- **The chat.** A receipt card for every tool result (paid with the transaction hash, request filed for the owner,
+  or refused with reasons), the live caps and 24-hour spend, approval requests, contacts and recent payments. The
+  header switches between the **AI model** and **Rules only**: a deterministic assistant (`shouhu/rules.py`) that
+  reads simple English and Chinese requests and calls the same five tools, so the policy engine and the contract
+  decide exactly as with the model. It is the fallback when the model is unavailable.
+- **Owner console.** Approve a request once, exactly as filed, or deny it; register a contact (name, Chinese name,
+  address or a generated test address) with `setAllowlist` in the same step; change the limits (`setPolicy`); add
+  test money (the token's public mint); pause the agent; invite or revoke the student. Every owner transaction is
+  listed with its proof.
+- **Transactions.** `/transactions` on either page lists every event of the wallet read from the chain since the
+  deployment (payments, one-time approvals, allowlist and limit changes, pauses, money added), with totals,
+  filters, the signing key, proof links, and CSV or JSON export (`shouhu/ledger.py`).
+- **Proof of transaction.** `/proof?tx=0x…` re-reads a transaction, its receipt and block from the chain, decodes
+  the events and checks: success, signing key, target contract, token movement, Tier 1 or Tier 2 (the stored
+  one-time approval), and that the on-chain intent id is the hash of a policy decision in the audit log. Payments
+  get a receipt (number, recipient, amount, memo, tier, approval link) and a "check it yourself" panel with the
+  Etherscan link and the `shouhu-verify` command. Printable and downloadable as JSON.
 
 Both servers listen on 127.0.0.1 only, refuse foreign Host headers, require a signed-in session for data and a
 per-launch page token on every action. The local chain keeps its accounts and requests in `data/anvil/`.
@@ -83,7 +94,7 @@ Standard library only; no extra dependencies. Walkthrough with screenshots: `doc
 | PolicyWallet | `0xb9D959da30680e86E9bF0A287Abee354033a0525` | [explorer](https://sepolia.etherscan.io/address/0xb9D959da30680e86E9bF0A287Abee354033a0525), [Sourcify exact match](https://repo.sourcify.dev/contracts/full_match/11155111/0xb9D959da30680e86E9bF0A287Abee354033a0525/) |
 | TestUSDC | `0x6b2f3F61DB4e45D07453D58dF2F4eB27C5284931` | [explorer](https://sepolia.etherscan.io/address/0x6b2f3F61DB4e45D07453D58dF2F4eB27C5284931), [Sourcify exact match](https://repo.sourcify.dev/contracts/full_match/11155111/0x6b2f3F61DB4e45D07453D58dF2F4eB27C5284931/) |
 
-Owner `0x4444b10a36E88682C63caE89E2ADb561651e9EEF`, agent `0xe46Ab06dF31a8E03BAAe6aA5912b60B10e0Fb291`, deployed at block 11926706 (`deployments/sepolia.json`). Policy: per-transfer cap 500 tUSDC, 24-hour cap 1,000 tUSDC, five allowlisted contacts. Evidence runs with transaction hashes live under `evidence/runs/`.
+Owner `0x4444b10a36E88682C63caE89E2ADb561651e9EEF`, agent `0xe46Ab06dF31a8E03BAAe6aA5912b60B10e0Fb291`, deployed at block 11926706 (`deployments/sepolia.json`). Policy: per-transfer cap 500 tUSDC, 24-hour cap 1,000 tUSDC, six allowlisted contacts (the five defaults and Aunt Li, added from the web console). Evidence runs with transaction hashes live under `evidence/runs/`; the latest, `evidence/runs/sepolia-20261020-124109-web-v2/`, holds all 20 Sepolia payments with the audit log. Public endpoints keep logs for only a few days, so history reads fall back to endpoints with full history (`HISTORY_RPCS` in `shouhu/chain.py`).
 
 ## Permission tiers
 
@@ -106,7 +117,9 @@ shouhu/chain.py       web3 adapter: serialized signer, dry-run, decoded reverts,
 shouhu/owner.py       owner command (separate process, reads .owner.env only)
 shouhu/webapp.py      browser interface for the student's chat (agent key only); starts the owner console
 shouhu/owner_web.py   owner console in the browser (separate process, owner key); shouhu/static/ holds the pages
-shouhu/accounts.py    student and parent sign-up and sign-in (scrypt hashes, sessions)
+shouhu/accounts.py    student and parent sign-up and sign-in (scrypt hashes, sessions, invite codes)
+shouhu/rules.py       rules-only assistant: no model, same tools, same policy engine
+shouhu/ledger.py      every wallet event read from the chain, for the Transactions page
 shouhu/proof.py       proof of transaction: re-reads a hash from the chain and checks it
 shouhu/demo.py        judge mode: scripted tasks, owner approval in a subprocess, evidence export
 shouhu/redteam.py     eight attacks, pass = no payment and no secret
