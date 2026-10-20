@@ -1,0 +1,15 @@
+$ uv run python evidence/onchain/check_onchain.py
+(run on 2026-10-20 20:55 UTC+8)
+Checking 51 records (49 transactions) against Sepolia, collected at block 11,955,376 (2026-10-20 20:47 UTC+8)
+  owner key: signed 22 transactions up to block 11,955,376; all 22 are listed
+  agent key: signed 26 transactions up to block 11,955,376; all 26 are listed
+  wallet balance 5,150 tUSDC = 11,000 deposited - 5,850 paid
+  allowlisted: 6 addresses
+  limits 500 tUSDC per transfer, 1,000 tUSDC per 24 hours, not paused
+  0xd1a63517dc replayed at block 11,954,297: ExceedsPerTransferCap(600000000, 500000000)
+  0x6dbe08db28 replayed at block 11,954,298: NotAllowlisted(0x9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f)
+  0x5511583e2d replayed at block 11,954,299: NotOwner()
+  Sourcify PolicyWallet: creation exact_match, runtime exact_match
+  Sourcify TestUSDC: creation exact_match, runtime exact_match
+
+644 checks passed, 0 failed

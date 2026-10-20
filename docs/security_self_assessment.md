@@ -18,7 +18,7 @@ Version 1.1 · 20 October 2026, revised after an adversarial review · assessed:
 
 A print version of this report is in [`Shouhu_Security_Self_Assessment.pdf`](Shouhu_Security_Self_Assessment.pdf).
 
-**Contents:** [1. Scope, method and rating scale](#1-scope-method-and-rating-scale) · [2. Permission-tier implementation](#2-permission-tier-implementation) · [3. Known-risk list](#3-known-risk-list) · [4. Controls against recognised checklists](#4-controls-against-recognised-checklists) · [5. Verification evidence](#5-verification-evidence) · [6. Remediation plan before real money](#6-remediation-plan-before-real-money) · [7. Conclusion](#7-conclusion) · [8. Revision note (version 1.1)](#8-revision-note-version-1-1) · [Appendix. Red-team results](#appendix-red-team-results)
+**Contents:** [1. Scope, method and rating scale](#1-scope-method-and-rating-scale) · [2. Permission-tier implementation](#2-permission-tier-implementation) · [3. Known-risk list](#3-known-risk-list) · [4. Controls against recognised checklists](#4-controls-against-recognised-checklists) · [5. Verification evidence](#5-verification-evidence) · [6. Remediation plan before real money](#6-remediation-plan-before-real-money) · [7. Conclusion](#7-conclusion) · [8. Revision note (version 1.1)](#8-revision-note-version-11) · [Appendix. Red-team results](#appendix-red-team-results)
 
 ## 1. Scope, method and rating scale
 
@@ -227,7 +227,7 @@ Twenty-six known risks, grouped by area. Ratings follow section 1.3 and assume r
 | Red team, AI model | 8 of 8: no payment, balance unchanged, no secret (re-run on 20 October 2026 against the current code) | `evidence/redteam_results.md` |
 | Red team, rules-only assistant | 8 of 8 | `evidence/redteam_results_rules.md`; `docs/test_results/06_red_team_rules_only_8_of_8.txt` |
 | Scripted tasks on Sepolia (AI model) | 8 of 8 as expected, with live hashes | `evidence/runs/sepolia-20261016-182745-tasks/` |
-| Live wallet on Sepolia | 43 events: 23 payments (16 Tier 1, 7 Tier 2), 7 approvals, 2 deposits, 11 rule changes; none outside policy; every payment linked to its decision | [PolicyWallet on Etherscan](https://sepolia.etherscan.io/address/0xb9D959da30680e86E9bF0A287Abee354033a0525); `evidence/runs/sepolia-20261020-181247/`; `evidence/onchain/` |
+| Live wallet on Sepolia | 43 events: 23 payments (16 Tier 1, 7 Tier 2), 7 approvals, 2 deposits, 11 rule settings (the agent key and the limits at deployment, 9 allowlist changes); none outside policy; every payment linked to its decision | [PolicyWallet on Etherscan](https://sepolia.etherscan.io/address/0xb9D959da30680e86E9bF0A287Abee354033a0525); `evidence/runs/sepolia-20261020-181247/`; `evidence/onchain/` |
 | Contract refusals on Sepolia | 3 transactions sent directly with the agent key were rejected on-chain: over the cap, not allowlisted, not the owner | `evidence/onchain/rejections.json`; Execution Evidence, section 4 |
 | Fresh-copy run of the README | Every step passed on 20 October 2026 | `docs/test_results/` |
 
@@ -266,6 +266,7 @@ Version 1.0 was reviewed again from an attacker’s point of view, checking ever
 | R24 | Messages are stored locally | With default file permissions other accounts on the computer can also read the audit log |
 | 4.1 | LLM01 and LLM03 mitigated; contacts and limits only on-chain | LLM01 and LLM03 keep a medium residual risk (R11, R23), as in the risk list; only limits and the allowlist are on-chain, contact names are local files |
 | 1.2 | “86 cases” next to 12 + 58 tests | 86 cases = 70 automated tests + 8 scripted tasks + 8 red-team attacks |
+| 5 | 11 rule changes | 11 rule settings: the agent key and the limits set at deployment, and 9 allowlist changes |
 | R3 | A thief could spend the agent key | Anyone using the computer account can sign with it directly and skip the policy engine; the contract still caps it, as three rejected transactions show |
 | 2.6 | No governance transaction from the agent key exists | The agent key’s deliberate setPolicy attempt exists on-chain and was rejected with NotOwner |
 | 4.2 | The only external call is the token transfer | Every external call goes to the immutable token (transfer and the balanceOf view) |

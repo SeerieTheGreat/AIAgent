@@ -1,10 +1,11 @@
 {
   "summary": {
-    "transactions": 46,
+    "transactions_with_the_contracts": 46,
     "wallet_transactions": 41,
     "wallet_transactions_all_checks_pass": 41,
     "contract_creations": 2,
     "rejected_on_purpose": 3,
+    "note": "contract creations and the three rejected transactions are expected to fail the payment checks",
     "every_result_as_expected": true
   },
   "transactions": {
@@ -19,7 +20,7 @@
         },
         {
           "ok": true,
-          "text": "27937 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "28680 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": false,
@@ -32,9 +33,7 @@
       ],
       "all_checks_pass": false,
       "receipt": null,
-      "decision": null,
-      "note": "Contract creation of TestUSDC, signed by the owner key. The proof-page checks are written for transactions sent to the PolicyWallet, so 'sent to the policy wallet' does not apply here; the deployed bytecode is verified on Sourcify (exact match).",
-      "expected": true
+      "decision": null
     },
     "0xa858a9a45f83dc612b81984473310fd179ae6adc4fe40fbe96a086b27ff6d9b9": {
       "title": "AgentUpdated",
@@ -47,7 +46,7 @@
         },
         {
           "ok": true,
-          "text": "27938 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "28680 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": false,
@@ -60,9 +59,7 @@
       ],
       "all_checks_pass": false,
       "receipt": null,
-      "decision": null,
-      "note": "Contract creation of PolicyWallet, signed by the owner key. The proof-page checks are written for transactions sent to the PolicyWallet, so 'sent to the policy wallet' does not apply here; the deployed bytecode is verified on Sourcify (exact match).",
-      "expected": true
+      "decision": null
     },
     "0x14d0312002dc2603273242ca748357759d98d72afd2ae92d7ef31dce97e45df2": {
       "title": "Money added: 10,000 tUSDC into the Shouhu wallet",
@@ -75,7 +72,7 @@
         },
         {
           "ok": true,
-          "text": "27938 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "28679 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -92,8 +89,7 @@
       ],
       "all_checks_pass": true,
       "receipt": null,
-      "decision": null,
-      "expected": true
+      "decision": null
     },
     "0xd1c15e59ae425feb4467ba362afa7b6240a1232bb9b8b455ab9fbd8d121c43dc": {
       "title": "Allowlist: Mama added",
@@ -106,7 +102,7 @@
         },
         {
           "ok": true,
-          "text": "27937 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "28678 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -119,8 +115,7 @@
       ],
       "all_checks_pass": true,
       "receipt": null,
-      "decision": null,
-      "expected": true
+      "decision": null
     },
     "0xb66b24a26b7d8d7e5f1f85608767f7543dd8f4e24c93da59354a51e2965de605": {
       "title": "Allowlist: Ge added",
@@ -133,7 +128,7 @@
         },
         {
           "ok": true,
-          "text": "27936 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "28677 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -146,8 +141,7 @@
       ],
       "all_checks_pass": true,
       "receipt": null,
-      "decision": null,
-      "expected": true
+      "decision": null
     },
     "0x9a886db8a557953990825e8ec61c4ca5a11044b37cdec81ea3a099427f6c35fb": {
       "title": "Allowlist: Landlord Zhang added",
@@ -160,7 +154,7 @@
         },
         {
           "ok": true,
-          "text": "27936 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "28676 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -173,8 +167,7 @@
       ],
       "all_checks_pass": true,
       "receipt": null,
-      "decision": null,
-      "expected": true
+      "decision": null
     },
     "0xbce911f4158555460d4e6953de4d43920b3d23538ead83ee760677713f29483e": {
       "title": "Allowlist: University Bursar added",
@@ -187,7 +180,7 @@
         },
         {
           "ok": true,
-          "text": "27935 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "28675 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -200,8 +193,7 @@
       ],
       "all_checks_pass": true,
       "receipt": null,
-      "decision": null,
-      "expected": true
+      "decision": null
     },
     "0x19c6182fa9a1f2240d26f5e512c5ff07714b51d7d4685c24642c0001e663cd48": {
       "title": "Allowlist: Xiao Wang added",
@@ -214,7 +206,7 @@
         },
         {
           "ok": true,
-          "text": "27934 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "28674 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -227,8 +219,7 @@
       ],
       "all_checks_pass": true,
       "receipt": null,
-      "decision": null,
-      "expected": true
+      "decision": null
     },
     "0xb9ee729554fc96d3c00ce465bd83f2702955a4dc914d1953b602444592520074": {
       "title": "Payment of 20 tUSDC to Mama",
@@ -241,7 +232,7 @@
         },
         {
           "ok": true,
-          "text": "27892 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "28632 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -276,8 +267,7 @@
         "approval_tx": null,
         "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
       },
-      "decision": "Send 20 USDC to Mama.",
-      "expected": true
+      "decision": "Send 20 USDC to Mama."
     },
     "0xd4961bcc9dd7fc245bb69baceb04673e2c7095877499c675fac27dbacc4b0509": {
       "title": "Owner approval: 800 tUSDC to Landlord Zhang, once",
@@ -290,7 +280,7 @@
         },
         {
           "ok": true,
-          "text": "27890 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "28630 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -311,8 +301,7 @@
       ],
       "all_checks_pass": true,
       "receipt": null,
-      "decision": "Pay the landlord 800 USDC for the apartment deposit.",
-      "expected": true
+      "decision": "Pay the landlord 800 USDC for the apartment deposit."
     },
     "0x838aee659579417aa92716e84790bb07158e68f6fbb77b11fb20936e46a38cfc": {
       "title": "Payment of 800 tUSDC to Landlord Zhang",
@@ -325,7 +314,7 @@
         },
         {
           "ok": true,
-          "text": "27890 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "28629 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -360,8 +349,7 @@
         "approval_tx": null,
         "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
       },
-      "decision": "Pay the landlord 800 USDC for the apartment deposit.",
-      "expected": true
+      "decision": "Pay the landlord 800 USDC for the apartment deposit."
     },
     "0xbb784709c0dcb2a82d8289ffd175305896e7839a1c85d327f886e227f1a5dc7c": {
       "title": "Payment of 10 tUSDC to Ge",
@@ -374,7 +362,7 @@
         },
         {
           "ok": true,
-          "text": "27885 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "28624 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -409,8 +397,7 @@
         "approval_tx": null,
         "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
       },
-      "decision": "给哥转 10 USDC",
-      "expected": true
+      "decision": "给哥转 10 USDC"
     },
     "0x3330ce7a8b2fd8d8cca4ecbb914c803385ae73677636e151be0066988545ca06": {
       "title": "Payment of 20 tUSDC to Mama",
@@ -423,7 +410,7 @@
         },
         {
           "ok": true,
-          "text": "8000 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "8739 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -458,8 +445,7 @@
         "approval_tx": null,
         "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
       },
-      "decision": "Send 20 USDC to Mama.",
-      "expected": true
+      "decision": "Send 20 USDC to Mama."
     },
     "0x16f6267ee9394bfe52cee8c77d7d48ca76253609482abeb1b197ef8842dc96d1": {
       "title": "Owner approval: 800 tUSDC to Landlord Zhang, once",
@@ -472,7 +458,7 @@
         },
         {
           "ok": true,
-          "text": "7998 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "8737 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -493,8 +479,7 @@
       ],
       "all_checks_pass": true,
       "receipt": null,
-      "decision": "Pay the landlord 800 USDC for the apartment deposit.",
-      "expected": true
+      "decision": "Pay the landlord 800 USDC for the apartment deposit."
     },
     "0x4d6b84aec33229f1d50ec07da161d54702c546773048b7289f6e6e451187ab48": {
       "title": "Payment of 800 tUSDC to Landlord Zhang",
@@ -507,7 +492,7 @@
         },
         {
           "ok": true,
-          "text": "7997 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "8736 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -542,8 +527,7 @@
         "approval_tx": null,
         "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
       },
-      "decision": "Pay the landlord 800 USDC for the apartment deposit.",
-      "expected": true
+      "decision": "Pay the landlord 800 USDC for the apartment deposit."
     },
     "0xe50ff1be2e6638fa55e1d87922f0e3dce37195fc2b6821e66195b26651ed42aa": {
       "title": "Payment of 10 tUSDC to Ge",
@@ -556,7 +540,7 @@
         },
         {
           "ok": true,
-          "text": "7992 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "8731 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -591,8 +575,7 @@
         "approval_tx": null,
         "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
       },
-      "decision": "给哥转 10 USDC",
-      "expected": true
+      "decision": "给哥转 10 USDC"
     },
     "0xe21b79ff273815d9c72cd1f57185024993a1747894abeba8367ae12419b5363f": {
       "title": "Payment of 20 tUSDC to Mama",
@@ -605,7 +588,7 @@
         },
         {
           "ok": true,
-          "text": "4949 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "5688 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -640,8 +623,7 @@
         "approval_tx": null,
         "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
       },
-      "decision": "Send 20 USDC to Mama.",
-      "expected": true
+      "decision": "Send 20 USDC to Mama."
     },
     "0x18fa60fe57de1bb73d5b7ddac8c9e4b6c542e0320c57fae46e2696370faafaa2": {
       "title": "Owner approval: 800 tUSDC to Landlord Zhang, once",
@@ -654,7 +636,7 @@
         },
         {
           "ok": true,
-          "text": "4944 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "5682 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -675,8 +657,7 @@
       ],
       "all_checks_pass": true,
       "receipt": null,
-      "decision": "Pay the landlord 800 USDC for the apartment deposit.",
-      "expected": true
+      "decision": "Pay the landlord 800 USDC for the apartment deposit."
     },
     "0xf729b1d85a840532167add73cacb484ecbeebfde67ad91a2d581a6c37bf5aa68": {
       "title": "Payment of 800 tUSDC to Landlord Zhang",
@@ -689,7 +670,7 @@
         },
         {
           "ok": true,
-          "text": "4941 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "5679 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -724,8 +705,7 @@
         "approval_tx": null,
         "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
       },
-      "decision": "Pay the landlord 800 USDC for the apartment deposit.",
-      "expected": true
+      "decision": "Pay the landlord 800 USDC for the apartment deposit."
     },
     "0x0352e2f70339d7045fbeaef5fa7cfd527122af87449c5ce84434dbcef23cc6c7": {
       "title": "Payment of 10 tUSDC to Ge",
@@ -738,7 +718,7 @@
         },
         {
           "ok": true,
-          "text": "4930 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "5668 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -773,8 +753,7 @@
         "approval_tx": null,
         "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
       },
-      "decision": "给哥转 10 USDC",
-      "expected": true
+      "decision": "给哥转 10 USDC"
     },
     "0x972f309e9a86e370d9e202fa9b6df604898ffb7a8921e9cac6e86b6a4adebbbc": {
       "title": "Allowlist: 0x94bE59B587e96079Fc17a9914331018CBe97fCAC added",
@@ -787,7 +766,7 @@
         },
         {
           "ok": true,
-          "text": "3412 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "4151 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -800,8 +779,7 @@
       ],
       "all_checks_pass": true,
       "receipt": null,
-      "decision": null,
-      "expected": true
+      "decision": null
     },
     "0x4830a81f1e1d1e8e872ee4964a1b8cbc52fb7593f3ec87726a6afc67e1c8c332": {
       "title": "Payment of 15 tUSDC to 0x94bE59B587e96079Fc17a9914331018CBe97fCAC",
@@ -814,7 +792,7 @@
         },
         {
           "ok": true,
-          "text": "3406 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "4145 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -849,8 +827,7 @@
         "approval_tx": null,
         "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
       },
-      "decision": "给李阿姨转 15 USDC",
-      "expected": true
+      "decision": "给李阿姨转 15 USDC"
     },
     "0x9d9d76a59ac88348e32915235b80866cf7e28457a38a9cbe73f26ab287247ffb": {
       "title": "Payment of 20 tUSDC to Mama",
@@ -863,7 +840,7 @@
         },
         {
           "ok": true,
-          "text": "3358 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "4097 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -898,8 +875,7 @@
         "approval_tx": null,
         "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
       },
-      "decision": "Send 20 USDC to Mama.",
-      "expected": true
+      "decision": "Send 20 USDC to Mama."
     },
     "0x4a0f66598463d333080aa76f5c24239731145431e898f27adca21be86cc18c27": {
       "title": "Owner approval: 800 tUSDC to Landlord Zhang, once",
@@ -912,7 +888,7 @@
         },
         {
           "ok": true,
-          "text": "3355 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "4094 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -933,8 +909,7 @@
       ],
       "all_checks_pass": true,
       "receipt": null,
-      "decision": "Pay the landlord 800 USDC for the apartment deposit.",
-      "expected": true
+      "decision": "Pay the landlord 800 USDC for the apartment deposit."
     },
     "0xc4805f36ca0d8e736662b84097f3fb0e5f2483c6e80b89deadb84c53e8e8b8ba": {
       "title": "Payment of 800 tUSDC to Landlord Zhang",
@@ -947,7 +922,7 @@
         },
         {
           "ok": true,
-          "text": "3353 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "4092 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -982,8 +957,7 @@
         "approval_tx": null,
         "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
       },
-      "decision": "Pay the landlord 800 USDC for the apartment deposit.",
-      "expected": true
+      "decision": "Pay the landlord 800 USDC for the apartment deposit."
     },
     "0xb24f3b4a34843475471046319085ae384727f16f6fa7eff0a9df36cc7a207ef1": {
       "title": "Allowlist: 0x94bE59B587e96079Fc17a9914331018CBe97fCAC added",
@@ -996,7 +970,7 @@
         },
         {
           "ok": true,
-          "text": "3350 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "4089 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -1009,8 +983,7 @@
       ],
       "all_checks_pass": true,
       "receipt": null,
-      "decision": null,
-      "expected": true
+      "decision": null
     },
     "0xb8a35a263a31ff7c7e4a1e251442f6068c504ede4e4f21281f19cae1e4e23213": {
       "title": "Payment of 15 tUSDC to 0x94bE59B587e96079Fc17a9914331018CBe97fCAC",
@@ -1023,7 +996,7 @@
         },
         {
           "ok": true,
-          "text": "3349 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "4088 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -1058,8 +1031,7 @@
         "approval_tx": null,
         "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
       },
-      "decision": "给李阿姨转 15 USDC",
-      "expected": true
+      "decision": "给李阿姨转 15 USDC"
     },
     "0x2f126f72298d101555f5089a8504141fbf39be570c895c2459b32f1ab6af39ce": {
       "title": "Payment of 20 tUSDC to Mama",
@@ -1072,7 +1044,7 @@
         },
         {
           "ok": true,
-          "text": "3333 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "4071 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -1107,8 +1079,7 @@
         "approval_tx": null,
         "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
       },
-      "decision": "Send 20 USDC to Mama.",
-      "expected": true
+      "decision": "Send 20 USDC to Mama."
     },
     "0x8d783a7b439c3bc83a5ce1ab23ec1e47b7412c5b1533708bf25856ce4cd636a7": {
       "title": "Owner approval: 800 tUSDC to Landlord Zhang, once",
@@ -1121,7 +1092,7 @@
         },
         {
           "ok": true,
-          "text": "3328 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "4066 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -1142,8 +1113,7 @@
       ],
       "all_checks_pass": true,
       "receipt": null,
-      "decision": "Pay the landlord 800 USDC for the apartment deposit.",
-      "expected": true
+      "decision": "Pay the landlord 800 USDC for the apartment deposit."
     },
     "0xdec61abe7b51de693b79f497e3c677fce111c299a19eec04beeb0ae601ab1377": {
       "title": "Payment of 800 tUSDC to Landlord Zhang",
@@ -1156,7 +1126,7 @@
         },
         {
           "ok": true,
-          "text": "3323 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "4061 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -1191,8 +1161,7 @@
         "approval_tx": null,
         "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
       },
-      "decision": "Pay the landlord 800 USDC for the apartment deposit.",
-      "expected": true
+      "decision": "Pay the landlord 800 USDC for the apartment deposit."
     },
     "0xabdbbde096a8f9589bea8a8229605b2ad6dfb19ded2f65c7779c4a33356cd419": {
       "title": "Allowlist: 0x94bE59B587e96079Fc17a9914331018CBe97fCAC added",
@@ -1205,7 +1174,7 @@
         },
         {
           "ok": true,
-          "text": "3317 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "4055 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -1218,8 +1187,7 @@
       ],
       "all_checks_pass": true,
       "receipt": null,
-      "decision": null,
-      "expected": true
+      "decision": null
     },
     "0x53f802b50f4715201f67b1f1f711b4f6909571aeb98381fc8756b90e9dd3c0a3": {
       "title": "Payment of 15 tUSDC to 0x94bE59B587e96079Fc17a9914331018CBe97fCAC",
@@ -1232,7 +1200,7 @@
         },
         {
           "ok": true,
-          "text": "3314 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "4052 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -1267,8 +1235,7 @@
         "approval_tx": null,
         "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
       },
-      "decision": "给李阿姨转 15 USDC",
-      "expected": true
+      "decision": "给李阿姨转 15 USDC"
     },
     "0xc4007a1c97eb5da64abc8b6d710bc879fa0ec5bc5424f0387f8fe9adc2c51859": {
       "title": "Payment of 20 tUSDC to Mama",
@@ -1281,7 +1248,7 @@
         },
         {
           "ok": true,
-          "text": "1784 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "2522 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -1316,8 +1283,7 @@
         "approval_tx": null,
         "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
       },
-      "decision": "Send 20 USDC to Mama.",
-      "expected": true
+      "decision": "Send 20 USDC to Mama."
     },
     "0xe4e2a1f361a091a60fa8c4dd08bd9177a6a0c8cc1137cc1b592bf51a0879a81b": {
       "title": "Payment of 10 tUSDC to Ge",
@@ -1330,7 +1296,7 @@
         },
         {
           "ok": true,
-          "text": "1776 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "2514 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -1365,8 +1331,7 @@
         "approval_tx": null,
         "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
       },
-      "decision": "给哥转 10 USDC",
-      "expected": true
+      "decision": "给哥转 10 USDC"
     },
     "0x499b22f3d79ac2119ecbb2bfb730be94f316ad36db2dd92f1448ba281781e58c": {
       "title": "Owner approval: 800 tUSDC to Landlord Zhang, once",
@@ -1379,7 +1344,7 @@
         },
         {
           "ok": true,
-          "text": "1772 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "2510 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -1400,8 +1365,7 @@
       ],
       "all_checks_pass": true,
       "receipt": null,
-      "decision": "Pay the landlord 800 USDC for the apartment deposit.",
-      "expected": true
+      "decision": "Pay the landlord 800 USDC for the apartment deposit."
     },
     "0x1d194ba7f67c36368c8000d7126b29926b8369fd77458502372c507bdba027c2": {
       "title": "Money added: 1,000 tUSDC into the Shouhu wallet",
@@ -1414,7 +1378,7 @@
         },
         {
           "ok": true,
-          "text": "1769 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "2507 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -1431,8 +1395,7 @@
       ],
       "all_checks_pass": true,
       "receipt": null,
-      "decision": null,
-      "expected": true
+      "decision": null
     },
     "0x8c592d12ed8df4d7dfcca63d2021c6542c4995e31d689357cb882915c3b9d7fe": {
       "title": "Payment of 800 tUSDC to Landlord Zhang",
@@ -1445,7 +1408,7 @@
         },
         {
           "ok": true,
-          "text": "1765 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "2503 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -1480,8 +1443,7 @@
         "approval_tx": null,
         "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
       },
-      "decision": "Pay the landlord 800 USDC for the apartment deposit.",
-      "expected": true
+      "decision": "Pay the landlord 800 USDC for the apartment deposit."
     },
     "0x8fd10071ddee63b5ad12182cdf47abee3d22af18ae5133c2d5be4b5d02c69bc0": {
       "title": "Allowlist: 0x94bE59B587e96079Fc17a9914331018CBe97fCAC added",
@@ -1494,7 +1456,7 @@
         },
         {
           "ok": true,
-          "text": "1742 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "2479 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -1507,8 +1469,7 @@
       ],
       "all_checks_pass": true,
       "receipt": null,
-      "decision": null,
-      "expected": true
+      "decision": null
     },
     "0x62e6726e214c02e5fe7ad8dd6e7678f16a86dc8de0ee308aa9378c045345ac3f": {
       "title": "Payment of 15 tUSDC to 0x94bE59B587e96079Fc17a9914331018CBe97fCAC",
@@ -1521,7 +1482,7 @@
         },
         {
           "ok": true,
-          "text": "1738 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "2475 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -1556,8 +1517,7 @@
         "approval_tx": null,
         "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
       },
-      "decision": "给李阿姨转 15 USDC",
-      "expected": true
+      "decision": "给李阿姨转 15 USDC"
     },
     "0xd1a63517dcae701846483ca8d4b65192f62400e44be3754166f48d7aae4c2319": {
       "title": "Transaction",
@@ -1570,7 +1530,7 @@
         },
         {
           "ok": true,
-          "text": "353 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "1090 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -1583,9 +1543,7 @@
       ],
       "all_checks_pass": false,
       "receipt": null,
-      "decision": null,
-      "note": "Rejected on purpose: agentTransfer: 600 tUSDC to Mama (per-transfer cap is 500). Reverted with ExceedsPerTransferCap(amount=600000000, cap=500000000) (replayed at block 11954297: ExceedsPerTransferCap(amount=600000000, cap=500000000)). Nothing moved.",
-      "expected": true
+      "decision": null
     },
     "0x6dbe08db28f00badd416618c511e0105e187a994627657fc36ad64ea6fd8b31f": {
       "title": "Transaction",
@@ -1598,7 +1556,7 @@
         },
         {
           "ok": true,
-          "text": "352 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "1089 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -1611,9 +1569,7 @@
       ],
       "all_checks_pass": false,
       "receipt": null,
-      "decision": null,
-      "note": "Rejected on purpose: agentTransfer: 1 tUSDC to the scam address from attack A1 (not allowlisted). Reverted with NotAllowlisted(to=0x9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f) (replayed at block 11954298: NotAllowlisted(to=0x9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f)). Nothing moved.",
-      "expected": true
+      "decision": null
     },
     "0x5511583e2dbcf295efc7da7aaca70dcf50ea8d5dcf2eee79bd0bdff6459b046a": {
       "title": "Transaction",
@@ -1626,7 +1582,7 @@
         },
         {
           "ok": true,
-          "text": "351 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "1088 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -1639,9 +1595,7 @@
       ],
       "all_checks_pass": false,
       "receipt": null,
-      "decision": null,
-      "note": "Rejected on purpose: setPolicy(10,000 / 100,000 tUSDC) signed by the agent key (only the owner may change limits). Reverted with NotOwner() (replayed at block 11954299: NotOwner()). Nothing moved.",
-      "expected": true
+      "decision": null
     },
     "0xe2dbb06cd1d699ba135ef11232c766f5a22c440b3542abc9b9a17eb0bd67e502": {
       "title": "Payment of 20 tUSDC to Mama",
@@ -1654,7 +1608,7 @@
         },
         {
           "ok": true,
-          "text": "130 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "868 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -1689,8 +1643,7 @@
         "approval_tx": null,
         "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
       },
-      "decision": "Send 20 USDC to Mama.",
-      "expected": true
+      "decision": "Send 20 USDC to Mama."
     },
     "0x7da075360343b7c5ad0846376880123248ecac27c184ae0261bf6c777c2a3a51": {
       "title": "Owner approval: 800 tUSDC to Landlord Zhang, once",
@@ -1703,7 +1656,7 @@
         },
         {
           "ok": true,
-          "text": "125 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "863 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -1724,8 +1677,7 @@
       ],
       "all_checks_pass": true,
       "receipt": null,
-      "decision": "Pay the landlord 800 USDC for the apartment deposit.",
-      "expected": true
+      "decision": "Pay the landlord 800 USDC for the apartment deposit."
     },
     "0x3b577f89b3b46e565385ea3655036d2084b7108b357d5c26c39de47d136d282e": {
       "title": "Payment of 800 tUSDC to Landlord Zhang",
@@ -1738,7 +1690,7 @@
         },
         {
           "ok": true,
-          "text": "123 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "861 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -1773,8 +1725,7 @@
         "approval_tx": null,
         "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
       },
-      "decision": "Pay the landlord 800 USDC for the apartment deposit.",
-      "expected": true
+      "decision": "Pay the landlord 800 USDC for the apartment deposit."
     },
     "0x5f3bbedca4e630015ba51820660304dc5c5f47badde580cd7ec71504178a517d": {
       "title": "Payment of 10 tUSDC to Ge",
@@ -1787,7 +1738,7 @@
         },
         {
           "ok": true,
-          "text": "118 confirmation(s) on sepolia (chain id 11155111)"
+          "text": "856 confirmation(s) on sepolia (chain id 11155111)"
         },
         {
           "ok": true,
@@ -1822,8 +1773,7 @@
         "approval_tx": null,
         "from_wallet": "0xb9D959da30680e86E9bF0A287Abee354033a0525"
       },
-      "decision": "给哥转 10 USDC",
-      "expected": true
+      "decision": "给哥转 10 USDC"
     }
   }
 }
