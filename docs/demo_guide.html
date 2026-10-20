@@ -240,7 +240,7 @@ uv run shouhu-demo --chain anvil --verbose                 # full demo, local ch
 <h2>10. Reading the evidence</h2>
 <ul>
   <li>Every payment the agent makes emits an on-chain event <code>Payment(intentId, to, amount, by, viaApproval)</code>. The intent id is the hash of the audit-log entry that recorded the request and the decision, so a judge can go from a transaction on the explorer to the conversation that caused it. The log is <code>evidence/audit_log.jsonl</code>; exported bundles under <code>evidence/runs/</code> join the two.</li>
-  <li>On the explorer, open a payment hash, then the Logs tab: the first topic is the intent id, the second is the recipient.</li>
+  <li>On the explorer, open a payment hash, then the Logs tab: in the PolicyWallet’s log, topic 1 is the intent id and topic 2 the recipient (topic 0 identifies the event).</li>
   <li>The contract source on Sourcify is an exact match of the deployed bytecode: what judges read is exactly what runs.</li>
 </ul>
 </div>
@@ -250,9 +250,9 @@ uv run shouhu-demo --chain anvil --verbose                 # full demo, local ch
 <div class="step"><h3>Check 1. The hashes are real, successful, and belong to our contract (browser only, two minutes)</h3>
 <ol>
   <li>Open any payment link from Section 1, for example Payment 1 to Mama. On the explorer page confirm: <b>Status: Success</b>; <b>From</b> is the agent address <code>0xe46A…b291</code>; <b>To</b> is the PolicyWallet contract <code>0xb9D9…0525</code>.</li>
-  <li>Open the <b>Logs</b> tab of that transaction. Two events appear: <code>Payment</code> from the PolicyWallet (topic 1 is the intent id, topic 2 is the recipient, data holds the amount and the by-approval flag) and the tUSDC <code>Transfer</code> from the wallet to the recipient.</li>
+  <li>Open the <b>Logs</b> tab of that transaction. Two logs appear: the tUSDC <code>Transfer</code> from the wallet to the recipient, shown by name, and the PolicyWallet’s <code>Payment</code>, shown as a raw log because Etherscan has not verified the contract (it is verified on Sourcify): topic 0 <code>0xa25ccf32…</code> means <code>Payment</code>, topic 1 is the intent id, topic 2 the recipient, and the data holds the amount and the by-approval flag. Blockscout (eth-sepolia.blockscout.com) shows the same log decoded by name.</li>
   <li>Open the approval link. <b>From</b> is the owner address <code>0x4444…9EEF</code>, not the agent; the log is <code>ApprovalGranted</code> with the same intent id that Payment 2 later carries. That is the one-time approval, made with a different key, consumed by the 800 payment.</li>
-  <li>Open the PolicyWallet address page and its <b>Events</b> tab: every payment the agent ever made is listed there, newest first. The contract's <b>Read Contract</b> view shows the live policy: <code>perTransferCap</code> 500000000 (500 tUSDC with six decimals), <code>rollingCap</code> 1000000000, <code>paused</code> false, and <code>allowlist(address)</code> for any address.</li>
+  <li>Open the PolicyWallet address page and its <b>Events</b> tab: every payment the agent ever made is listed there, newest first. On Blockscout, the contract’s <b>Read contract</b> tab shows the live policy (Etherscan has no such view for this contract): <code>perTransferCap</code> 500000000 (500 tUSDC with six decimals), <code>rollingCap</code> 1000000000, <code>paused</code> false, and <code>allowlist(address)</code> for any address.</li>
 </ol></div>
 <div class="step"><h3>Check 2. The contract that runs is the contract we show (browser only, one minute)</h3>
 <p>Open the Sourcify links in Section 1. Sourcify reports an <b>exact match</b> between the deployed bytecode and the source, and shows the source itself; it is the same file as <code>contracts/src/PolicyWallet.sol</code> in the repository. The limits are in that code, in <code>agentTransfer</code>, and the only functions that change them are marked <code>onlyOwner</code>.</p></div>
