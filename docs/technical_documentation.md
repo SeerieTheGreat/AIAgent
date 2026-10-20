@@ -27,7 +27,7 @@ Shouhu is an AI agent that holds its own wallet key and pays people on a student
 - **The policy engine decides.** A pure function with no AI in it resolves the recipient, applies the address-provenance and lookalike checks, the pause, the balance, the allowlist and both caps, and returns allow, ask the parent, or refuse, with written reasons.
 - **The contract enforces.** The PolicyWallet smart contract re-checks the per-transfer cap, a rolling 24-hour cap, the allowlist and the pause for the agent’s key, and executes exceptions only against a one-time approval that the parent signed with a separate owner key.
 
-Every decision is written to an append-only audit log, and the hash of the decision entry (the intent id) is written on-chain in the payment event. Any transaction hash can therefore be traced back to the request that caused it, and a proof page re-verifies it from the chain.
+Every decision is written to an append-only audit log, and a hash identifying the decision entry (the intent id) is written on-chain in the payment event. Any transaction hash can therefore be traced back to the request that caused it, and a proof page re-verifies it from the chain.
 
 The precise security claim, which the rest of this document supports: **no tool can move funds outside policy; the model cannot change policy; the chain enforces the agent’s caps.**
 
@@ -39,7 +39,7 @@ The precise security claim, which the rest of this document supports: **no tool 
 |---|---|
 | G1 · Complete real financial tasks autonomously | Five typed tools over a live contract on Ethereum Sepolia. Routine payments execute with no human step (Tier 1); exceptions take one click from the parent (Tier 2). |
 | G2 · No single compromised component can overspend | Planning (model), decision (policy engine) and enforcement (contract) are separate. The agent key is capped on-chain; the owner key lives in a different process. |
-| G3 · Every action is provable | The intent id, the hash of the decision entry, is emitted on-chain. A proof page and a command-line verifier re-read any hash from the chain. |
+| G3 · Every action is provable | The intent id, a hash identifying the decision entry, is emitted on-chain. A proof page and a command-line verifier re-read any hash from the chain. |
 | G4 · Usable by a real family | A web app with registration, English and Chinese input, parent approvals in one click, receipts, and a no-AI fallback. |
 
 ### 1.2 Components
@@ -193,7 +193,7 @@ agentTransferWithApproval(to, amount, intent_id)
 event Payment(intent_id, to, amount, by, viaApproval)
 ```
 
-The approval, the payment and the decision share one identifier. The proof page and `shouhu-verify` recompute the hash of every decision entry in the audit log and match it to the on-chain intent id, then show the student’s exact words, the decision, its tier and reasons. An edited or invented log entry produces a different hash and does not match.
+The approval, the payment and the decision share one identifier. The proof page and `shouhu-verify` recompute the hash of every decision entry in the audit log and match it to the on-chain intent id, then show the student’s exact words, the decision, its tier and reasons. The hash covers the entry’s session, sequence number, event name and time: it identifies which entry made the payment, while the amount, recipient and signer come from the chain itself. It does not seal the entry’s text (the student’s words and the reasons), which someone able to write to the log file could change without breaking the match; risk R25 of the security self-assessment covers this.
 
 ### 2.6 On-chain enforcement in PolicyWallet
 
